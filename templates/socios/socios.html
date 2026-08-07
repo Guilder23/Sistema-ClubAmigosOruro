@@ -32,25 +32,22 @@
 
     <div class="card card-filtros mb-3">
         <div class="card-body py-3">
-            <form method="get" class="filtros-socios-form">
+            <form method="get" class="filtros-socios-form" id="sociosFiltrosForm">
                 <div class="filtros-socios-linea">
                     <div class="filtro-busqueda">
                         <div class="input-group input-group-sm">
                             <div class="input-group-prepend">
                                 <span class="input-group-text bg-white border-right-0"><i class="fas fa-search text-muted"></i></span>
                             </div>
-                            <input type="text" class="form-control form-control-sm border-left-0" name="q" value="{{ q }}" placeholder="Buscar por nombre, apellido o correo...">
+                            <input id="inputSocioBusqueda" type="text" class="form-control form-control-sm border-left-0" name="q" value="{{ q }}" placeholder="Buscar por nombre, apellido o correo...">
                         </div>
                     </div>
                     <div class="filtro-item">
-                        <select class="form-control form-control-sm" name="estado">
+                        <select id="selectSocioEstado" class="form-control form-control-sm" name="estado">
                             <option value="">Todos los estados</option>
                             <option value="activo" {% if estado == 'activo' %}selected{% endif %}>Activo</option>
                             <option value="inactivo" {% if estado == 'inactivo' %}selected{% endif %}>Inactivo</option>
                         </select>
-                    </div>
-                    <div class="filtro-item">
-                        <button type="submit" class="btn btn-primary btn-sm">Filtrar</button>
                     </div>
                 </div>
             </form>

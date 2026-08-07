@@ -15,26 +15,30 @@
         </div>
     </div>
 
-    <form method="get" class="card p-3 mb-3">
-        <div class="row g-2 align-items-end">
-            <div class="col-md-6">
-                <label class="form-label">Buscar</label>
-                <input type="text" name="q" class="form-control" value="{{ q }}" placeholder="Nombre, apellido o correo">
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Estado</label>
-                <select name="estado" class="form-control">
-                    <option value="">Todos</option>
-                    <option value="pendiente" {% if estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
-                    <option value="aprobada" {% if estado == 'aprobada' %}selected{% endif %}>Aprobada</option>
-                    <option value="rechazada" {% if estado == 'rechazada' %}selected{% endif %}>Rechazada</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <button class="btn btn-primary btn-block" type="submit">Filtrar</button>
-            </div>
+    <div class="card card-filtros mb-3">
+        <div class="card-body py-3">
+            <form method="get" class="filtros-solicitudes-form" id="solicitudesFiltrosForm">
+                <div class="filtros-solicitudes-linea">
+                    <div class="filtro-busqueda">
+                        <div class="input-group input-group-sm">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white border-right-0"><i class="fas fa-search text-muted"></i></span>
+                            </div>
+                            <input id="inputSolicitudBusqueda" type="text" name="q" class="form-control form-control-sm border-left-0" value="{{ q }}" placeholder="Nombre, apellido o correo">
+                        </div>
+                    </div>
+                    <div class="filtro-item">
+                        <select id="selectSolicitudEstado" name="estado" class="form-control form-control-sm">
+                            <option value="">Todos</option>
+                            <option value="pendiente" {% if estado == 'pendiente' %}selected{% endif %}>Pendiente</option>
+                            <option value="aprobada" {% if estado == 'aprobada' %}selected{% endif %}>Aprobada</option>
+                            <option value="rechazada" {% if estado == 'rechazada' %}selected{% endif %}>Rechazada</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
         </div>
-    </form>
+    </div>
 
     <div class="card">
         <div class="table-responsive">
@@ -55,7 +59,9 @@
                         <td>{{ solicitud.nombre }} {{ solicitud.apellido }}</td>
                         <td>{{ solicitud.email }}</td>
                         <td>{{ solicitud.telefono|default:'-' }}</td>
-                        <td><span class="badge badge-{% if solicitud.estado == 'aprobada' %}success{% elif solicitud.estado == 'rechazada' %}danger{% else %}warning{% endif %}">{{ solicitud.get_estado_display }}</span></td>
+                        <td>
+                            <span class="estado-badge {% if solicitud.estado == 'aprobada' %}estado-badge-aprobada{% elif solicitud.estado == 'rechazada' %}estado-badge-rechazada{% else %}estado-badge-pendiente{% endif %}">{{ solicitud.get_estado_display }}</span>
+                        </td>
                         <td>{{ solicitud.fecha_solicitud|date:'d/m/Y H:i' }}</td>
                         <td>
                             {% if solicitud.estado == 'pendiente' %}
@@ -86,4 +92,8 @@
     </nav>
     {% endif %}
 </div>
+{% endblock %}
+
+{% block scripts_extra %}
+<script src="{% static 'js/solicitudes/solicitudes.js' %}"></script>
 {% endblock %}
