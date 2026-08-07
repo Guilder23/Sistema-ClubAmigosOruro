@@ -8,16 +8,16 @@
 {% endblock %}
 
 {% block contenido %}
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h2>Gestión de souvenirs</h2>
-            <p class="text-muted mb-0">Revisa, edita y administra los souvenirs disponibles para entregar.</p>
+<div class="container-fluid py-4">
+    <div class="page-header mb-4">
+        <div class="page-header-content">
+            <h1 class="page-title"><i class="fas fa-gifts"></i> Gestión de Souvenirs</h1>
+            <p class="page-subtitle">Revisa, edita y administra los souvenirs disponibles para entregar.</p>
         </div>
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCrearSouvenir">Nuevo souvenir</button>
+        <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalCrearSouvenir">Nuevo souvenir</button>
     </div>
 
-    <div class="card">
+    <div class="card card-tabla">
         <div class="table-responsive">
             <table class="table table-striped mb-0">
                 <thead>
@@ -36,22 +36,28 @@
                         <td>{{ s.nombre }}</td>
                         <td>{{ s.stock }}</td>
                         <td>{{ s.activo|yesno:'Sí,No' }}</td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-sm btn-info btn-ver-souvenir" data-toggle="modal" data-target="#modalVerSouvenir"
+                        <td class="text-center acciones-col">
+                            <button type="button" class="btn btn-icon btn-info btn-sm btn-ver-souvenir" data-toggle="modal" data-target="#modalVerSouvenir"
                                 data-nombre="{{ s.nombre|escapejs }}"
                                 data-descripcion="{{ s.descripcion|escapejs }}"
                                 data-stock="{{ s.stock }}"
                                 data-activo="{{ s.activo|yesno:'Sí,No' }}"
                                 data-creado="{{ s.creado|date:'d/m/Y H:i' }}"
-                                {% if s.imagen %}data-imagen="{{ s.imagen.url }}"{% endif %}>Ver</button>
-                            <button type="button" class="btn btn-sm btn-warning btn-editar-souvenir" data-toggle="modal" data-target="#modalEditarSouvenir"
+                                {% if s.imagen %}data-imagen="{{ s.imagen.url }}"{% endif %}>
+                                <i class="fas fa-eye"></i>
+                            </button>
+                            <button type="button" class="btn btn-icon btn-warning btn-sm btn-editar-souvenir" data-toggle="modal" data-target="#modalEditarSouvenir"
                                 data-id="{{ s.pk }}"
                                 data-nombre="{{ s.nombre|escapejs }}"
                                 data-descripcion="{{ s.descripcion|escapejs }}"
-                                data-stock="{{ s.stock }}">Editar</button>
-                            <button type="button" class="btn btn-sm btn-danger btn-eliminar-souvenir" data-toggle="modal" data-target="#modalEliminarSouvenir"
+                                data-stock="{{ s.stock }}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button type="button" class="btn btn-icon btn-danger btn-sm btn-eliminar-souvenir" data-toggle="modal" data-target="#modalEliminarSouvenir"
                                 data-id="{{ s.pk }}"
-                                data-nombre="{{ s.nombre|escapejs }}">Eliminar</button>
+                                data-nombre="{{ s.nombre|escapejs }}">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
                         </td>
                     </tr>
                     {% empty %}

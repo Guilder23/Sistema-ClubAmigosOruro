@@ -200,6 +200,76 @@ def importar_socios(request):
 
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url='/login/')
+def importar_socios_masivo(request):
+    return render(request, 'socios/importar_masivo.html')
+
+
+@login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/login/')
+def importar_socios_xlsx_preview(request):
+    if request.method != 'POST':
+        return redirect('socios:importar_socios_masivo')
+
+    f = request.FILES.get('file')
+    if not f:
+        messages.error(request, 'Sube un archivo .xlsx.')
+        return redirect('socios:importar_socios_masivo')
+
+    try:
+        wb = openpyxl.load_workbook(f)
+        ws = wb.active
+        rows = list(ws.iter_rows(values_only=True))
+        if not rows:
+            messages.error(request, 'El archivo está vacío.')
+            return redirect('socios:importar_socios_masivo')
+
+        headers = [str(cell or '') for cell in rows[0]]
+        preview = [[str(cell or '') for cell in row] for row in rows[1:11]]
+        preview_data = [
+            [cell or '' for cell in row[:8]]
+            for row in rows[1:]
+            if any(cell is not None for cell in row[:8])
+        ]
+
+        request.session['socios_import_preview'] = preview_data
+
+        return render(request, 'socios/importar_masivo.html', {
+            'preview_headers': headers,
+            'preview_rows': preview,
+        })
+    except Exception as e:
+        messages.error(request, f'Error al procesar xlsx: {e}')
+        return redirect('socios:importar_socios_masivo')
+
+
+@login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/login/')
+def importar_socios_xlsx_confirm(request):
+    preview_data = request.session.pop('socios_import_preview', None)
+    if not preview_data:
+        messages.error(request, 'No hay datos para confirmar.')
+        return redirect('socios:importar_socios_masivo')
+
+    created = 0
+    for row in preview_data:
+        username, nombre, apellido, email, password, telefono, ciudad, direccion = [(c or '') for c in row[:8]]
+        if not username or User.objects.filter(username=username).exists():
+            continue
+        if not password:
+            password = User.objects.make_random_password()
+        user = User.objects.create_user(username=username, email=email, password=password)
+        user.first_name = nombre
+        user.last_name = apellido
+        user.save()
+        Socio.objects.create(user=user, nombre=nombre, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion)
+        created += 1
+
+    messages.success(request, f'Socios importados desde XLSX: {created}')
+    return redirect('socios:listar_socios')
+
+
+@login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/login/')
 def descargar_plantilla_excel(request):
     wb = Workbook()
     ws = wb.active

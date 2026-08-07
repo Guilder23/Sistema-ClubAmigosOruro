@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import listar_socios, crear_socio, editar_socio, activar_socio, desactivar_socio, eliminar_socio, perfil_socio
 from .views import subir_foto
-from .views import crear_admin, importar_socios
+from .views import crear_admin, importar_socios, importar_socios_masivo, importar_socios_xlsx_preview, importar_socios_xlsx_confirm
 from .views import descargar_plantilla_excel, importar_socios_xlsx
 from .views import listar_admins, ver_admin, editar_admin, eliminar_admin, mis_souvenirs
 
@@ -18,6 +18,9 @@ urlpatterns = [
     path('subir_foto/', subir_foto, name='subir_foto'),
     path('crear_admin/', crear_admin, name='crear_admin'),
     path('importar/', importar_socios, name='importar_socios'),
+    path('importar/masivo/', importar_socios_masivo, name='importar_socios_masivo'),
+    path('importar/masivo/preview/', importar_socios_xlsx_preview, name='importar_socios_xlsx_preview'),
+    path('importar/masivo/confirmar/', importar_socios_xlsx_confirm, name='importar_socios_xlsx_confirm'),
     path('importar/xlsx/', importar_socios_xlsx, name='importar_socios_xlsx'),
     path('importar/plantilla/', descargar_plantilla_excel, name='descargar_plantilla_excel'),
     path('admins/', listar_admins, name='listar_admins'),

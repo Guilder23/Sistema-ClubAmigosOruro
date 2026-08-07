@@ -1,15 +1,17 @@
 {% extends 'base/base.html' %}
 {% load static %}
 {% block contenido %}
-<div class="container py-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h2>Administradores</h2>
-      <p class="text-muted mb-0">Gestiona los administradores del sistema.</p>
+<div class="container-fluid py-4">
+  <div class="page-header mb-4">
+    <div class="page-header-content">
+      <h1 class="page-title"><i class="fas fa-user-shield"></i> Gestión de Administradores</h1>
+      <p class="page-subtitle">Gestiona los administradores del sistema.</p>
     </div>
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCrearAdmin">Crear administrador</button>
+    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalCrearAdmin">Crear administrador</button>
   </div>
-  <table class="table">
+  <div class="card card-tabla">
+    <div class="table-responsive">
+      <table class="table table-sm table-striped mb-0">
     <thead><tr><th>Usuario</th><th>Nombre</th><th>Email</th><th>Acciones</th></tr></thead>
     <tbody>
       {% for u in page_obj.object_list %}
@@ -17,10 +19,16 @@
         <td>{{ u.username }}</td>
         <td>{{ u.get_full_name }}</td>
         <td>{{ u.email }}</td>
-        <td>
-          <button type="button" class="btn btn-sm btn-info btn-ver-admin" data-toggle="modal" data-target="#modalVerAdmin" data-username="{{ u.username }}" data-fullname="{{ u.get_full_name }}" data-email="{{ u.email }}">Ver</button>
-          <button type="button" class="btn btn-sm btn-warning btn-editar-admin" data-toggle="modal" data-target="#modalEditarAdmin" data-id="{{ u.id }}" data-username="{{ u.username }}" data-first-name="{{ u.first_name }}" data-last-name="{{ u.last_name }}" data-email="{{ u.email }}">Editar</button>
-          <button type="button" class="btn btn-sm btn-danger btn-eliminar-admin" data-toggle="modal" data-target="#modalEliminarAdmin" data-id="{{ u.id }}" data-username="{{ u.username }}">Eliminar</button>
+        <td class="text-center acciones-col">
+          <button type="button" class="btn btn-icon btn-info btn-ver-admin" data-toggle="modal" data-target="#modalVerAdmin" data-username="{{ u.username }}" data-fullname="{{ u.get_full_name }}" data-email="{{ u.email }}">
+            <i class="fas fa-eye"></i>
+          </button>
+          <button type="button" class="btn btn-icon btn-warning btn-editar-admin" data-toggle="modal" data-target="#modalEditarAdmin" data-id="{{ u.id }}" data-username="{{ u.username }}" data-first-name="{{ u.first_name }}" data-last-name="{{ u.last_name }}" data-email="{{ u.email }}">
+            <i class="fas fa-edit"></i>
+          </button>
+          <button type="button" class="btn btn-icon btn-danger btn-eliminar-admin" data-toggle="modal" data-target="#modalEliminarAdmin" data-id="{{ u.id }}" data-username="{{ u.username }}">
+            <i class="fas fa-trash-alt"></i>
+          </button>
         </td>
       </tr>
       {% endfor %}
@@ -29,6 +37,8 @@
   {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}">Anterior</a>{% endif %}
   <span> Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }} </span>
   {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}">Siguiente</a>{% endif %}
+    </div>
+  </div>
   {% include 'admins/modals/crear.html' %}
   {% include 'admins/modals/ver.html' %}
   {% include 'admins/modals/editar.html' %}
