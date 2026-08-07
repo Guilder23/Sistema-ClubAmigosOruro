@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block titulo %}Entregas de souvenirs{% endblock %}
+{% block estilos_extra %}
+<link rel="stylesheet" href="{% static 'css/souvenirs/souvenirs.css' %}">
+{% endblock %}
+{% block contenido %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="mb-1">Souvenirs entregados</h2>
+            <p class="text-muted mb-0">Controla el historial de entregas y evita duplicados.</p>
+        </div>
+        <a href="{% url 'souvenirs:registrar_entrega' %}" class="btn btn-primary">Registrar entrega</a>
+    </div>
+
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Socio</th>
+                        <th>Fecha</th>
+                        <th>Entregado por</th>
+                        <th>Observación</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entrega in page_obj %}
+                    <tr>
+                        <td>{{ entrega.socio }}</td>
+                        <td>{{ entrega.fecha_entrega|date:'d/m/Y' }}</td>
+                        <td>{{ entrega.entregado_por|default:'-' }}</td>
+                        <td>{{ entrega.observacion|default:'-' }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4" class="text-center py-4">No hay entregas registradas.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

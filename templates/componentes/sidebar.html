@@ -1,0 +1,46 @@
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-brand">
+            <i class="fas fa-store"></i>
+            <span class="sidebar-brand-text">SIS-Textil</span>
+        </div>
+        <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Colapsar menu">
+            <i class="fas fa-angles-left"></i>
+        </button>
+    </div>
+
+    <nav class="sidebar-nav">
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <a href="{% url 'dashboard:dashboard' %}" class="sidebar-link {% if '/dashboard/' in request.path %}active{% endif %}">
+                    <i class="fas fa-chart-pie"></i><span>Dashboard</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="{% url 'solicitudes:listar_solicitudes' %}" class="sidebar-link {% if '/solicitudes/' in request.path %}active{% endif %}">
+                    <i class="fas fa-file-signature"></i><span>Solicitudes</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="{% url 'socios:listar_socios' %}" class="sidebar-link {% if '/socios/' in request.path %}active{% endif %}">
+                    <i class="fas fa-users"></i><span>Socios</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="{% url 'souvenirs:listar_entregas' %}" class="sidebar-link {% if '/souvenirs/' in request.path %}active{% endif %}">
+                    <i class="fas fa-gift"></i><span>Souvenirs</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="sidebar-user">
+            <div class="sidebar-user-avatar"><i class="fas fa-user"></i></div>
+            <div class="sidebar-user-info">
+                <strong>{{ user.username|title }}</strong>
+                <small>{% if user.is_staff %}Administrador{% else %}Usuario{% endif %}</small>
+            </div>
+        </div>
+    </div>
+</aside>

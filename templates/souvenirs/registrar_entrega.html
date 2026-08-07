@@ -1,0 +1,27 @@
+{% extends 'base/base.html' %}
+{% block titulo %}Registrar entrega{% endblock %}
+{% block contenido %}
+<div class="container-fluid py-4">
+    <div class="card p-4">
+        <h2 class="mb-3">Registrar entrega de souvenir</h2>
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label>Socio</label>
+                <select name="socio_id" class="form-control" required>
+                    <option value="">Selecciona un socio</option>
+                    {% for socio in socios %}
+                    <option value="{{ socio.id }}">{{ socio.nombre }} {{ socio.apellido }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Observación</label>
+                <textarea name="observacion" class="form-control"></textarea>
+            </div>
+            <button class="btn btn-primary" type="submit">Guardar entrega</button>
+            <a href="{% url 'souvenirs:listar_entregas' %}" class="btn btn-secondary">Volver</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

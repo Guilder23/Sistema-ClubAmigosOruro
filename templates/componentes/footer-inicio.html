@@ -1,0 +1,55 @@
+{% load static %}
+
+{% if not user.is_authenticated %}
+<footer class="footer-inicio">
+    <div class="container-fluid footer-inicio-container">
+        <div class="footer-top">
+            <div class="footer-grid">
+                <section class="footer-brand">
+                    <a class="navbar-brand-inicio" href="{% url 'core:inicio' %}">
+                        <img src="{% static 'img/logoAlmacen.png' %}" alt="Club Amigos" class="navbar-logo">
+                        <span class="navbar-brand-text">
+                            <span class="brand-american">CLUB</span> <span class="brand-outlet">AMIGOS</span>
+                        </span>
+                    </a>
+                    <p class="footer-tagline">Conecta con tu comunidad, gestiona tu membresía y recibe beneficios exclusivos para socios.</p>
+                </section>
+
+                <section class="footer-section">
+                    <h4 class="footer-title">Navegación</h4>
+                    <ul class="footer-links">
+                        <li><a href="{% url 'core:inicio' %}">Inicio</a></li>
+                        <li><a href="#beneficios">Beneficios</a></li>
+                        <li><a href="#inscripcion">Cómo unirse</a></li>
+                        <li><a href="#faq">FAQ</a></li>
+                    </ul>
+                </section>
+
+                <section class="footer-section">
+                    <h4 class="footer-title">Contacto</h4>
+                    <ul class="footer-contact">
+                        <li><i class="fab fa-whatsapp"></i> WhatsApp: 75000343</li>
+                        <li><i class="fas fa-map-marker-alt"></i> Calle Ingavi 370</li>
+                        <li><i class="fas fa-envelope"></i> contacto@clubamigos.com</li>
+                    </ul>
+                </section>
+
+                <section class="footer-section">
+                    <h4 class="footer-title">Redes</h4>
+                    <div class="footer-social">
+                        <a href="https://wa.me/59175000343" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="footer-bottom-item">&copy; 2026 Club Amigos</p>
+            <p class="footer-bottom-item">Todos los derechos reservados</p>
+            <p class="footer-bottom-item">Desarrollado por <a href="https://appyaa.com" class="footer-bottom-link" target="_blank" rel="noopener noreferrer">appyaa</a></p>
+        </div>
+    </div>
+</footer>
+{% endif %}

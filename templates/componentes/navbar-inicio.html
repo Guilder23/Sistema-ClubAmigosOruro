@@ -1,0 +1,58 @@
+{% load static %}
+
+{% if not user.is_authenticated %}
+<nav class="navbar-inicio navbar navbar-expand-lg">
+    <div class="container-fluid navbar-inicio-container">
+        <div class="navbar-left">
+            <button class="mobile-nav-toggle d-lg-none" id="mobileNavToggle" aria-label="Menú">
+                <i class="fas fa-bars"></i>
+            </button>
+            <a class="navbar-brand-inicio" href="{% url 'core:inicio' %}">
+                <img src="{% static 'img/logoAlmacen.png' %}" alt="Club Amigos" class="navbar-logo">
+                <span class="navbar-brand-text">
+                    <span class="brand-american">CLUB</span> <span class="brand-outlet">AMIGOS</span>
+                </span>
+            </a>
+        </div>
+
+        <div class="navbar-center">
+            <ul class="navbar-desktop-links d-none d-lg-flex">
+                <li><a class="nav-link" href="{% url 'core:inicio' %}">Inicio</a></li>
+                <li><a class="nav-link" href="#beneficios">Beneficios</a></li>
+                <li><a class="nav-link" href="#inscripcion">Cómo unirse</a></li>
+                <li><a class="nav-link" href="#faq">FAQ</a></li>
+                <li><a class="nav-link" href="#contacto">Contacto</a></li>
+            </ul>
+        </div>
+
+        <div class="navbar-right-icons">
+            <a href="{% url 'core:login' %}" class="nav-icon-btn" aria-label="Iniciar sesión" title="Iniciar sesión">
+                <i class="fas fa-user"></i>
+            </a>
+        </div>
+    </div>
+</nav>
+
+<div class="mobile-nav-overlay d-lg-none" id="mobileNavOverlay"></div>
+
+<div class="mobile-nav d-lg-none" id="mobileNav">
+    <div class="mobile-nav-header">
+        <a class="navbar-brand-inicio" href="{% url 'core:inicio' %}">
+            <img src="{% static 'img/logoAlmacen.png' %}" alt="Club Amigos" class="navbar-logo">
+            <span class="navbar-brand-text">
+                <span class="brand-american">CLUB</span> <span class="brand-outlet">AMIGOS</span>
+            </span>
+        </a>
+        <button class="mobile-nav-close" id="mobileNavClose" aria-label="Cerrar">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <ul class="mobile-nav-links">
+        <li><a class="nav-link" href="{% url 'core:inicio' %}">Inicio</a></li>
+        <li><a class="nav-link" href="#beneficios">Beneficios</a></li>
+        <li><a class="nav-link" href="#inscripcion">Cómo unirse</a></li>
+        <li><a class="nav-link" href="#faq">FAQ</a></li>
+        <li><a class="nav-link" href="#contacto">Contacto</a></li>
+    </ul>
+</div>
+{% endif %}

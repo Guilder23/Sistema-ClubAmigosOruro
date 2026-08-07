@@ -1,0 +1,181 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block titulo %}Club Amigos{% endblock %}
+
+{% block estilos_extra %}
+<link rel="stylesheet" href="{% static 'css/componentes/navbar-inicio.css' %}">
+<link rel="stylesheet" href="{% static 'css/componentes/footer-inicio.css' %}">
+<link rel="stylesheet" href="{% static 'css/core/inicio.css' %}">
+{% endblock %}
+
+{% block contenido %}
+{% include 'componentes/navbar-inicio.html' %}
+
+<section class="hero-portada" style="--hero-img: url('https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1920&q=85');">
+    <div class="hero-portada-overlay"></div>
+    <div class="hero-portada-inner">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-7 text-white">
+                    <h1 class="display-4 font-weight-bold">Bienvenidos al Club Amigos</h1>
+                    <p class="lead">Una comunidad activa para socios, eventos, beneficios y seguimiento de membresías.</p>
+                    <a href="#inscripcion" class="btn btn-primary btn-lg">Quiero inscribirme</a>
+                </div>
+                <div class="col-lg-5">
+                    <div class="card p-4 shadow">
+                        <h3 class="mb-3">Solicita tu membresía</h3>
+                        <form method="post" action="{% url 'solicitudes:crear_solicitud' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" name="nombre" class="form-control" placeholder="Nombres" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="apellido" class="form-control" placeholder="Apellidos" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="email" name="email" class="form-control" placeholder="Correo electrónico" required>
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="telefono" class="form-control" placeholder="Teléfono">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="ciudad" class="form-control" placeholder="Ciudad">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" name="direccion" class="form-control" placeholder="Dirección">
+                            </div>
+                            <button class="btn btn-primary btn-block" type="submit">Enviar solicitud</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container py-5">
+    <section class="mb-5">
+        <h2 class="mb-3">Beneficios del club</h2>
+        <div class="row">
+            <div class="col-md-4 mb-3"><div class="card p-3 h-100"><h4>Acceso exclusivo</h4><p>Participa en eventos especiales y actividades privadas para socios.</p></div></div>
+            <div class="col-md-4 mb-3"><div class="card p-3 h-100"><h4>Atención prioritaria</h4><p>Prioridad en solicitudes, información y seguimiento de tus datos.</p></div></div>
+            <div class="col-md-4 mb-3"><div class="card p-3 h-100"><h4>Souvenirs y reconocimientos</h4><p>Recibe beneficios y novedades durante tu membresía.</p></div></div>
+        </div>
+    </section>
+
+    <section id="faq" class="mb-5">
+        <h2 class="mb-3">Preguntas frecuentes</h2>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="card p-3 h-100">
+                    <h4>¿Cómo me hago socio?</h4>
+                    <p>Completa el formulario de solicitud en la página principal y nuestro equipo revisará tus datos.</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card p-3 h-100">
+                    <h4>¿Cuánto tarda la aprobación?</h4>
+                    <p>Normalmente respondemos en 24 a 48 horas hábiles. Recibirás un correo cuando tu solicitud sea procesada.</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card p-3 h-100">
+                    <h4>¿Qué beneficios obtengo?</h4>
+                    <p>Acceso a eventos exclusivos, descuentos especiales, souvenirs y comunicación prioritaria con el club.</p>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card p-3 h-100">
+                    <h4>¿Puedo actualizar mis datos?</h4>
+                    <p>Sí, los socios activos pueden solicitar modificaciones de su información a través del panel administrativo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="inicio-section" aria-hidden="false">
+        <div class="row">
+            <div class="col-12">
+                <h2 class="mb-3" style="font-size:1.3rem; color:#1e3a8a; font-weight:700;"><i class="fas fa-user-friends"></i> Opiniones de socios</h2>
+            </div>
+            <div class="col-lg-4 mb-3">
+                <div class="inicio-testimonio h-100">
+                    <p class="inicio-testimonio-txt">“Ser socio me permitió asistir a eventos únicos y sentirme parte de una comunidad cercana.”</p>
+                    <div class="inicio-testimonio-meta">
+                        <span class="inicio-testimonio-nombre">María</span>
+                        <span class="inicio-testimonio-rol">Socio</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-3">
+                <div class="inicio-testimonio h-100">
+                    <p class="inicio-testimonio-txt">“La atención es rápida y el seguimiento de mi membresía siempre fue claro y amable.”</p>
+                    <div class="inicio-testimonio-meta">
+                        <span class="inicio-testimonio-nombre">Juan</span>
+                        <span class="inicio-testimonio-rol">Socio</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-3">
+                <div class="inicio-testimonio h-100">
+                    <p class="inicio-testimonio-txt">“Los souvenirs y reconocimientos son un plus excelente. Me hacen sentir valorado como miembro.”</p>
+                    <div class="inicio-testimonio-meta">
+                        <span class="inicio-testimonio-nombre">Ana</span>
+                        <span class="inicio-testimonio-rol">Socio</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="inicio-section gallery-section" aria-hidden="false">
+        <div class="section-heading reveal">
+            <span class="section-eyebrow"><i class="fas fa-images"></i> Galería</span>
+            <h2>Momentos de nuestro trabajo</h2>
+        </div>
+        <div class="gallery-grid">
+            <figure class="inicio-galeria-card reveal">
+                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen1.png' %}" alt="Galería 1" loading="lazy">
+            </figure>
+            <figure class="inicio-galeria-card reveal">
+                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen2.png' %}" alt="Galería 2" loading="lazy">
+            </figure>
+            <figure class="inicio-galeria-card reveal">
+                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen3.png' %}" alt="Galería 3" loading="lazy">
+            </figure>
+            <figure class="inicio-galeria-card reveal">
+                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen5.png' %}" alt="Galería 4" loading="lazy">
+            </figure>
+            <figure class="inicio-galeria-card reveal">
+                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen6.png' %}" alt="Galería 5" loading="lazy">
+            </figure>
+            <figure class="inicio-galeria-card reveal">
+                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen7.png' %}" alt="Galería 6" loading="lazy">
+            </figure>
+            <figure class="inicio-galeria-card reveal">
+                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen8.png' %}" alt="Galería 7" loading="lazy">
+            </figure>
+            <figure class="inicio-galeria-card reveal">
+                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen9.png' %}" alt="Galería 8" loading="lazy">
+            </figure>
+            <figure class="inicio-galeria-card reveal">
+                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen10.png' %}" alt="Galería 9" loading="lazy">
+            </figure>
+        </div>
+    </section>
+</div>
+
+<a href="https://wa.me/59175000343?text=Hola%2C%20vengo%20desde%20su%20p%C3%A1gina%20y%20quiero%20consultar%20sobre%20el%20club%20y%20mis%20membres%C3%ADas..." class="floating-whatsapp-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+</a>
+
+{% if not user.is_authenticated %}
+    {% include 'componentes/footer-inicio.html' %}
+{% endif %}
+{% endblock %}
+
+{% block scripts_extra %}
+<script src="{% static 'js/core/inicio.js' %}"></script>
+<script src="{% static 'js/componentes/navbar-inicio.js' %}"></script>
+{% endblock %}
