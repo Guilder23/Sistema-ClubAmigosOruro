@@ -92,13 +92,15 @@ def crear_socio(request):
 
 @login_required
 def perfil_socio(request):
+    user = request.user
+    profile, _ = UserProfile.objects.get_or_create(user=user)
+    socio = None
     try:
-        socio = request.user.socio_profile
+        socio = user.socio_profile
     except Socio.DoesNotExist:
-        messages.error(request, 'No se encontró el perfil de socio.')
-        return redirect('/')
+        socio = None
 
-    entregas = socio.entregas_souvenir.select_related('entregado_por').all()
+    entregas = socio.entregas_souvenir.select_related('entregado_por').all() if socio else []
     paginator = Paginator(entregas, 10)
     page_obj = paginator.get_page(request.GET.get('page'))
 
@@ -106,6 +108,7 @@ def perfil_socio(request):
         'socio': socio,
         'page_obj': page_obj,
         'is_admin': request.user.is_staff,
+        'user_profile': profile,
     })
 
 
