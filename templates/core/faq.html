@@ -1,0 +1,109 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block titulo %}FAQ - Club Amigos{% endblock %}
+
+{% block estilos_extra %}
+<link rel="stylesheet" href="{% static 'css/componentes/navbar-inicio.css' %}">
+<link rel="stylesheet" href="{% static 'css/componentes/footer-inicio.css' %}">
+<link rel="stylesheet" href="{% static 'css/core/faq.css' %}">
+{% endblock %}
+
+{% block contenido %}
+{% include 'componentes/navbar-inicio.html' %}
+
+<section class="faq-hero">
+    <div class="faq-hero-content container">
+        <div class="faq-hero-copy">
+            <span class="section-eyebrow"><i class="fas fa-question-circle"></i> Preguntas frecuentes</span>
+            <h1>Resuelve tus dudas sobre el Club Amigos</h1>
+            <p>Encuentra respuestas claras sobre membresía, beneficios, solicitudes y seguimiento de tu cuenta.</p>
+        </div>
+        <div class="faq-hero-card">
+            <div class="faq-hero-card-inner">
+                <h3>¿Necesitas ayuda?</h3>
+                <p>Si no encuentras la respuesta aquí, escríbenos al WhatsApp o envía tu consulta desde la página de contacto.</p>
+                <a href="https://wa.me/59175000343" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Contactar por WhatsApp</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container faq-page py-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="faq-accordion">
+                <div class="faq-item active">
+                    <button class="faq-question" type="button" aria-expanded="true">
+                        <span>¿Cómo puedo solicitar ser socio?</span>
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Visita la página principal, completa el formulario de solicitud y espera nuestra confirmación por correo. Nuestro equipo revisará tu solicitud en 24-48 horas hábiles.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" type="button" aria-expanded="false">
+                        <span>¿Qué documentos necesito para ser socio?</span>
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Por lo general solo necesitas datos personales básicos: nombre, apellidos, correo, teléfono, ciudad y dirección. Si te solicitamos documentación adicional, te avisaremos por correo.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" type="button" aria-expanded="false">
+                        <span>¿Cuáles son los beneficios de la membresía?</span>
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Los socios reciben acceso a eventos exclusivos, atención prioritaria, envíos de souvenirs y mejoras en la comunicación con el club.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" type="button" aria-expanded="false">
+                        <span>¿Cómo actualizo mis datos personales?</span>
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Si eres socio, ingresa a tu perfil desde la barra lateral y envía una solicitud de actualización. Si eres administrador, puedes gestionar los datos desde el panel interno.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question" type="button" aria-expanded="false">
+                        <span>¿Dónde veo el estado de mi solicitud?</span>
+                        <i class="fas fa-plus"></i>
+                    </button>
+                    <div class="faq-answer">
+                        <p>El estado de tu solicitud se enviará al correo que registres. También puedes escribirnos por WhatsApp si necesitas soporte inmediato.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="faq-side-card">
+                <h4>¿Tienes otra pregunta?</h4>
+                <p>Habla con nuestro equipo de soporte, estamos disponibles para ayudarte con tu membresía y cualquier duda sobre el club.</p>
+                <ul class="faq-contact-list">
+                    <li><i class="fas fa-phone-alt"></i> <a href="tel:+59175000343">+591 7500 0343</a></li>
+                    <li><i class="fas fa-envelope"></i> <a href="mailto:contacto@clubamigos.com">contacto@clubamigos.com</a></li>
+                    <li><i class="fab fa-whatsapp"></i> <a href="https://wa.me/59175000343" target="_blank" rel="noopener noreferrer">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<a href="https://wa.me/59175000343" class="floating-whatsapp-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+    <i class="fab fa-whatsapp" aria-hidden="true"></i>
+</a>
+
+{% if not user.is_authenticated %}
+    {% include 'componentes/footer-inicio.html' %}
+{% endif %}
+{% endblock %}
+
+{% block scripts_extra %}
+<script src="{% static 'js/core/inicio.js' %}"></script>
+<script src="{% static 'js/componentes/navbar-inicio.js' %}"></script>
+{% endblock %}

@@ -11,6 +11,10 @@ def inicio(request):
     return render(request, 'core/inicio.html')
 
 
+def faq(request):
+    return render(request, 'core/faq.html')
+
+
 def iniciar_sesion(request):
     if request.user.is_authenticated:
         return redirect('core:inicio')

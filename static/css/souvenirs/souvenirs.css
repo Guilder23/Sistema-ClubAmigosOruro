@@ -4,10 +4,22 @@
     align-items: center;
     margin-bottom: 1.5rem;
     padding: 1.5rem 2rem;
-    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    background: #1e3a8a;
     border-radius: 1rem;
     color: white;
     box-shadow: 0 18px 40px rgba(15, 23, 42, 0.12);
+}
+
+.page-header-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.page-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 .page-title {
@@ -18,7 +30,7 @@
 
 .page-subtitle {
     margin: 0.3rem 0 0;
-    color: rgba(255, 255, 255, 0.9);
+    color: rgba(255, 255, 255, 0.95);
     font-size: 0.98rem;
 }
 
@@ -69,7 +81,7 @@
 }
 
 .table thead {
-    background: #2563eb;
+    background: #4567a5;
 }
 
 .table thead th {
@@ -87,11 +99,11 @@
     color: #334155;
 }
 
-.no-data-row td {
-    border-bottom: none;
+.table tbody td:first-child {
+    padding: 0.8rem 0.75rem;
 }
 
-.btn-primary {
+.page-header .btn-primary {
     white-space: nowrap;
 }
 
@@ -100,5 +112,10 @@
         flex-direction: column;
         text-align: center;
         gap: 1rem;
+    }
+
+    .page-header-actions {
+        justify-content: center;
+        width: 100%;
     }
 }
