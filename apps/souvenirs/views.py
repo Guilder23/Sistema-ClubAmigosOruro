@@ -15,7 +15,7 @@ def listar_entregas(request):
     entregas = SouvenirEntrega.objects.select_related('socio', 'entregado_por').order_by('-fecha_entrega')
     paginator = Paginator(entregas, 10)
     page_obj = paginator.get_page(request.GET.get('page'))
-    return render(request, 'souvenirs/listar_entregas.html', {'page_obj': page_obj})
+    return render(request, 'souvenirs/entregas/entregas.html', {'page_obj': page_obj})
 
 
 @login_required
@@ -46,7 +46,7 @@ def registrar_entrega(request):
 
     socios = Socio.objects.filter(estado='activo').order_by('apellido', 'nombre')
     souvenirs = Souvenir.objects.filter(activo=True).order_by('-creado')
-    return render(request, 'souvenirs/registrar_entrega.html', {'socios': socios, 'souvenirs': souvenirs})
+    return render(request, 'souvenirs/entregas/registrar_entrega.html', {'socios': socios, 'souvenirs': souvenirs})
 
 
 @login_required
@@ -55,7 +55,7 @@ def listar_souvenirs(request):
     objetos = Souvenir.objects.order_by('-creado')
     paginator = Paginator(objetos, 10)
     page_obj = paginator.get_page(request.GET.get('page'))
-    return render(request, 'souvenirs/listar_souvenirs.html', {'page_obj': page_obj})
+    return render(request, 'souvenirs/souvenirs.html', {'page_obj': page_obj})
 
 
 @login_required

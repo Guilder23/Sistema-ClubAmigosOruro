@@ -1,5 +1,8 @@
 {% extends 'base/base.html' %}
 {% block contenido %}
+{% block estilos_extra %}
+<link rel="stylesheet" href="{% static 'css/admins/modals/editar.css' %}">
+{% endblock %}
 <div class="container">
   <h2>Editar Administrador</h2>
   <form method="post">
@@ -16,9 +19,9 @@
 {% endblock %}
 
 {% block estilos_extra %}
-<link rel="stylesheet" href="{% static 'css/admins/editar_admin.css' %}">
+<link rel="stylesheet" href="{% static 'css/admins/modals/editar.css' %}">
 {% endblock %}
 
 {% block scripts_extra %}
-<script src="{% static 'js/admins/editar_admin.js' %}"></script>
+<script src="{% static 'js/admins/modals/editar.js' %}"></script>
 {% endblock %}

@@ -28,6 +28,16 @@
                 </a>
             </li>
             <li class="sidebar-item">
+                <a href="{% url 'socios:listar_admins' %}" class="sidebar-link {% if '/socios/listar_admins' in request.path %}active{% endif %}">
+                    <i class="fas fa-user-shield"></i><span>Administradores</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="{% url 'socios:crear_admin' %}" class="sidebar-link {% if '/socios/crear_admin' in request.path %}active{% endif %}">
+                    <i class="fas fa-user-plus"></i><span>Crear admin</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
                 <a href="{% url 'souvenirs:listar_souvenirs' %}" class="sidebar-link {% if '/souvenirs/gestion/' in request.path %}active{% endif %}">
                     <i class="fas fa-gift"></i><span>Gestión de souvenirs</span>
                 </a>

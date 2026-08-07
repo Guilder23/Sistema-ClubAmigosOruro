@@ -252,7 +252,7 @@ def listar_admins(request):
     admins = User.objects.filter(is_staff=True).order_by('username')
     paginator = Paginator(admins, 20)
     page_obj = paginator.get_page(request.GET.get('page'))
-    return render(request, 'admins/listar_admins.html', {'page_obj': page_obj})
+    return render(request, 'admins/admins.html', {'page_obj': page_obj})
 
 
 @login_required

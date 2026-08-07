@@ -1,30 +1,30 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block titulo %}Editar Souvenir{% endblock %}
+{% block titulo %}Crear Souvenir{% endblock %}
 
 {% block estilos_extra %}
-<link rel="stylesheet" href="{% static 'css/souvenirs/editar_souvenir.css' %}">
+<link rel="stylesheet" href="{% static 'css/souvenirs/modals/crear.css' %}">
 {% endblock %}
 
 {% block contenido %}
 <div class="container py-4">
     <div class="card card-body souvenir-form-card">
-        <h2 class="mb-3">Editar souvenir</h2>
-        <form method="post" enctype="multipart/form-data">
+        <h2 class="mb-3">Crear souvenir</h2>
+        <form method="post" action="{% url 'souvenirs:crear_souvenir' %}" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="form-group">
                 <label>Nombre</label>
-                <input type="text" name="nombre" class="form-control" value="{{ souvenir.nombre }}" required>
+                <input type="text" name="nombre" class="form-control" required>
             </div>
             <div class="form-group">
                 <label>Descripción</label>
-                <textarea name="descripcion" class="form-control" rows="3">{{ souvenir.descripcion }}</textarea>
+                <textarea name="descripcion" class="form-control" rows="3"></textarea>
             </div>
             <div class="form-row">
                 <div class="col-md-6 form-group">
                     <label>Stock</label>
-                    <input type="number" name="stock" class="form-control" value="{{ souvenir.stock }}" min="0">
+                    <input type="number" name="stock" class="form-control" min="0" value="0">
                 </div>
                 <div class="col-md-6 form-group">
                     <label>Imagen</label>
@@ -41,5 +41,5 @@
 {% endblock %}
 
 {% block scripts_extra %}
-<script src="{% static 'js/souvenirs/editar_souvenir.js' %}"></script>
+<script src="{% static 'js/souvenirs/modals/crear.js' %}"></script>
 {% endblock %}

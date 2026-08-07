@@ -1,5 +1,8 @@
 {% extends 'base/base.html' %}
 {% block contenido %}
+{% block estilos_extra %}
+<link rel="stylesheet" href="{% static 'css/admins/modals/ver.css' %}">
+{% endblock %}
 <div class="container">
   <h2>Administrador: {{ user_obj.username }}</h2>
   <p><strong>Nombre:</strong> {{ user_obj.get_full_name }}</p>
@@ -9,9 +12,9 @@
 {% endblock %}
 
 {% block estilos_extra %}
-<link rel="stylesheet" href="{% static 'css/admins/ver_admin.css' %}">
+<link rel="stylesheet" href="{% static 'css/admins/modals/ver.css' %}">
 {% endblock %}
 
 {% block scripts_extra %}
-<script src="{% static 'js/admins/ver_admin.js' %}"></script>
+<script src="{% static 'js/admins/modals/ver.js' %}"></script>
 {% endblock %}
