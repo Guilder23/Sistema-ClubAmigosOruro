@@ -322,10 +322,26 @@ def importar_socios_xlsx(request):
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url='/login/')
 def listar_admins(request):
-    admins = User.objects.filter(is_staff=True).order_by('username')
-    paginator = Paginator(admins, 20)
+    q = request.GET.get('q', '').strip()
+    activo = request.GET.get('activo', '').strip()
+    admins = User.objects.filter(is_staff=True)
+
+    if q:
+        admins = admins.filter(
+            Q(username__icontains=q)
+            | Q(first_name__icontains=q)
+            | Q(last_name__icontains=q)
+            | Q(email__icontains=q)
+        )
+
+    if activo == 'si':
+        admins = admins.filter(is_active=True)
+    elif activo == 'no':
+        admins = admins.filter(is_active=False)
+
+    paginator = Paginator(admins.order_by('username'), 20)
     page_obj = paginator.get_page(request.GET.get('page'))
-    return render(request, 'admins/admins.html', {'page_obj': page_obj})
+    return render(request, 'admins/admins.html', {'page_obj': page_obj, 'q': q, 'activo': activo})
 
 
 @login_required

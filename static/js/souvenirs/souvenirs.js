@@ -3,38 +3,46 @@ document.addEventListener('DOMContentLoaded', function () {
     const modalEditarForm = document.getElementById('formEditarSouvenir');
     const modalEliminarForm = document.getElementById('formEliminarSouvenir');
 
+    const populateVerModal = function(button) {
+        if (!button) return;
+
+        const nombre = button.getAttribute('data-nombre') || '';
+        const descripcion = button.getAttribute('data-descripcion') || '';
+        const stock = button.getAttribute('data-stock') || '0';
+        const activo = button.getAttribute('data-activo') || 'No';
+        const creado = button.getAttribute('data-creado') || '-';
+        const imagenUrl = button.getAttribute('data-imagen') || null;
+
+        const nombreEl = document.getElementById('verSouvenirNombre');
+        const descripcionEl = document.getElementById('verSouvenirDescripcion');
+        const stockEl = document.getElementById('verSouvenirStock');
+        const activoEl = document.getElementById('verSouvenirActivo');
+        const creadoEl = document.getElementById('verSouvenirCreado');
+        const imagenEl = document.getElementById('verSouvenirImagen');
+        const imagenPlaceholder = document.getElementById('verSouvenirImagenPlaceholder');
+
+        if (nombreEl) nombreEl.textContent = nombre;
+        if (descripcionEl) descripcionEl.textContent = descripcion || 'No disponible';
+        if (stockEl) stockEl.textContent = stock;
+        if (activoEl) activoEl.textContent = activo;
+        if (creadoEl) creadoEl.textContent = creado;
+
+        if (imagenUrl && imagenEl) {
+            imagenEl.src = imagenUrl;
+            imagenEl.style.display = 'block';
+            if (imagenPlaceholder) imagenPlaceholder.style.display = 'none';
+        } else {
+            if (imagenEl) imagenEl.style.display = 'none';
+            if (imagenPlaceholder) imagenPlaceholder.style.display = 'block';
+        }
+    };
+
     if (modalVer) {
-        modalVer.addEventListener('show.bs.modal', function (event) {
-            const button = event.relatedTarget;
-            const nombre = button.getAttribute('data-nombre') || '';
-            const descripcion = button.getAttribute('data-descripcion') || '-';
-            const stock = button.getAttribute('data-stock') || '0';
-            const activo = button.getAttribute('data-activo') || 'No';
-            const creado = button.getAttribute('data-creado') || '-';
-            const imagenUrl = button.getAttribute('data-imagen') || null;
-
-            const nombreEl = document.getElementById('verSouvenirNombre');
-            const descripcionEl = document.getElementById('verSouvenirDescripcion');
-            const stockEl = document.getElementById('verSouvenirStock');
-            const activoEl = document.getElementById('verSouvenirActivo');
-            const creadoEl = document.getElementById('verSouvenirCreado');
-            const imagenEl = document.getElementById('verSouvenirImagen');
-            const imagenPlaceholder = document.getElementById('verSouvenirImagenPlaceholder');
-
-            if (nombreEl) nombreEl.textContent = nombre;
-            if (descripcionEl) descripcionEl.textContent = descripcion || 'No disponible';
-            if (stockEl) stockEl.textContent = stock;
-            if (activoEl) activoEl.textContent = activo;
-            if (creadoEl) creadoEl.textContent = creado;
-
-            if (imagenUrl && imagenEl) {
-                imagenEl.src = imagenUrl;
-                imagenEl.style.display = 'block';
-                if (imagenPlaceholder) imagenPlaceholder.style.display = 'none';
-            } else {
-                if (imagenEl) imagenEl.style.display = 'none';
-                if (imagenPlaceholder) imagenPlaceholder.style.display = 'block';
-            }
+        const verButtons = document.querySelectorAll('.btn-ver-souvenir');
+        verButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                populateVerModal(button);
+            });
         });
     }
 
@@ -59,6 +67,30 @@ document.addEventListener('DOMContentLoaded', function () {
             if (stockInput) stockInput.value = stock;
         });
     });
+
+    const filtrosForm = document.getElementById('souvenirsFiltrosForm');
+    const searchInput = document.getElementById('inputSouvenirBusqueda');
+    const activoSelect = document.getElementById('selectSouvenirActivo');
+    let debounceTimer = null;
+
+    const submitFiltros = function () {
+        if (filtrosForm) {
+            filtrosForm.submit();
+        }
+    };
+
+    const scheduleSubmit = function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(submitFiltros, 300);
+    };
+
+    if (searchInput) {
+        searchInput.addEventListener('input', scheduleSubmit);
+    }
+
+    if (activoSelect) {
+        activoSelect.addEventListener('change', scheduleSubmit);
+    }
 
     const eliminarButtons = document.querySelectorAll('.btn-eliminar-souvenir');
     eliminarButtons.forEach(button => {

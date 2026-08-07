@@ -1,12 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
-from django.shortcuts import redirect, render
+from django.db.models import Q
+from django.shortcuts import redirect, render, get_object_or_404
 
 from apps.socios.models import Socio
-from .models import SouvenirEntrega
-from .models import Souvenir
-from django.shortcuts import get_object_or_404
+from .models import SouvenirEntrega, Souvenir
 
 
 @login_required
@@ -52,10 +51,24 @@ def registrar_entrega(request):
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url='/login/')
 def listar_souvenirs(request):
+    q = request.GET.get('q', '').strip()
+    activo = request.GET.get('activo', '').strip()
     objetos = Souvenir.objects.order_by('-creado')
+
+    if q:
+        objetos = objetos.filter(
+            Q(nombre__icontains=q) |
+            Q(descripcion__icontains=q)
+        )
+
+    if activo == 'si':
+        objetos = objetos.filter(activo=True)
+    elif activo == 'no':
+        objetos = objetos.filter(activo=False)
+
     paginator = Paginator(objetos, 10)
     page_obj = paginator.get_page(request.GET.get('page'))
-    return render(request, 'souvenirs/souvenirs.html', {'page_obj': page_obj})
+    return render(request, 'souvenirs/souvenirs.html', {'page_obj': page_obj, 'q': q, 'activo': activo})
 
 
 @login_required
