@@ -12,11 +12,11 @@
     <nav class="sidebar-nav">
         <ul class="sidebar-menu">
             {% if request.user.is_staff %}
-            <li class="sidebar-item">
+            {% comment %} <li class="sidebar-item">
                 <a href="{% url 'dashboard:dashboard' %}" class="sidebar-link {% if '/dashboard/' in request.path %}active{% endif %}">
                     <i class="fas fa-chart-pie"></i><span>Dashboard</span>
                 </a>
-            </li>
+            </li> {% endcomment %}
             <li class="sidebar-item">
                 <a href="{% url 'solicitudes:listar_solicitudes' %}" class="sidebar-link {% if '/solicitudes/' in request.path %}active{% endif %}">
                     <i class="fas fa-file-signature"></i><span>Solicitudes</span>
@@ -29,12 +29,12 @@
             </li>
             <li class="sidebar-item">
                 <a href="{% url 'souvenirs:listar_souvenirs' %}" class="sidebar-link {% if '/souvenirs/gestion/' in request.path %}active{% endif %}">
-                    <i class="fas fa-gift"></i><span>Gestión de souvenirs</span>
+                    <i class="fas fa-gift"></i><span>Souvenirs</span>
                 </a>
             </li>
             <li class="sidebar-item">
                 <a href="{% url 'souvenirs:listar_entregas' %}" class="sidebar-link {% if request.path == '/souvenirs/' or '/souvenirs/registrar/' in request.path %}active{% endif %}">
-                    <i class="fas fa-truck-loading"></i><span>Entregas de souvenirs</span>
+                    <i class="fas fa-truck-loading"></i><span>Entregas</span>
                 </a>
             </li>
             <li class="sidebar-section">
