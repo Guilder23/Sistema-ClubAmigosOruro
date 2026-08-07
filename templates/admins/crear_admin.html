@@ -1,0 +1,51 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block titulo %}Crear Administrador{% endblock %}
+
+{% block estilos_extra %}
+<link rel="stylesheet" href="{% static 'css/admins/crear_admin.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<div class="container py-4">
+    <div class="card card-body admin-form-card">
+        <h2 class="mb-3">Crear administrador</h2>
+        <form method="post" action="{% url 'socios:crear_admin' %}">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="col-md-6 form-group">
+                    <label>Usuario</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label>Correo</label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-md-6 form-group">
+                    <label>Contraseña</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <div class="col-md-6 form-group">
+                    <label>Nombre</label>
+                    <input type="text" name="first_name" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Apellido</label>
+                <input type="text" name="last_name" class="form-control">
+            </div>
+            <div class="btn-group mt-3" role="group">
+                <button type="submit" class="btn btn-primary">Crear</button>
+                <a href="{% url 'socios:listar_admins' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts_extra %}
+<script src="{% static 'js/admins/crear_admin.js' %}"></script>
+{% endblock %}

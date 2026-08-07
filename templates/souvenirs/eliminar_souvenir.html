@@ -1,0 +1,28 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block titulo %}Eliminar Souvenir{% endblock %}
+
+{% block estilos_extra %}
+<link rel="stylesheet" href="{% static 'css/souvenirs/eliminar_souvenir.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<div class="container py-4">
+    <div class="card card-body souvenir-delete-card">
+        <h2 class="mb-3">Eliminar souvenir</h2>
+        <p>¿Seguro que deseas eliminar <strong>{{ souvenir.nombre }}</strong>?</p>
+        <form method="post">
+            {% csrf_token %}
+            <div class="btn-group" role="group">
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+                <a href="{% url 'souvenirs:listar_souvenirs' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts_extra %}
+<script src="{% static 'js/souvenirs/eliminar_souvenir.js' %}"></script>
+{% endblock %}

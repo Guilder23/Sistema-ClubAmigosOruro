@@ -11,6 +11,7 @@
 
     <nav class="sidebar-nav">
         <ul class="sidebar-menu">
+            {% if request.user.is_staff %}
             <li class="sidebar-item">
                 <a href="{% url 'dashboard:dashboard' %}" class="sidebar-link {% if '/dashboard/' in request.path %}active{% endif %}">
                     <i class="fas fa-chart-pie"></i><span>Dashboard</span>
@@ -27,8 +28,34 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a href="{% url 'souvenirs:listar_entregas' %}" class="sidebar-link {% if '/souvenirs/' in request.path %}active{% endif %}">
-                    <i class="fas fa-gift"></i><span>Souvenirs</span>
+                <a href="{% url 'souvenirs:listar_souvenirs' %}" class="sidebar-link {% if '/souvenirs/gestion/' in request.path %}active{% endif %}">
+                    <i class="fas fa-gift"></i><span>Gestión de souvenirs</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="{% url 'souvenirs:listar_entregas' %}" class="sidebar-link {% if request.path == '/souvenirs/' or '/souvenirs/registrar/' in request.path %}active{% endif %}">
+                    <i class="fas fa-truck-loading"></i><span>Entregas de souvenirs</span>
+                </a>
+            </li>
+            {% else %}
+            <li class="sidebar-item">
+                <a href="{% url 'socios:perfil_socio' %}" class="sidebar-link {% if '/socios/perfil' in request.path %}active{% endif %}">
+                    <i class="fas fa-user"></i><span>Mi Perfil</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="{% url 'socios:mis_souvenirs' %}" class="sidebar-link {% if '/socios/mis_souvenirs' in request.path %}active{% endif %}">
+                    <i class="fas fa-gift"></i><span>Mis Souvenirs</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    <nav class="sidebar-nav">
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <a href="{% url 'socios:perfil_socio' %}" class="sidebar-link {% if '/socios/perfil' in request.path %}active{% endif %}">
+                    <i class="fas fa-user-circle"></i><span>Mi Perfil</span>
                 </a>
             </li>
         </ul>
@@ -36,7 +63,13 @@
 
     <div class="sidebar-footer">
         <div class="sidebar-user">
-            <div class="sidebar-user-avatar"><i class="fas fa-user"></i></div>
+            <div class="sidebar-user-avatar">
+                {% if user_profile.foto %}
+                    <img src="{{ user_profile.foto.url }}" alt="avatar" style="width:40px;height:40px;border-radius:50%;object-fit:cover;"/>
+                {% else %}
+                    <i class="fas fa-user"></i>
+                {% endif %}
+            </div>
             <div class="sidebar-user-info">
                 <strong>{{ user.username|title }}</strong>
                 <small>{% if user.is_staff %}Administrador{% else %}Usuario{% endif %}</small>

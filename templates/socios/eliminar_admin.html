@@ -1,0 +1,12 @@
+{% extends 'base/base.html' %}
+{% block contenido %}
+<div class="container">
+  <h2>Eliminar Administrador</h2>
+  <p>¿Eliminar a {{ user_obj.username }}?</p>
+  <form method="post">
+    {% csrf_token %}
+    <button class="btn btn-danger" type="submit">Eliminar</button>
+    <a href="{% url 'socios:listar_admins' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

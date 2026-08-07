@@ -6,6 +6,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 
 from .models import SolicitudSocio
+from apps.socios.models import Socio
 
 
 @login_required
@@ -73,6 +74,17 @@ def aprobar_solicitud(request, solicitud_id):
     if created:
         user.set_password('ClubAmigos2026!')
         user.save()
+    # Crear registro de Socio si no existe
+    if not Socio.objects.filter(user=user).exists():
+        Socio.objects.create(
+            user=user,
+            nombre=solicitud.nombre,
+            apellido=solicitud.apellido,
+            email=solicitud.email,
+            telefono=solicitud.telefono or '',
+            ciudad=solicitud.ciudad or '',
+            direccion=solicitud.direccion or '',
+        )
     solicitud.estado = 'aprobada'
     solicitud.usuario_creado = user
     solicitud.observacion = 'Solicitud aprobada y cuenta creada automáticamente.'

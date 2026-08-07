@@ -1,0 +1,69 @@
+{% extends 'base/base.html' %}
+
+{% block contenido %}
+<div class="container">
+  <h2>Mi Perfil</h2>
+  <div class="perfil-card">
+    <div style="display:flex;align-items:center;gap:16px;margin-bottom:12px;">
+      <div style="width:96px;height:96px;border-radius:8px;overflow:hidden;">
+        {% if user_profile.foto %}
+          <img src="{{ user_profile.foto.url }}" alt="avatar" style="width:100%;height:100%;object-fit:cover;"/>
+        {% elif socio.user.userprofile.foto %}
+          <img src="{{ socio.user.userprofile.foto.url }}" alt="avatar" style="width:100%;height:100%;object-fit:cover;"/>
+        {% else %}
+          <div style="width:96px;height:96px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;color:#666;">No foto</div>
+        {% endif %}
+      </div>
+      <div>
+        <p><strong>Nombre:</strong> {{ socio.nombre }} {{ socio.apellido }}</p>
+        <p><strong>Correo:</strong> {{ socio.email }}</p>
+      </div>
+    </div>
+
+    <form method="post" action="{% url 'socios:subir_foto' %}" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="form-group">
+        <input type="file" name="foto" accept="image/*">
+        <button class="btn btn-sm btn-primary" type="submit">Subir foto</button>
+      </div>
+    </form>
+
+    <p><strong>Teléfono:</strong> {{ socio.telefono }}</p>
+    <p><strong>Ciudad:</strong> {{ socio.ciudad }}</p>
+    <p><strong>Dirección:</strong> {{ socio.direccion }}</p>
+    <p><strong>Estado:</strong> {{ socio.get_estado_display }}</p>
+    <p><strong>Fecha de ingreso:</strong> {{ socio.fecha_ingreso }}</p>
+  </div>
+
+  <h3>Historial de entregas de souvenirs</h3>
+  {% if page_obj.object_list %}
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Entregado por</th>
+          <th>Observación</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in page_obj.object_list %}
+          <tr>
+            <td>{{ e.fecha_entrega }}</td>
+            <td>{% if e.entregado_por %}{{ e.entregado_por.get_full_name }} ({{ e.entregado_por.username }}){% else %}-{% endif %}</td>
+            <td>{{ e.observacion }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="pagination">
+      {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}">Anterior</a>{% endif %}
+      <span> Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }} </span>
+      {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}">Siguiente</a>{% endif %}
+    </div>
+
+  {% else %}
+    <p>No hay entregas registradas.</p>
+  {% endif %}
+</div>
+{% endblock %}

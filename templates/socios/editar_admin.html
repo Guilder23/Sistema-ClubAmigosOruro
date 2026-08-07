@@ -1,0 +1,16 @@
+{% extends 'base/base.html' %}
+{% block contenido %}
+<div class="container">
+  <h2>Editar Administrador</h2>
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group"><label>Usuario</label><input class="form-control" name="username" value="{{ user_obj.username }}"></div>
+    <div class="form-group"><label>Email</label><input class="form-control" name="email" value="{{ user_obj.email }}"></div>
+    <div class="form-group"><label>Nombre</label><input class="form-control" name="first_name" value="{{ user_obj.first_name }}"></div>
+    <div class="form-group"><label>Apellido</label><input class="form-control" name="last_name" value="{{ user_obj.last_name }}"></div>
+    <div class="form-group"><label>Nueva contraseña (opcional)</label><input class="form-control" name="password" type="password"></div>
+    <button class="btn btn-primary" type="submit">Guardar</button>
+    <a href="{% url 'socios:listar_admins' %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

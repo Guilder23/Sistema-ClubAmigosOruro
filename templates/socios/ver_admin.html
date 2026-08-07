@@ -1,0 +1,9 @@
+{% extends 'base/base.html' %}
+{% block contenido %}
+<div class="container">
+  <h2>Administrador: {{ user_obj.username }}</h2>
+  <p><strong>Nombre:</strong> {{ user_obj.get_full_name }}</p>
+  <p><strong>Email:</strong> {{ user_obj.email }}</p>
+  <a href="{% url 'socios:listar_admins' %}" class="btn btn-secondary">Volver</a>
+</div>
+{% endblock %}
