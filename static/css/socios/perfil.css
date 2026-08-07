@@ -146,6 +146,10 @@
 
 .perfil-actions input[type='file'] {
     flex: 1 1 220px;
+    min-width: 0;
+    max-width: 100%;
+    width: 100%;
+    box-sizing: border-box;
     border: 1px solid #cbd5e1;
     border-radius: 0.65rem;
     padding: 0.55rem 0.9rem;
@@ -153,6 +157,9 @@
 }
 
 .perfil-actions .btn {
+    flex: 0 0 auto;
+    min-width: 120px;
+    width: auto;
     height: 42px;
 }
 

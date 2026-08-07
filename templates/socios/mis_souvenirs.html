@@ -1,22 +1,92 @@
 {% extends 'base/base.html' %}
+{% load static %}
+
+{% block estilos_extra %}
+<style>
+.mis-souvenirs-wrapper {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 1.5rem 0;
+}
+.mis-souvenirs-table .souvenir-cell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.mis-souvenirs-table .souvenir-thumb-min {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+.mis-souvenirs-table .souvenir-name {
+  font-weight: 600;
+  color: #0f172a;
+}
+</style>
+{% endblock %}
+
 {% block contenido %}
-<div class="container">
-  <h2>Mis Souvenirs</h2>
-  <table class="table">
-    <thead><tr><th>Fecha</th><th>Souvenir</th><th>Entregado por</th><th>Observación</th></tr></thead>
-    <tbody>
-      {% for e in page_obj.object_list %}
-      <tr>
-        <td>{{ e.fecha_entrega }}</td>
-        <td>{% if e.souvenir %}{{ e.souvenir.nombre }}{% else %}-{% endif %}</td>
-        <td>{% if e.entregado_por %}{{ e.entregado_por.get_full_name }}{% else %}-{% endif %}</td>
-        <td>{{ e.observacion }}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}">Anterior</a>{% endif %}
-  <span> Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }} </span>
-  {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}">Siguiente</a>{% endif %}
+<div class="mis-souvenirs-wrapper">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h2>Mis Souvenirs</h2>
+      <p class="text-muted mb-0">Tus entregas recientes con detalle de souvenir y quién lo entregó.</p>
+    </div>
+  </div>
+  <div class="table-responsive mis-souvenirs-table">
+    <table class="table table-striped mb-0">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Souvenir</th>
+          <th>Entregado por</th>
+          <th>Observación</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for e in page_obj.object_list %}
+        <tr>
+          <td>{{ e.fecha_entrega|date:'j \d\e F \d\e Y' }}</td>
+          <td>
+            {% if e.souvenir %}
+            <div class="souvenir-cell">
+              {% if e.souvenir.imagen %}
+              <img src="{{ e.souvenir.imagen.url }}" alt="{{ e.souvenir.nombre }}" class="souvenir-thumb-min">
+              {% endif %}
+              <span class="souvenir-name">{{ e.souvenir.nombre }}</span>
+            </div>
+            {% else %}
+            -
+            {% endif %}
+          </td>
+          <td>
+            {% if e.entregado_por %}
+              {% if e.entregado_por.get_full_name %}
+                {{ e.entregado_por.get_full_name }}
+              {% else %}
+                {{ e.entregado_por.username }}
+              {% endif %}
+            {% else %}
+              -
+            {% endif %}
+          </td>
+          <td>{{ e.observacion|default:'Sin observación' }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  <div class="d-flex align-items-center gap-2 mt-3">
+    {% if page_obj.has_previous %}
+      <a class="btn btn-sm btn-secondary" href="?page={{ page_obj.previous_page_number }}">Anterior</a>
+    {% endif %}
+    <span class="text-muted">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+      <a class="btn btn-sm btn-secondary" href="?page={{ page_obj.next_page_number }}">Siguiente</a>
+    {% endif %}
+  </div>
 </div>
 {% endblock %}
