@@ -160,7 +160,7 @@ def crear_admin(request):
         user.save()
         messages.success(request, 'Administrador creado correctamente.')
         return redirect('socios:listar_admins')
-    return render(request, 'admins/crear_admin.html')
+    return redirect('socios:listar_admins')
 
 
 @login_required
@@ -258,8 +258,7 @@ def listar_admins(request):
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url='/login/')
 def ver_admin(request, user_id):
-    user = get_object_or_404(User, id=user_id, is_staff=True)
-    return render(request, 'admins/ver_admin.html', {'user_obj': user})
+    return redirect('socios:listar_admins')
 
 
 @login_required
@@ -277,7 +276,7 @@ def editar_admin(request, user_id):
         user.save()
         messages.success(request, 'Administrador actualizado.')
         return redirect('socios:listar_admins')
-    return render(request, 'admins/editar_admin.html', {'user_obj': user})
+    return redirect('socios:listar_admins')
 
 
 @login_required
@@ -288,7 +287,7 @@ def eliminar_admin(request, user_id):
         user.delete()
         messages.success(request, 'Administrador eliminado.')
         return redirect('socios:listar_admins')
-    return render(request, 'admins/eliminar_admin.html', {'user_obj': user})
+    return redirect('socios:listar_admins')
 
 
 @login_required

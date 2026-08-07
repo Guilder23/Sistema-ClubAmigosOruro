@@ -68,12 +68,11 @@ def crear_souvenir(request):
         imagen = request.FILES.get('imagen')
         if not nombre:
             messages.error(request, 'Nombre requerido.')
-            return redirect('souvenirs:crear_souvenir')
+            return redirect('souvenirs:listar_souvenirs')
         Souvenir.objects.create(nombre=nombre, descripcion=descripcion, stock=stock, imagen=imagen)
         messages.success(request, 'Souvenir creado.')
         return redirect('souvenirs:listar_souvenirs')
-
-    return render(request, 'souvenirs/crear_souvenir.html')
+    return redirect('souvenirs:listar_souvenirs')
 
 
 @login_required
@@ -89,14 +88,13 @@ def editar_souvenir(request, pk):
         s.save()
         messages.success(request, 'Souvenir actualizado.')
         return redirect('souvenirs:listar_souvenirs')
-    return render(request, 'souvenirs/editar_souvenir.html', {'souvenir': s})
+    return redirect('souvenirs:listar_souvenirs')
 
 
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url='/login/')
 def ver_souvenir(request, pk):
-    s = get_object_or_404(Souvenir, pk=pk)
-    return render(request, 'souvenirs/ver_souvenir.html', {'souvenir': s})
+    return redirect('souvenirs:listar_souvenirs')
 
 
 @login_required
@@ -107,4 +105,4 @@ def eliminar_souvenir(request, pk):
         s.delete()
         messages.success(request, 'Souvenir eliminado.')
         return redirect('souvenirs:listar_souvenirs')
-    return render(request, 'souvenirs/eliminar_souvenir.html', {'souvenir': s})
+    return redirect('souvenirs:listar_souvenirs')

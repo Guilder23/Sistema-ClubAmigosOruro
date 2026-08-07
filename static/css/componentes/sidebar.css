@@ -6,17 +6,16 @@
     width: 220px;
     background: #ffffff;
     border-right: 1px solid var(--color-borde);
-    height: calc(100vh - 56px);
-    overflow-y: auto;
-    overflow-x: hidden;
     position: fixed;
     left: 0;
     top: 56px;
+    bottom: 0;
     transition: transform 0.3s ease;
     z-index: 1020;
     box-shadow: 1px 0 3px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
+    overflow-x: hidden;
 }
 
 /* En móvil, el sidebar comienza oculto por defecto */
@@ -107,6 +106,13 @@
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.sidebar-nav::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 
 .sidebar-menu {

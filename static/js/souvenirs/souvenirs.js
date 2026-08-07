@@ -1,2 +1,77 @@
-// JS para listar_souvenirs
-console.log('listar_souvenirs loaded');
+document.addEventListener('DOMContentLoaded', function () {
+    const modalVer = document.getElementById('modalVerSouvenir');
+    const modalEditarForm = document.getElementById('formEditarSouvenir');
+    const modalEliminarForm = document.getElementById('formEliminarSouvenir');
+
+    if (modalVer) {
+        modalVer.addEventListener('show.bs.modal', function (event) {
+            const button = event.relatedTarget;
+            const nombre = button.getAttribute('data-nombre') || '';
+            const descripcion = button.getAttribute('data-descripcion') || '-';
+            const stock = button.getAttribute('data-stock') || '0';
+            const activo = button.getAttribute('data-activo') || 'No';
+            const creado = button.getAttribute('data-creado') || '-';
+            const imagenUrl = button.getAttribute('data-imagen') || null;
+
+            const nombreEl = document.getElementById('verSouvenirNombre');
+            const descripcionEl = document.getElementById('verSouvenirDescripcion');
+            const stockEl = document.getElementById('verSouvenirStock');
+            const activoEl = document.getElementById('verSouvenirActivo');
+            const creadoEl = document.getElementById('verSouvenirCreado');
+            const imagenEl = document.getElementById('verSouvenirImagen');
+            const imagenPlaceholder = document.getElementById('verSouvenirImagenPlaceholder');
+
+            if (nombreEl) nombreEl.textContent = nombre;
+            if (descripcionEl) descripcionEl.textContent = descripcion || 'No disponible';
+            if (stockEl) stockEl.textContent = stock;
+            if (activoEl) activoEl.textContent = activo;
+            if (creadoEl) creadoEl.textContent = creado;
+
+            if (imagenUrl && imagenEl) {
+                imagenEl.src = imagenUrl;
+                imagenEl.style.display = 'block';
+                if (imagenPlaceholder) imagenPlaceholder.style.display = 'none';
+            } else {
+                if (imagenEl) imagenEl.style.display = 'none';
+                if (imagenPlaceholder) imagenPlaceholder.style.display = 'block';
+            }
+        });
+    }
+
+    const editarButtons = document.querySelectorAll('.btn-editar-souvenir');
+    editarButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const id = button.getAttribute('data-id');
+            const nombre = button.getAttribute('data-nombre') || '';
+            const descripcion = button.getAttribute('data-descripcion') || '';
+            const stock = button.getAttribute('data-stock') || '0';
+
+            if (modalEditarForm) {
+                modalEditarForm.action = `/souvenirs/gestion/${id}/editar/`;
+            }
+
+            const nombreInput = document.getElementById('editarSouvenirNombre');
+            const descripcionInput = document.getElementById('editarSouvenirDescripcion');
+            const stockInput = document.getElementById('editarSouvenirStock');
+
+            if (nombreInput) nombreInput.value = nombre;
+            if (descripcionInput) descripcionInput.value = descripcion;
+            if (stockInput) stockInput.value = stock;
+        });
+    });
+
+    const eliminarButtons = document.querySelectorAll('.btn-eliminar-souvenir');
+    eliminarButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const id = button.getAttribute('data-id');
+            const nombre = button.getAttribute('data-nombre') || '';
+
+            if (modalEliminarForm) {
+                modalEliminarForm.action = `/souvenirs/gestion/${id}/eliminar/`;
+            }
+
+            const nombreEl = document.getElementById('eliminarSouvenirNombre');
+            if (nombreEl) nombreEl.textContent = nombre;
+        });
+    });
+});

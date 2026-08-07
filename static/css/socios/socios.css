@@ -20,6 +20,34 @@
     color: rgba(255, 255, 255, 0.92);
 }
 
+.import-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
+    margin-top: 0.75rem;
+}
+
+.import-actions form,
+.import-actions a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.import-actions input[type="file"] {
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    padding: 0.35rem 0.5rem;
+    background: #ffffff;
+    font-size: 0.85rem;
+}
+
+.import-actions button,
+.import-actions a {
+    white-space: nowrap;
+}
+
 .card-filtros {
     margin-bottom: 1rem;
     border: 1px solid #e5e7eb;

@@ -24,17 +24,19 @@
         </button>
         {% endif %}
         {% if is_admin %}
-        <form method="post" action="{% url 'socios:importar_socios' %}" enctype="multipart/form-data" style="display:inline-block;margin-left:8px;">
-            {% csrf_token %}
-            <input type="file" name="file" accept=".csv">
-            <button class="btn btn-secondary btn-lg" type="submit">Importar CSV</button>
-        </form>
-        <form method="post" action="{% url 'socios:importar_socios_xlsx' %}" enctype="multipart/form-data" style="display:inline-block;margin-left:8px;">
-            {% csrf_token %}
-            <input type="file" name="file" accept=".xlsx">
-            <button class="btn btn-secondary btn-lg" type="submit">Importar XLSX</button>
-        </form>
-        <a class="btn btn-outline-primary btn-lg" href="{% url 'socios:descargar_plantilla_excel' %}" style="margin-left:8px;">Descargar plantilla XLSX</a>
+        <div class="import-actions">
+            <form method="post" action="{% url 'socios:importar_socios' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="file" accept=".csv">
+                <button class="btn btn-secondary btn-sm" type="submit">Importar CSV</button>
+            </form>
+            <form method="post" action="{% url 'socios:importar_socios_xlsx' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" name="file" accept=".xlsx">
+                <button class="btn btn-secondary btn-sm" type="submit">Importar XLSX</button>
+            </form>
+            <a class="btn btn-outline-primary btn-sm" href="{% url 'socios:descargar_plantilla_excel' %}">Descargar plantilla XLSX</a>
+        </div>
         {% endif %}
     </div>
 

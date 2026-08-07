@@ -14,7 +14,7 @@
             <h2>Gestión de souvenirs</h2>
             <p class="text-muted mb-0">Revisa, edita y administra los souvenirs disponibles para entregar.</p>
         </div>
-        <a href="{% url 'souvenirs:crear_souvenir' %}" class="btn btn-primary">Nuevo souvenir</a>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCrearSouvenir">Nuevo souvenir</button>
     </div>
 
     <div class="card">
@@ -37,12 +37,21 @@
                         <td>{{ s.stock }}</td>
                         <td>{{ s.activo|yesno:'Sí,No' }}</td>
                         <td class="text-center">
-                            <a href="{% url 'souvenirs:ver_souvenir' s.pk %}" class="btn btn-sm btn-info">Ver</a>
-                            <a href="{% url 'souvenirs:editar_souvenir' s.pk %}" class="btn btn-sm btn-warning">Editar</a>
-                            <form method="post" action="{% url 'souvenirs:eliminar_souvenir' s.pk %}" class="d-inline-block mb-0">
-                                {% csrf_token %}
-                                <button class="btn btn-sm btn-danger" type="submit">Eliminar</button>
-                            </form>
+                            <button type="button" class="btn btn-sm btn-info btn-ver-souvenir" data-toggle="modal" data-target="#modalVerSouvenir"
+                                data-nombre="{{ s.nombre|escapejs }}"
+                                data-descripcion="{{ s.descripcion|escapejs }}"
+                                data-stock="{{ s.stock }}"
+                                data-activo="{{ s.activo|yesno:'Sí,No' }}"
+                                data-creado="{{ s.creado|date:'d/m/Y H:i' }}"
+                                {% if s.imagen %}data-imagen="{{ s.imagen.url }}"{% endif %}>Ver</button>
+                            <button type="button" class="btn btn-sm btn-warning btn-editar-souvenir" data-toggle="modal" data-target="#modalEditarSouvenir"
+                                data-id="{{ s.pk }}"
+                                data-nombre="{{ s.nombre|escapejs }}"
+                                data-descripcion="{{ s.descripcion|escapejs }}"
+                                data-stock="{{ s.stock }}">Editar</button>
+                            <button type="button" class="btn btn-sm btn-danger btn-eliminar-souvenir" data-toggle="modal" data-target="#modalEliminarSouvenir"
+                                data-id="{{ s.pk }}"
+                                data-nombre="{{ s.nombre|escapejs }}">Eliminar</button>
                         </td>
                     </tr>
                     {% empty %}
@@ -66,6 +75,10 @@
         </ul>
     </nav>
     {% endif %}
+    {% include 'souvenirs/modals/crear.html' %}
+    {% include 'souvenirs/modals/ver.html' %}
+    {% include 'souvenirs/modals/editar.html' %}
+    {% include 'souvenirs/modals/eliminar.html' %}
 </div>
 {% endblock %}
 

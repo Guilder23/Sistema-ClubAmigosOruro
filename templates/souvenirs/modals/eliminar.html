@@ -1,28 +1,22 @@
-{% extends 'base/base.html' %}
-{% load static %}
-
-{% block titulo %}Eliminar Souvenir{% endblock %}
-
-{% block estilos_extra %}
-<link rel="stylesheet" href="{% static 'css/souvenirs/modals/eliminar.css' %}">
-{% endblock %}
-
-{% block contenido %}
-<div class="container py-4">
-    <div class="card card-body souvenir-delete-card">
-        <h2 class="mb-3">Eliminar souvenir</h2>
-        <p>¿Seguro que deseas eliminar <strong>{{ souvenir.nombre }}</strong>?</p>
-        <form method="post">
-            {% csrf_token %}
-            <div class="btn-group" role="group">
-                <button type="submit" class="btn btn-danger">Eliminar</button>
-                <a href="{% url 'souvenirs:listar_souvenirs' %}" class="btn btn-secondary">Cancelar</a>
-            </div>
-        </form>
+<div class="modal fade" id="modalEliminarSouvenir" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="formEliminarSouvenir" method="post" action="">
+                {% csrf_token %}
+                <div class="modal-header">
+                    <h5 class="modal-title">Eliminar souvenir</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Seguro que deseas eliminar <strong id="eliminarSouvenirNombre"></strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
-{% endblock %}
-
-{% block scripts_extra %}
-<script src="{% static 'js/souvenirs/modals/eliminar.js' %}"></script>
-{% endblock %}

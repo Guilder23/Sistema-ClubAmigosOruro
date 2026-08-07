@@ -1,37 +1,30 @@
-{% extends 'base/base.html' %}
-{% load static %}
-
-{% block titulo %}Ver Souvenir{% endblock %}
-
-{% block estilos_extra %}
-<link rel="stylesheet" href="{% static 'css/souvenirs/modals/ver.css' %}">
-{% endblock %}
-
-{% block contenido %}
-<div class="container py-4">
-    <div class="card card-body souvenir-view-card">
-        <h2 class="mb-3">Souvenir: {{ souvenir.nombre }}</h2>
-        <div class="row mb-3">
-            <div class="col-md-4">
-                {% if souvenir.imagen %}
-                    <img src="{{ souvenir.imagen.url }}" class="img-fluid rounded" alt="{{ souvenir.nombre }}">
-                {% else %}
-                    <div class="souvenir-image-placeholder">Sin imagen</div>
-                {% endif %}
+<div class="modal fade" id="modalVerSouvenir" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ver souvenir</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
-            <div class="col-md-8">
-                <p><strong>Descripción:</strong> {{ souvenir.descripcion|default:'No disponible' }}</p>
-                <p><strong>Stock:</strong> {{ souvenir.stock }}</p>
-                <p><strong>Activo:</strong> {{ souvenir.activo|yesno:'Sí,No' }}</p>
-                <p><strong>Creado:</strong> {{ souvenir.creado|date:'d/m/Y H:i' }}</p>
+            <div class="modal-body">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <img id="verSouvenirImagen" class="img-fluid rounded" alt="Souvenir" style="display:none;" />
+                        <div id="verSouvenirImagenPlaceholder" class="souvenir-image-placeholder">Sin imagen</div>
+                    </div>
+                    <div class="col-md-8">
+                        <p><strong>Nombre:</strong> <span id="verSouvenirNombre"></span></p>
+                        <p><strong>Descripción:</strong> <span id="verSouvenirDescripcion"></span></p>
+                        <p><strong>Stock:</strong> <span id="verSouvenirStock"></span></p>
+                        <p><strong>Activo:</strong> <span id="verSouvenirActivo"></span></p>
+                        <p><strong>Creado:</strong> <span id="verSouvenirCreado"></span></p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
-        <a href="{% url 'souvenirs:listar_souvenirs' %}" class="btn btn-secondary">Volver</a>
-        <a href="{% url 'souvenirs:editar_souvenir' souvenir.pk %}" class="btn btn-warning">Editar</a>
     </div>
 </div>
-{% endblock %}
-
-{% block scripts_extra %}
-<script src="{% static 'js/souvenirs/modals/ver.js' %}"></script>
-{% endblock %}

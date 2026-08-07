@@ -1,4 +1,5 @@
 {% extends 'base/base.html' %}
+{% load static %}
 {% block contenido %}
 <div class="container py-4">
   <div class="d-flex justify-content-between align-items-center mb-4">
@@ -6,7 +7,7 @@
       <h2>Administradores</h2>
       <p class="text-muted mb-0">Gestiona los administradores del sistema.</p>
     </div>
-    <a href="{% url 'socios:crear_admin' %}" class="btn btn-primary">Crear administrador</a>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalCrearAdmin">Crear administrador</button>
   </div>
   <table class="table">
     <thead><tr><th>Usuario</th><th>Nombre</th><th>Email</th><th>Acciones</th></tr></thead>
@@ -17,12 +18,9 @@
         <td>{{ u.get_full_name }}</td>
         <td>{{ u.email }}</td>
         <td>
-          <a href="{% url 'socios:ver_admin' u.id %}" class="btn btn-sm btn-info">Ver</a>
-          <a href="{% url 'socios:editar_admin' u.id %}" class="btn btn-sm btn-warning">Editar</a>
-          <form method="post" action="{% url 'socios:eliminar_admin' u.id %}" style="display:inline;">
-            {% csrf_token %}
-            <button class="btn btn-sm btn-danger">Eliminar</button>
-          </form>
+          <button type="button" class="btn btn-sm btn-info btn-ver-admin" data-toggle="modal" data-target="#modalVerAdmin" data-username="{{ u.username }}" data-fullname="{{ u.get_full_name }}" data-email="{{ u.email }}">Ver</button>
+          <button type="button" class="btn btn-sm btn-warning btn-editar-admin" data-toggle="modal" data-target="#modalEditarAdmin" data-id="{{ u.id }}" data-username="{{ u.username }}" data-first-name="{{ u.first_name }}" data-last-name="{{ u.last_name }}" data-email="{{ u.email }}">Editar</button>
+          <button type="button" class="btn btn-sm btn-danger btn-eliminar-admin" data-toggle="modal" data-target="#modalEliminarAdmin" data-id="{{ u.id }}" data-username="{{ u.username }}">Eliminar</button>
         </td>
       </tr>
       {% endfor %}
@@ -31,6 +29,10 @@
   {% if page_obj.has_previous %}<a href="?page={{ page_obj.previous_page_number }}">Anterior</a>{% endif %}
   <span> Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }} </span>
   {% if page_obj.has_next %}<a href="?page={{ page_obj.next_page_number }}">Siguiente</a>{% endif %}
+  {% include 'admins/modals/crear.html' %}
+  {% include 'admins/modals/ver.html' %}
+  {% include 'admins/modals/editar.html' %}
+  {% include 'admins/modals/eliminar.html' %}
 </div>
 {% endblock %}
 
