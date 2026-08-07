@@ -15,6 +15,8 @@ class SolicitudSocio(models.Model):
     telefono = models.CharField(max_length=20, blank=True, default='', verbose_name='Teléfono')
     ciudad = models.CharField(max_length=150, blank=True, default='', verbose_name='Ciudad')
     direccion = models.CharField(max_length=250, blank=True, default='', verbose_name='Dirección')
+    fecha_nacimiento = models.DateField(null=True, blank=True, verbose_name='Fecha de nacimiento')
+    razon = models.TextField(blank=True, default='', verbose_name='Razón de unirse al club')
     fecha_solicitud = models.DateTimeField(auto_now_add=True, verbose_name='Fecha de solicitud')
     estado = models.CharField(max_length=20, choices=ESTADO_CHOICES, default='pendiente')
     observacion = models.TextField(blank=True, default='', verbose_name='Observación')

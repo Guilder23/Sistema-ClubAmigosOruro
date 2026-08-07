@@ -37,6 +37,8 @@ def crear_solicitud(request):
         telefono = request.POST.get('telefono', '').strip()
         ciudad = request.POST.get('ciudad', '').strip()
         direccion = request.POST.get('direccion', '').strip()
+        fecha_nacimiento = request.POST.get('fecha_nacimiento', '').strip() or None
+        razon = request.POST.get('razon', '').strip()
 
         if not nombre or not apellido or not email:
             messages.error(request, 'Completa los datos básicos de la solicitud.')
@@ -49,6 +51,8 @@ def crear_solicitud(request):
             telefono=telefono,
             ciudad=ciudad,
             direccion=direccion,
+            fecha_nacimiento=fecha_nacimiento,
+            razon=razon,
         )
         messages.success(request, 'Tu solicitud fue registrada correctamente. Pronto nos contactaremos.')
         return redirect('core:inicio')

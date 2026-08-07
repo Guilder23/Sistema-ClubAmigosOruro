@@ -12,43 +12,146 @@
 {% block contenido %}
 {% include 'componentes/navbar-inicio.html' %}
 
-<section class="hero-portada" id="inicio" style="--hero-img: url('https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1920&q=85');">
+<section class="hero-portada" id="inicio" style="--hero-img: url('{% static 'img/imagenprincipal.png' %}');">
     <div class="hero-portada-overlay"></div>
     <div class="hero-portada-inner">
         <div class="container py-5">
             <div class="row align-items-center">
-                <div class="col-lg-7 text-white">
-                    <h1 class="display-4 font-weight-bold">Bienvenidos al Club Amigos</h1>
-                    <p class="lead">Una comunidad activa para socios, eventos, beneficios y seguimiento de membresías.</p>
-                    <a href="#inscripcion" class="btn btn-primary btn-lg">Quiero inscribirme</a>
+                <div class="col-lg-8 text-white">
+                    <span class="hero-kicker"><i class="fas fa-hands-helping"></i> Bienvenido al Club</span>
+                    <h1 class="hero-portada-title">Únete a la red de amigos y crece con nosotros.</h1>
+                    <p class="hero-portada-desc">Una comunidad activa para socios, eventos, beneficios y seguimiento de membresías que busca construir experiencias reales, llenas de amistad y apoyo mutuo.</p>
+                    <ul class="hero-portada-bullets">
+                        <li><i class="fas fa-check-circle"></i> Actividades sociales y recreativas.</li>
+                        <li><i class="fas fa-check-circle"></i> Souvenirs exclusivos en cada encuentro.</li>
+                        <li><i class="fas fa-check-circle"></i> Beneficios y seguimiento personalizado.</li>
+                    </ul>
+                    <div class="hero-actions">
+                        <button type="button" class="btn btn-primary btn-lg mt-3" data-toggle="modal" data-target="#modalInscripcion">
+                            <i class="fas fa-file-signature mr-2"></i>Quiero inscribirme
+                        </button>
+                        <a href="#beneficios" class="btn btn-outline-light btn-lg mt-3 ml-2">Ver beneficios</a>
+                    </div>
                 </div>
-                <div class="col-lg-5">
-                    <div class="card p-4 shadow-lg" id="inscripcion">
-                        <h3 class="mb-3">Solicita tu membresía</h3>
-                        <form method="post" action="{% url 'solicitudes:crear_solicitud' %}">
-                            {% csrf_token %}
-                            <div class="form-group">
-                                <input type="text" name="nombre" class="form-control" placeholder="Nombres" required>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade modern-inscripcion-modal" id="modalInscripcion" tabindex="-1" role="dialog" aria-labelledby="modalInscripcionTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h3 class="modal-title" id="modalInscripcionTitle"><i class="fas fa-user-plus mr-2"></i>Solicita tu membresía</h3>
+                    <p class="modal-subtitle">Completa tus datos y nos pondremos en contacto contigo.</p>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'solicitudes:crear_solicitud' %}">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="nombre">Nombres</label>
+                            <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Tu nombre" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="apellido">Apellidos</label>
+                            <input type="text" id="apellido" name="apellido" class="form-control" placeholder="Tus apellidos" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo electrónico</label>
+                        <input type="email" id="email" name="email" class="form-control" placeholder="correo@ejemplo.com" required>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="fecha_nacimiento">Fecha de nacimiento</label>
+                            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="telefono">Teléfono</label>
+                            <input type="text" id="telefono" name="telefono" class="form-control" placeholder="Tu número">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="ciudad">Ciudad</label>
+                            <input type="text" id="ciudad" name="ciudad" class="form-control" placeholder="Ciudad">
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="direccion">Dirección</label>
+                            <input type="text" id="direccion" name="direccion" class="form-control" placeholder="Dirección">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="razon">¿Por qué quieres unirte al club?</label>
+                        <textarea id="razon" name="razon" class="form-control" rows="4" placeholder="Cuéntanos un poco más sobre ti..."></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-outline-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                        <button class="btn btn-primary" type="submit">Enviar solicitud</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="sobre-club-section py-5">
+    <div class="container">
+        <div class="row align-items-center gy-4">
+            <div class="col-lg-6">
+                <div class="sobre-club-card p-4 shadow-sm">
+                    <div class="mb-4">
+                        <h2>Sobre el Club</h2>
+                        <p>Un espacio para fortalecer la amistad, el apoyo mutuo y el desarrollo personal de nuestros miembros.</p>
+                    </div>
+                    <div class="sobre-club-item mb-4">
+                        <div class="sobre-club-feature">
+                            <span class="sobre-club-icon"><i class="fas fa-bullseye"></i></span>
+                            <div>
+                                <h5>Misión</h5>
+                                <p>Fomentar la amistad, el apoyo mutuo y el desarrollo personal de nuestros miembros.</p>
                             </div>
-                            <div class="form-group">
-                                <input type="text" name="apellido" class="form-control" placeholder="Apellidos" required>
+                        </div>
+                    </div>
+                    <div class="sobre-club-item mb-4">
+                        <div class="sobre-club-feature">
+                            <span class="sobre-club-icon"><i class="fas fa-eye"></i></span>
+                            <div>
+                                <h5>Visión</h5>
+                                <p>Ser el club de amigos más reconocido por nuestras actividades y la unión de sus miembros.</p>
                             </div>
-                            <div class="form-group">
-                                <input type="email" name="email" class="form-control" placeholder="Correo electrónico" required>
+                        </div>
+                    </div>
+                    <div class="sobre-club-item">
+                        <div class="sobre-club-feature">
+                            <span class="sobre-club-icon"><i class="fas fa-list-check"></i></span>
+                            <div>
+                                <h5>Objetivos</h5>
+                                <ul class="sobre-club-list">
+                                    <li>Promover actividades recreativas y culturales.</li>
+                                    <li>Fortalecer la integración entre socios.</li>
+                                    <li>Brindar beneficios exclusivos.</li>
+                                </ul>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <input type="text" name="telefono" class="form-control" placeholder="Teléfono">
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <input type="text" name="ciudad" class="form-control" placeholder="Ciudad">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="text" name="direccion" class="form-control" placeholder="Dirección">
-                            </div>
-                            <button class="btn btn-primary btn-block" type="submit">Enviar solicitud</button>
-                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="sobre-club-media">
+                    <div class="sobre-club-main-img">
+                        <img src="{% static 'img/imagenprincipal.png' %}" alt="Club Amigos" class="img-fluid rounded">
+                    </div>
+                    <div class="sobre-club-subgrid mt-3">
+                        <img src="{% static 'img/galeria/imagen1.png' %}" alt="Vida social" class="img-fluid rounded">
+                        <img src="{% static 'img/galeria/imagen6.png' %}" alt="Reunión de grupo" class="img-fluid rounded">
+                        <img src="{% static 'img/galeria/imagen3.png' %}" alt="Actividad al aire libre" class="img-fluid rounded">
                     </div>
                 </div>
             </div>
@@ -90,7 +193,7 @@
         </div>
     </section>
 
-    <section id="faq" class="mb-5">
+    {% comment %} <section id="faq" class="mb-5">
         <div class="section-heading mb-4">
             <h2>Preguntas frecuentes</h2>
             <p class="text-muted">Respuestas claras para ayudarte a empezar con tu membresía.</p>
@@ -121,7 +224,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> {% endcomment %}
 
     <section class="inicio-section" aria-hidden="false">
         <div class="row">
@@ -130,29 +233,38 @@
             </div>
             <div class="col-lg-4 mb-3">
                 <div class="inicio-testimonio h-100">
+                    <div class="testimonio-head d-flex align-items-center mb-3">
+                        <img src="{% static 'img/galeria/imagen1.png' %}" alt="María" class="testimonio-avatar mr-3">
+                        <div>
+                            <div class="inicio-testimonio-nombre">María</div>
+                            <div class="inicio-testimonio-rol">Socio</div>
+                        </div>
+                    </div>
                     <p class="inicio-testimonio-txt">“Ser socio me permitió asistir a eventos únicos y sentirme parte de una comunidad cercana.”</p>
-                    <div class="inicio-testimonio-meta">
-                        <span class="inicio-testimonio-nombre">María</span>
-                        <span class="inicio-testimonio-rol">Socio</span>
-                    </div>
                 </div>
             </div>
             <div class="col-lg-4 mb-3">
                 <div class="inicio-testimonio h-100">
+                    <div class="testimonio-head d-flex align-items-center mb-3">
+                        <img src="{% static 'img/galeria/imagen2.png' %}" alt="Juan" class="testimonio-avatar mr-3">
+                        <div>
+                            <div class="inicio-testimonio-nombre">Juan</div>
+                            <div class="inicio-testimonio-rol">Socio</div>
+                        </div>
+                    </div>
                     <p class="inicio-testimonio-txt">“La atención es rápida y el seguimiento de mi membresía siempre fue claro y amable.”</p>
-                    <div class="inicio-testimonio-meta">
-                        <span class="inicio-testimonio-nombre">Juan</span>
-                        <span class="inicio-testimonio-rol">Socio</span>
-                    </div>
                 </div>
             </div>
             <div class="col-lg-4 mb-3">
                 <div class="inicio-testimonio h-100">
-                    <p class="inicio-testimonio-txt">“Los souvenirs y reconocimientos son un plus excelente. Me hacen sentir valorado como miembro.”</p>
-                    <div class="inicio-testimonio-meta">
-                        <span class="inicio-testimonio-nombre">Ana</span>
-                        <span class="inicio-testimonio-rol">Socio</span>
+                    <div class="testimonio-head d-flex align-items-center mb-3">
+                        <img src="{% static 'img/galeria/imagen3.png' %}" alt="Ana" class="testimonio-avatar mr-3">
+                        <div>
+                            <div class="inicio-testimonio-nombre">Ana</div>
+                            <div class="inicio-testimonio-rol">Socio</div>
+                        </div>
                     </div>
+                    <p class="inicio-testimonio-txt">“Los souvenirs y reconocimientos son un plus excelente. Me hacen sentir valorado como miembro.”</p>
                 </div>
             </div>
         </div>
@@ -161,35 +273,35 @@
     <section class="inicio-section gallery-section" aria-hidden="false">
         <div class="section-heading reveal">
             <span class="section-eyebrow"><i class="fas fa-images"></i> Galería</span>
-            <h2>Momentos de nuestro trabajo</h2>
+            <h2>Momentos del Club de Amigos</h2>
         </div>
         <div class="gallery-grid">
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen1.png' %}" alt="Galería 1" loading="lazy">
+                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen1.png' %}" alt="Galería 1" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen2.png' %}" alt="Galería 2" loading="lazy">
+                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen2.png' %}" alt="Galería 2" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen3.png' %}" alt="Galería 3" loading="lazy">
+                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen3.png' %}" alt="Galería 3" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen5.png' %}" alt="Galería 4" loading="lazy">
+                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen4.png' %}" alt="Galería 4" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen6.png' %}" alt="Galería 5" loading="lazy">
+                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen5.png' %}" alt="Galería 5" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen7.png' %}" alt="Galería 6" loading="lazy">
+                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen6.png' %}" alt="Galería 6" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen8.png' %}" alt="Galería 7" loading="lazy">
+                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen7.png' %}" alt="Galería 7" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen9.png' %}" alt="Galería 8" loading="lazy">
+                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen8.png' %}" alt="Galería 8" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/imagenes/imagen10.png' %}" alt="Galería 9" loading="lazy">
+                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen9.png' %}" alt="Galería 9" loading="lazy">
             </figure>
         </div>
     </section>
