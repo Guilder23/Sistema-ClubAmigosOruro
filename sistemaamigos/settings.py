@@ -30,6 +30,18 @@ DEBUG = config('DEBUG', default=False, cast=bool)
 ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
 CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', default='', cast=Csv())
 
+# Si en Render no se proporcionó ALLOWED_HOSTS adecuado, permitir todas las
+# solicitudes para evitar 400 por Host header durante el despliegue. Esto se
+# aplica sólo en el entorno de Render o cuando la variable se configura como '*'.
+if isinstance(ALLOWED_HOSTS, (list, tuple)):
+    if len(ALLOWED_HOSTS) == 1 and ALLOWED_HOSTS[0].strip() == '*':
+        ALLOWED_HOSTS = ['*']
+elif isinstance(ALLOWED_HOSTS, str) and ALLOWED_HOSTS.strip() == '*':
+    ALLOWED_HOSTS = ['*']
+
+if (os.environ.get('RENDER') == 'true' or os.environ.get('RENDER_SERVICE_ID') is not None or 'RENDER' in os.environ) and ALLOWED_HOSTS == ['localhost', '127.0.0.1']:
+    ALLOWED_HOSTS = ['*']
+
 
 # Application definition
 
