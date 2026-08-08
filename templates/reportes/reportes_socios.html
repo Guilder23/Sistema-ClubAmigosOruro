@@ -12,11 +12,11 @@
     <div class="page-header mb-3">
         <div class="page-header-content">
             <h1 class="page-title"><i class="fas fa-file-alt"></i> Reportes de Socios</h1>
-            <p class="page-subtitle">Filtra por estado, fecha, ciudad y orden. Descarga el PDF con los resultados actuales.</p>
+            <p class="page-subtitle">Filtra por estado, fecha, ciudad y orden. Descarga el Excel con los resultados actuales.</p>
         </div>
         <div class="page-header-actions">
             <a href="{% url 'reportes:descargar_reporte_socios' %}?q={{ q|urlencode }}&estado={{ estado|urlencode }}&ciudad={{ ciudad|urlencode }}&recibio_souvenir={{ recibio_souvenir|urlencode }}&orden={{ orden|urlencode }}&desde={{ desde|urlencode }}&hasta={{ hasta|urlencode }}" class="btn btn-primary btn-lg">
-                <i class="fas fa-file-pdf"></i> Descargar PDF
+                <i class="fas fa-file-excel"></i> Descargar Excel
             </a>
         </div>
     </div>
