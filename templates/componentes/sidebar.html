@@ -51,11 +51,11 @@
                 </a>
             </li>
             {% else %}
-            <li class="sidebar-item">
+            {% comment %} <li class="sidebar-item">
                 <a href="{% url 'socios:mis_souvenirs' %}" class="sidebar-link {% if '/socios/mis_souvenirs' in request.path %}active{% endif %}">
                     <i class="fas fa-gift"></i><span>Mis Souvenirs</span>
                 </a>
-            </li>
+            </li> {% endcomment %}
             {% endif %}
             <li class="sidebar-section">
                 <span class="sidebar-section-title">Cuenta</span>
