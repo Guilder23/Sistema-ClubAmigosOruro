@@ -7,7 +7,15 @@ from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 
 
+def get_home_redirect(user):
+    if user.is_staff:
+        return 'solicitudes:listar_solicitudes'
+    return 'socios:perfil_socio'
+
+
 def inicio(request):
+    if request.user.is_authenticated:
+        return redirect(get_home_redirect(request.user))
     return render(request, 'core/inicio.html')
 
 
@@ -17,7 +25,7 @@ def faq(request):
 
 def iniciar_sesion(request):
     if request.user.is_authenticated:
-        return redirect('core:inicio')
+        return redirect(get_home_redirect(request.user))
 
     if request.method == 'POST':
         username = request.POST.get('username', '').strip()
@@ -29,7 +37,10 @@ def iniciar_sesion(request):
             return render(request, 'auth/login.html')
 
         login(request, user)
-        return redirect('core:inicio')
+        next_url = request.GET.get('next') or request.POST.get('next')
+        if next_url:
+            return redirect(next_url)
+        return redirect(get_home_redirect(user))
 
     return render(request, 'auth/login.html')
 
