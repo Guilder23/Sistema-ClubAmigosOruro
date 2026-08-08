@@ -2,7 +2,7 @@
     <div class="sidebar-header">
         <div class="sidebar-brand">
             <i class="fas fa-store"></i>
-            <span class="sidebar-brand-text">SIS-Textil</span>
+            <span class="sidebar-brand-text">SIS-Amigos</span>
         </div>
         <button class="sidebar-collapse-btn" id="sidebarCollapseBtn" title="Colapsar menu">
             <i class="fas fa-angles-left"></i>
@@ -35,6 +35,11 @@
             <li class="sidebar-item">
                 <a href="{% url 'souvenirs:listar_entregas' %}" class="sidebar-link {% if request.path == '/souvenirs/' or '/souvenirs/registrar/' in request.path %}active{% endif %}">
                     <i class="fas fa-truck-loading"></i><span>Entregas</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a href="{% url 'reportes:reportes_socios' %}" class="sidebar-link {% if '/reportes/' in request.path %}active{% endif %}">
+                    <i class="fas fa-chart-line"></i><span>Reportes</span>
                 </a>
             </li>
             <li class="sidebar-section">

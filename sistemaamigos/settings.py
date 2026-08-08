@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'apps.socios.apps.SociosConfig',
     'apps.souvenirs.apps.SouvenirsConfig',
     'apps.dashboard.apps.DashboardConfig',
+    'apps.reportes.apps.ReportesConfig',
 ]
 
 MIDDLEWARE = [

@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include(('apps.core.urls', 'core'), namespace='core')),
     path('solicitudes/', include(('apps.solicitudes.urls', 'solicitudes'), namespace='solicitudes')),
     path('socios/', include(('apps.socios.urls', 'socios'), namespace='socios')),
+    path('reportes/', include(('apps.reportes.urls', 'reportes'), namespace='reportes')),
     path('souvenirs/', include(('apps.souvenirs.urls', 'souvenirs'), namespace='souvenirs')),
     path('dashboard/', include(('apps.dashboard.urls', 'dashboard'), namespace='dashboard')),
     path('admin/', admin.site.urls),
