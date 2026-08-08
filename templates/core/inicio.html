@@ -68,9 +68,16 @@
                         <input type="email" id="email" name="email" class="form-control" placeholder="correo@ejemplo.com" required>
                     </div>
                     <div class="row">
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-6 form-group position-relative">
                             <label for="fecha_nacimiento">Fecha de nacimiento</label>
-                            <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control">
+                            <div class="input-group">
+                                <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" class="form-control fecha-nacimiento-date">
+                                <input type="text" id="fecha_nacimiento_manual" class="form-control fecha-nacimiento-text d-none" placeholder="dd/mm/aaaa" autocomplete="bday" inputmode="numeric" aria-label="Fecha de nacimiento manual">
+                                <button type="button" class="btn btn-outline-secondary d-none" id="fechaNacimientoBtn" title="Seleccionar fecha">
+                                    <i class="fas fa-calendar-alt"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback" id="fechaNacimientoError" style="display:none;">Ingresa una fecha válida en formato dd/mm/aaaa.</div>
                         </div>
                         <div class="col-md-6 form-group">
                             <label for="telefono">Teléfono</label>
