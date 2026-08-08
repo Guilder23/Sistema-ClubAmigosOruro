@@ -1,0 +1,118 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block titulo %}Reportes de Socios{% endblock %}
+
+{% block estilos_extra %}
+<link rel="stylesheet" href="{% static 'css/reportes/reportes_socios.css' %}">
+{% endblock %}
+
+{% block contenido %}
+<div class="container-fluid">
+    <div class="page-header mb-3">
+        <div class="page-header-content">
+            <h1 class="page-title"><i class="fas fa-file-alt"></i> Reportes de Socios</h1>
+            <p class="page-subtitle">Filtra por estado, fecha, ciudad y orden. Descarga el PDF con los resultados actuales.</p>
+        </div>
+        <div class="page-header-actions">
+            <a href="{% url 'reportes:descargar_reporte_socios' %}?q={{ q|urlencode }}&estado={{ estado|urlencode }}&ciudad={{ ciudad|urlencode }}&recibio_souvenir={{ recibio_souvenir|urlencode }}&orden={{ orden|urlencode }}&desde={{ desde|urlencode }}&hasta={{ hasta|urlencode }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-file-pdf"></i> Descargar PDF
+            </a>
+        </div>
+    </div>
+
+    <div class="card card-filtros mb-4">
+        <div class="card-body py-3">
+            <form class="filtros-socios-form row gx-3 gy-3" id="reportesFiltrosForm">
+                <div class="col-12 col-md-4">
+                    <div class="input-group input-group-sm">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text bg-white border-right-0"><i class="fas fa-search text-muted"></i></span>
+                        </div>
+                        <input id="filtroBusqueda" type="text" class="form-control form-control-sm border-left-0" placeholder="Buscar por nombre, correo, teléfono, ciudad..." value="{{ q }}">
+                    </div>
+                </div>
+                <div class="col-6 col-md-2">
+                    <select id="filtroEstado" class="form-control form-control-sm">
+                        <option value="">Todos los estados</option>
+                        <option value="activo" {% if estado == 'activo' %}selected{% endif %}>Activo</option>
+                        <option value="inactivo" {% if estado == 'inactivo' %}selected{% endif %}>Inactivo</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md-2">
+                    <select id="filtroSouvenir" class="form-control form-control-sm">
+                        <option value="">Todos los souvenirs</option>
+                        <option value="si" {% if recibio_souvenir == 'si' %}selected{% endif %}>Sí</option>
+                        <option value="no" {% if recibio_souvenir == 'no' %}selected{% endif %}>No</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md-2">
+                    <input id="filtroCiudad" type="text" class="form-control form-control-sm" placeholder="Ciudad" value="{{ ciudad }}">
+                </div>
+                <div class="col-6 col-md-2">
+                    <select id="filtroOrden" class="form-control form-control-sm">
+                        <option value="recientes" {% if orden == 'recientes' or not orden %}selected{% endif %}>Más recientes</option>
+                        <option value="antiguos" {% if orden == 'antiguos' %}selected{% endif %}>Más antiguos</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md-2">
+                    <label class="form-label mb-1">Desde</label>
+                    <input id="filtroDesde" type="date" class="form-control form-control-sm" value="{{ desde }}">
+                </div>
+                <div class="col-6 col-md-2">
+                    <label class="form-label mb-1">Hasta</label>
+                    <input id="filtroHasta" type="date" class="form-control form-control-sm" value="{{ hasta }}">
+                </div>
+                <div class="col-6 col-md-2 d-flex align-items-end">
+                    <button id="btnLimpiarFiltros" type="button" class="btn btn-outline-secondary w-100">Limpiar filtros</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card card-tabla">
+        <div class="table-responsive">
+            <table class="table table-sm tabla-socios mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Socio</th>
+                        <th>Correo</th>
+                        <th>Teléfono</th>
+                        <th>Ciudad</th>
+                        <th>Estado</th>
+                        <th>Souvenir</th>
+                        <th>Ingreso</th>
+                    </tr>
+                </thead>
+                <tbody id="tablaSociosBody">
+                    {% for socio in socios %}
+                    <tr>
+                        <td>{{ forloop.counter }}</td>
+                        <td>{{ socio.nombre }} {{ socio.apellido }}</td>
+                        <td>{{ socio.email }}</td>
+                        <td>{{ socio.telefono|default:'-' }}</td>
+                        <td>{{ socio.ciudad|default:'-' }}</td>
+                        <td>
+                            <span class="badge-estado {% if socio.estado == 'activo' %}badge-estado-activo{% else %}badge-estado-inactivo{% endif %}">{{ socio.get_estado_display }}</span>
+                        </td>
+                        <td>
+                            <span class="badge-estado {% if socio.recibio_souvenir %}badge-estado-activo{% else %}badge-estado-inactivo{% endif %}">{% if socio.recibio_souvenir %}Sí{% else %}No{% endif %}</span>
+                        </td>
+                        <td>{{ socio.fecha_ingreso|date:'d/m/Y' }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="8" class="text-center py-4 text-muted">No se encontraron socios con los filtros seleccionados.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts_extra %}
+<script src="{% static 'js/reportes/reportes_socios.js' %}"></script>
+{% endblock %}
