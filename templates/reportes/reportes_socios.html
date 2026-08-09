@@ -15,7 +15,7 @@
             <p class="page-subtitle">Filtra por estado, fecha, ciudad y orden. Descarga el Excel con los resultados actuales.</p>
         </div>
         <div class="page-header-actions">
-            <a href="{% url 'reportes:descargar_reporte_socios' %}?q={{ q|urlencode }}&estado={{ estado|urlencode }}&ciudad={{ ciudad|urlencode }}&recibio_souvenir={{ recibio_souvenir|urlencode }}&orden={{ orden|urlencode }}&desde={{ desde|urlencode }}&hasta={{ hasta|urlencode }}" class="btn btn-primary btn-lg">
+            <a href="{% url 'reportes:descargar_reporte_socios' %}?q={{ q|urlencode }}&estado={{ estado|urlencode }}&ciudad={{ ciudad|urlencode }}&recibio_souvenir={{ recibio_souvenir|urlencode }}&souvenir_id={{ souvenir_id|urlencode }}&orden={{ orden|urlencode }}&desde={{ desde|urlencode }}&hasta={{ hasta|urlencode }}" class="btn btn-primary btn-lg">
                 <i class="fas fa-file-excel"></i> Descargar Excel
             </a>
         </div>
@@ -44,6 +44,14 @@
                         <option value="">Todos los souvenirs</option>
                         <option value="si" {% if recibio_souvenir == 'si' %}selected{% endif %}>Sí</option>
                         <option value="no" {% if recibio_souvenir == 'no' %}selected{% endif %}>No</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md-2">
+                    <select id="filtroSouvenirId" class="form-control form-control-sm">
+                        <option value="">Souvenir específico</option>
+                        {% for souvenir in souvenirs %}
+                        <option value="{{ souvenir.id }}" {% if souvenir_id == souvenir.id|stringformat:'s' %}selected{% endif %}>{{ souvenir.nombre }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <div class="col-6 col-md-2">
@@ -82,6 +90,7 @@
                         <th>Ciudad</th>
                         <th>Estado</th>
                         <th>Souvenir</th>
+                        <th>Souvenir recibido</th>
                         <th>Ingreso</th>
                     </tr>
                 </thead>
@@ -99,11 +108,12 @@
                         <td>
                             <span class="badge-estado {% if socio.recibio_souvenir %}badge-estado-activo{% else %}badge-estado-inactivo{% endif %}">{% if socio.recibio_souvenir %}Sí{% else %}No{% endif %}</span>
                         </td>
+                        <td>{{ socio.souvenir_recibido_nombre|default:'-' }}</td>
                         <td>{{ socio.fecha_ingreso|date:'d/m/Y' }}</td>
                     </tr>
                     {% empty %}
                     <tr>
-                        <td colspan="8" class="text-center py-4 text-muted">No se encontraron socios con los filtros seleccionados.</td>
+                        <td colspan="9" class="text-center py-4 text-muted">No se encontraron socios con los filtros seleccionados.</td>
                     </tr>
                     {% endfor %}
                 </tbody>
