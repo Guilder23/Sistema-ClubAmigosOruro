@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'apps.solicitudes.apps.SolicitudesConfig',
     'apps.socios.apps.SociosConfig',
     'apps.souvenirs.apps.SouvenirsConfig',
+    'apps.eventos.apps.EventosConfig',
     'apps.dashboard.apps.DashboardConfig',
     'apps.reportes.apps.ReportesConfig',
 ]

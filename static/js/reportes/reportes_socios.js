@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const filtroEstado = document.getElementById('filtroEstado');
     const filtroCiudad = document.getElementById('filtroCiudad');
     const filtroSouvenir = document.getElementById('filtroSouvenir');
+    const filtroSouvenirId = document.getElementById('filtroSouvenirId');
     const filtroOrden = document.getElementById('filtroOrden');
     const filtroDesde = document.getElementById('filtroDesde');
     const filtroHasta = document.getElementById('filtroHasta');
@@ -21,6 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (filtroSouvenir.value) {
             params.set('recibio_souvenir', filtroSouvenir.value);
+        }
+        if (filtroSouvenirId.value) {
+            params.set('souvenir_id', filtroSouvenirId.value);
         }
         if (filtroOrden.value) {
             params.set('orden', filtroOrden.value);
@@ -48,6 +52,7 @@ document.addEventListener('DOMContentLoaded', function () {
     filtroEstado.addEventListener('change', aplicarFiltros);
     filtroCiudad.addEventListener('input', debounce(aplicarFiltros));
     filtroSouvenir.addEventListener('change', aplicarFiltros);
+    filtroSouvenirId.addEventListener('change', aplicarFiltros);
     filtroOrden.addEventListener('change', aplicarFiltros);
     filtroDesde.addEventListener('change', aplicarFiltros);
     filtroHasta.addEventListener('change', aplicarFiltros);
@@ -56,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
         filtroEstado.value = '';
         filtroCiudad.value = '';
         filtroSouvenir.value = '';
+        filtroSouvenirId.value = '';
         filtroOrden.value = 'recientes';
         filtroDesde.value = '';
         filtroHasta.value = '';

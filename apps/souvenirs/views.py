@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import redirect, render, get_object_or_404
 
+from apps.eventos.models import Evento
 from apps.socios.models import Socio
 from .models import SouvenirEntrega, Souvenir
 
@@ -11,7 +12,7 @@ from .models import SouvenirEntrega, Souvenir
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url='/login/')
 def listar_entregas(request):
-    entregas = SouvenirEntrega.objects.select_related('socio', 'entregado_por').order_by('-fecha_entrega')
+    entregas = SouvenirEntrega.objects.select_related('socio', 'entregado_por', 'evento').order_by('-fecha_entrega')
     paginator = Paginator(entregas, 10)
     page_obj = paginator.get_page(request.GET.get('page'))
     return render(request, 'souvenirs/entregas/entregas.html', {'page_obj': page_obj})
@@ -22,30 +23,49 @@ def listar_entregas(request):
 def registrar_entrega(request):
     if request.method == 'POST':
         socio_id = request.POST.get('socio_id')
+        evento_id = request.POST.get('evento_id')
         souvenir_id = request.POST.get('souvenir_id')
         observacion = request.POST.get('observacion', '').strip()
+
         socio = Socio.objects.filter(id=socio_id).first()
         if not socio:
             messages.error(request, 'Selecciona un socio válido.')
             return redirect('souvenirs:registrar_entrega')
-        if SouvenirEntrega.objects.filter(socio=socio).exists():
-            messages.warning(request, 'Este socio ya registró la entrega del souvenir.')
+
+        evento = Evento.objects.filter(id=evento_id, activo=True).first()
+        if not evento:
+            messages.error(request, 'Selecciona un evento válido.')
+            return redirect('souvenirs:registrar_entrega')
+
+        if SouvenirEntrega.objects.filter(socio=socio, evento=evento).exists():
+            messages.warning(request, 'Este socio ya registró una entrega para el evento seleccionado.')
             return redirect('souvenirs:listar_entregas')
+
         souvenir = None
         if souvenir_id:
             souvenir = Souvenir.objects.filter(id=souvenir_id, activo=True).first()
-        SouvenirEntrega.objects.create(socio=socio, souvenir=souvenir, entregado_por=request.user, observacion=observacion)
+
+        SouvenirEntrega.objects.create(
+            socio=socio,
+            evento=evento,
+            souvenir=souvenir,
+            entregado_por=request.user,
+            observacion=observacion,
+        )
+
         if souvenir and souvenir.stock and souvenir.stock > 0:
             souvenir.stock = max(0, souvenir.stock - 1)
             souvenir.save()
+
         socio.recibio_souvenir = True
         socio.save()
         messages.success(request, 'Entrega de souvenir registrada.')
         return redirect('souvenirs:listar_entregas')
 
     socios = Socio.objects.filter(estado='activo').order_by('apellido', 'nombre')
+    eventos = Evento.objects.filter(activo=True).order_by('-fecha_evento')
     souvenirs = Souvenir.objects.filter(activo=True).order_by('-creado')
-    return render(request, 'souvenirs/entregas/registrar_entrega.html', {'socios': socios, 'souvenirs': souvenirs})
+    return render(request, 'souvenirs/entregas/registrar_entrega.html', {'socios': socios, 'eventos': eventos, 'souvenirs': souvenirs})
 
 
 @login_required
@@ -53,22 +73,34 @@ def registrar_entrega(request):
 def listar_souvenirs(request):
     q = request.GET.get('q', '').strip()
     activo = request.GET.get('activo', '').strip()
-    objetos = Souvenir.objects.order_by('-creado')
+    evento_id = request.GET.get('evento_id', '').strip()
+    objetos = Souvenir.objects.select_related('evento').order_by('-creado')
 
     if q:
         objetos = objetos.filter(
             Q(nombre__icontains=q) |
-            Q(descripcion__icontains=q)
+            Q(descripcion__icontains=q) |
+            Q(evento__nombre__icontains=q)
         )
+
+    if evento_id:
+        objetos = objetos.filter(evento_id=evento_id)
 
     if activo == 'si':
         objetos = objetos.filter(activo=True)
     elif activo == 'no':
         objetos = objetos.filter(activo=False)
 
+    eventos = Evento.objects.filter(activo=True).order_by('-fecha_evento')
     paginator = Paginator(objetos, 10)
     page_obj = paginator.get_page(request.GET.get('page'))
-    return render(request, 'souvenirs/souvenirs.html', {'page_obj': page_obj, 'q': q, 'activo': activo})
+    return render(request, 'souvenirs/souvenirs.html', {
+        'page_obj': page_obj,
+        'q': q,
+        'activo': activo,
+        'eventos': eventos,
+        'evento_id': evento_id,
+    })
 
 
 @login_required
@@ -76,13 +108,20 @@ def listar_souvenirs(request):
 def crear_souvenir(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre', '').strip()
+        evento_id = request.POST.get('evento_id')
         descripcion = request.POST.get('descripcion', '').strip()
         stock = int(request.POST.get('stock') or 0)
         imagen = request.FILES.get('imagen')
+
         if not nombre:
             messages.error(request, 'Nombre requerido.')
             return redirect('souvenirs:listar_souvenirs')
-        Souvenir.objects.create(nombre=nombre, descripcion=descripcion, stock=stock, imagen=imagen)
+
+        evento = None
+        if evento_id:
+            evento = Evento.objects.filter(id=evento_id, activo=True).first()
+
+        Souvenir.objects.create(nombre=nombre, evento=evento, descripcion=descripcion, stock=stock, imagen=imagen)
         messages.success(request, 'Souvenir creado.')
         return redirect('souvenirs:listar_souvenirs')
     return redirect('souvenirs:listar_souvenirs')
@@ -94,10 +133,15 @@ def editar_souvenir(request, pk):
     s = get_object_or_404(Souvenir, pk=pk)
     if request.method == 'POST':
         s.nombre = request.POST.get('nombre', s.nombre).strip()
+        evento_id = request.POST.get('evento_id')
         s.descripcion = request.POST.get('descripcion', s.descripcion).strip()
         s.stock = int(request.POST.get('stock') or s.stock)
         if request.FILES.get('imagen'):
             s.imagen = request.FILES.get('imagen')
+        if evento_id:
+            s.evento = Evento.objects.filter(id=evento_id, activo=True).first()
+        else:
+            s.evento = None
         s.save()
         messages.success(request, 'Souvenir actualizado.')
         return redirect('souvenirs:listar_souvenirs')
