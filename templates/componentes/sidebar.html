@@ -28,6 +28,11 @@
                 </a>
             </li>
             <li class="sidebar-item">
+                <a href="{% url 'eventos:listar_eventos' %}" class="sidebar-link {% if '/eventos/' in request.path %}active{% endif %}">
+                    <i class="fas fa-calendar-check"></i><span>Eventos</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
                 <a href="{% url 'souvenirs:listar_souvenirs' %}" class="sidebar-link {% if '/souvenirs/gestion/' in request.path %}active{% endif %}">
                     <i class="fas fa-gift"></i><span>Souvenirs</span>
                 </a>

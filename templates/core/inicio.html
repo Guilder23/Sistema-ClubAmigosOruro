@@ -18,20 +18,25 @@
         <div class="container py-5">
             <div class="row align-items-center">
                 <div class="col-lg-8 text-white">
-                    <span class="hero-kicker"><i class="fas fa-hands-helping"></i> Bienvenido al Club</span>
-                    <h1 class="hero-portada-title">Únete a la red de amigos y crece con nosotros.</h1>
-                    <p class="hero-portada-desc">Una comunidad activa para socios, eventos, beneficios y seguimiento de membresías que busca construir experiencias reales, llenas de amistad y apoyo mutuo.</p>
-                    <ul class="hero-portada-bullets">
+                    <span class="hero-kicker hero-anim hero-anim-1"><i class="fas fa-hands-helping"></i> Bienvenido al Club</span>
+                    <h1 class="hero-portada-title hero-anim hero-anim-2">Únete a la red de amigos y crece con nosotros.</h1>
+                    <p class="hero-portada-desc hero-anim hero-anim-3">Una comunidad activa para socios, eventos, beneficios y seguimiento de membresías que busca construir experiencias reales, llenas de amistad y apoyo mutuo.</p>
+                    <ul class="hero-portada-bullets hero-anim hero-anim-4">
                         <li><i class="fas fa-check-circle"></i> Actividades sociales y recreativas.</li>
                         <li><i class="fas fa-check-circle"></i> Souvenirs exclusivos en cada encuentro.</li>
                         <li><i class="fas fa-check-circle"></i> Beneficios y seguimiento personalizado.</li>
                     </ul>
-                    <div class="hero-actions">
-                        <button type="button" class="btn btn-primary btn-lg mt-3" data-toggle="modal" data-target="#modalInscripcion">
+                    <div class="hero-actions hero-anim hero-anim-5">
+                        <button type="button" class="btn btn-primary btn-lg mt-3 hero-btn-glow" data-toggle="modal" data-target="#modalInscripcion">
                             <i class="fas fa-file-signature mr-2"></i>Quiero inscribirme
                         </button>
-                        <a href="#beneficios" class="btn btn-outline-light btn-lg mt-3 ml-2">Ver beneficios</a>
+                        <a href="#beneficios" class="btn btn-outline-light btn-lg mt-3 ml-2 hero-btn-float">Ver beneficios</a>
                     </div>
+                </div>
+                <div class="col-lg-4 hero-portada-gallery hero-anim hero-anim-5">
+                    <img src="{% static 'img/galeria/imagen1.png' %}" alt="Amigos" class="hero-thumb hero-thumb-1 img-fall">
+                    <img src="{% static 'img/galeria/imagen2.png' %}" alt="Reunión" class="hero-thumb hero-thumb-2 img-fall">
+                    <img src="{% static 'img/galeria/imagen3.png' %}" alt="Actividad" class="hero-thumb hero-thumb-3 img-fall">
                 </div>
             </div>
         </div>
@@ -51,16 +56,20 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" action="{% url 'solicitudes:crear_solicitud' %}">
+                <form id="formInscripcion" method="post" action="{% url 'solicitudes:crear_solicitud' %}">
                     {% csrf_token %}
                     <div class="row">
-                        <div class="col-md-6 form-group">
+                        <div class="col-md-4 form-group">
                             <label for="nombre">Nombres</label>
                             <input type="text" id="nombre" name="nombre" class="form-control" placeholder="Tu nombre" required>
                         </div>
-                        <div class="col-md-6 form-group">
-                            <label for="apellido">Apellidos</label>
-                            <input type="text" id="apellido" name="apellido" class="form-control" placeholder="Tus apellidos" required>
+                        <div class="col-md-4 form-group">
+                            <label for="apellido_paterno">Apellido paterno</label>
+                            <input type="text" id="apellido_paterno" name="apellido_paterno" class="form-control" placeholder="Apellido paterno" required>
+                        </div>
+                        <div class="col-md-4 form-group">
+                            <label for="apellido_materno">Apellido materno</label>
+                            <input type="text" id="apellido_materno" name="apellido_materno" class="form-control" placeholder="Apellido materno">
                         </div>
                     </div>
                     <div class="form-group">
@@ -82,6 +91,16 @@
                         <div class="col-md-6 form-group">
                             <label for="telefono">Teléfono</label>
                             <input type="text" id="telefono" name="telefono" class="form-control" placeholder="Tu número">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 form-group">
+                            <label for="carnet_ci">Carnet / CI</label>
+                            <input type="text" id="carnet_ci" name="carnet_ci" class="form-control" placeholder="Número de carnet" required>
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label for="carnet_complemento">Complemento (opcional)</label>
+                            <input type="text" id="carnet_complemento" name="carnet_complemento" class="form-control" placeholder="-1A, -2B (opcional)">
                         </div>
                     </div>
                     <div class="row">
@@ -112,38 +131,39 @@
     <div class="container">
         <div class="row align-items-center gy-4">
             <div class="col-lg-6">
-                <div class="sobre-club-card p-4 shadow-sm">
+                <div class="sobre-club-card p-4 shadow-sm reveal">
                     <div class="mb-4">
-                        <h2>Sobre el Club</h2>
-                        <p>Un espacio para fortalecer la amistad, el apoyo mutuo y el desarrollo personal de nuestros miembros.</p>
+                        <h2 class="section-title-animate"><i class="fas fa-heart-pulse"></i> Sobre el Club</h2>
+                        <p class="text-animate">Somos una comunidad vibrante donde cada miembro encuentra un espacio único para conectar, crecer y vivir experiencias inolvidables. Más que un club, construimos lazos de amistad auténtica que trascienden el tiempo, creando una red de apoyo mutuo y crecimiento compartido para todos.</p>
                     </div>
-                    <div class="sobre-club-item mb-4">
-                        <div class="sobre-club-feature">
-                            <span class="sobre-club-icon"><i class="fas fa-bullseye"></i></span>
+                    <div class="sobre-club-item mb-4 reveal">
+                        <div class="sobre-club-feature hover-lift">
+                            <span class="sobre-club-icon icon-pulse"><i class="fas fa-bullseye"></i></span>
                             <div>
                                 <h5>Misión</h5>
-                                <p>Fomentar la amistad, el apoyo mutuo y el desarrollo personal de nuestros miembros.</p>
+                                <p>Construir una comunidad sólida y unida donde cada socio se sienta parte de algo especial. Creamos espacios y experiencias memorables que fortalecen los vínculos de amistad, impulsan el desarrollo integral y generan un impacto positivo en la vida de cada miembro.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="sobre-club-item mb-4">
-                        <div class="sobre-club-feature">
-                            <span class="sobre-club-icon"><i class="fas fa-eye"></i></span>
+                    <div class="sobre-club-item mb-4 reveal">
+                        <div class="sobre-club-feature hover-lift">
+                            <span class="sobre-club-icon icon-pulse"><i class="fas fa-eye"></i></span>
                             <div>
                                 <h5>Visión</h5>
-                                <p>Ser el club de amigos más reconocido por nuestras actividades y la unión de sus miembros.</p>
+                                <p>Ser el club social líder y referente a nivel nacional, reconocido por nuestra calidez humana, la excelencia en cada actividad y la fuerte unión entre nuestros socios. Queremos ser el lugar donde la amistad se convierte en familia y cada miembro se siente orgulloso de pertenecer.</p>
                             </div>
                         </div>
                     </div>
-                    <div class="sobre-club-item">
-                        <div class="sobre-club-feature">
-                            <span class="sobre-club-icon"><i class="fas fa-list-check"></i></span>
+                    <div class="sobre-club-item reveal">
+                        <div class="sobre-club-feature hover-lift">
+                            <span class="sobre-club-icon icon-pulse"><i class="fas fa-list-check"></i></span>
                             <div>
                                 <h5>Objetivos</h5>
                                 <ul class="sobre-club-list">
-                                    <li>Promover actividades recreativas y culturales.</li>
-                                    <li>Fortalecer la integración entre socios.</li>
-                                    <li>Brindar beneficios exclusivos.</li>
+                                    <li><i class="fas fa-check-circle text-primary mr-2"></i>Diseñar eventos sociales, recreativos y culturales que inspiren y fortalezcan la convivencia.</li>
+                                    <li><i class="fas fa-check-circle text-primary mr-2"></i>Fomentar espacios de integración donde cada socio pueda conectar y crear amistades genuinas.</li>
+                                    <li><i class="fas fa-check-circle text-primary mr-2"></i>Ofrecer beneficios exclusivos, souvenirs y reconocimientos que valoren tu pertenencia al club.</li>
+                                    <li><i class="fas fa-check-circle text-primary mr-2"></i>Impulsar el crecimiento personal a través de talleres, charlas y actividades enriquecedoras.</li>
                                 </ul>
                             </div>
                         </div>
@@ -151,14 +171,14 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="sobre-club-media">
-                    <div class="sobre-club-main-img">
-                        <img src="{% static 'img/imagenprincipal.png' %}" alt="Club Amigos" class="img-fluid rounded">
+                <div class="sobre-club-media reveal">
+                    <div class="sobre-club-main-img img-zoom">
+                        <img src="{% static 'img/imagenprincipal.png' %}" alt="Club Amigos" class="img-fluid rounded img-fall">
                     </div>
                     <div class="sobre-club-subgrid mt-3">
-                        <img src="{% static 'img/galeria/imagen1.png' %}" alt="Vida social" class="img-fluid rounded">
-                        <img src="{% static 'img/galeria/imagen6.png' %}" alt="Reunión de grupo" class="img-fluid rounded">
-                        <img src="{% static 'img/galeria/imagen3.png' %}" alt="Actividad al aire libre" class="img-fluid rounded">
+                        <img src="{% static 'img/galeria/imagen1.png' %}" alt="Vida social" class="img-fluid rounded img-hover img-fall">
+                        <img src="{% static 'img/galeria/imagen6.png' %}" alt="Reunión de grupo" class="img-fluid rounded img-hover img-fall">
+                        <img src="{% static 'img/galeria/imagen3.png' %}" alt="Actividad al aire libre" class="img-fluid rounded img-hover img-fall">
                     </div>
                 </div>
             </div>
@@ -168,30 +188,34 @@
 
 <div class="container py-5">
     <section id="beneficios" class="mb-5">
+        <div class="section-heading reveal">
+            <span class="section-eyebrow"><i class="fas fa-gem"></i> Beneficios</span>
+            <h2>¿Por qué unirte a nosotros?</h2>
+        </div>
         <div class="row align-items-center">
             <div class="col-lg-6 mb-4">
-                <div class="card p-4 h-100 shadow-sm border-0">
+                <div class="card p-4 h-100 shadow-sm border-0 servicio-card-modern reveal">
                     <div class="servicio-icono"><i class="fas fa-hand-holding-heart"></i></div>
                     <h4>Acceso exclusivo</h4>
                     <p>Participa en eventos especiales y actividades privadas para socios.</p>
                 </div>
             </div>
             <div class="col-lg-6 mb-4">
-                <div class="card p-4 h-100 shadow-sm border-0">
+                <div class="card p-4 h-100 shadow-sm border-0 servicio-card-modern reveal">
                     <div class="servicio-icono"><i class="fas fa-star"></i></div>
                     <h4>Atención prioritaria</h4>
                     <p>Prioridad en solicitudes, información y seguimiento de tus datos.</p>
                 </div>
             </div>
             <div class="col-lg-6 mb-4">
-                <div class="card p-4 h-100 shadow-sm border-0">
+                <div class="card p-4 h-100 shadow-sm border-0 servicio-card-modern reveal">
                     <div class="servicio-icono"><i class="fas fa-gift"></i></div>
                     <h4>Souvenirs y reconocimientos</h4>
                     <p>Recibe beneficios y novedades durante tu membresía.</p>
                 </div>
             </div>
             <div class="col-lg-6 mb-4">
-                <div class="card p-4 h-100 shadow-sm border-0">
+                <div class="card p-4 h-100 shadow-sm border-0 servicio-card-modern reveal">
                     <div class="servicio-icono"><i class="fas fa-users"></i></div>
                     <h4>Comunidad activa</h4>
                     <p>Conecta con otros socios y participa en iniciativas comunitarias del club.</p>
@@ -241,7 +265,7 @@
             <div class="col-lg-4 mb-3">
                 <div class="inicio-testimonio h-100">
                     <div class="testimonio-head d-flex align-items-center mb-3">
-                        <img src="{% static 'img/galeria/imagen1.png' %}" alt="María" class="testimonio-avatar mr-3">
+                        <img src="{% static 'img/galeria/imagen1.png' %}" alt="María" class="testimonio-avatar mr-3 img-fall">
                         <div>
                             <div class="inicio-testimonio-nombre">María</div>
                             <div class="inicio-testimonio-rol">Socio</div>
@@ -253,7 +277,7 @@
             <div class="col-lg-4 mb-3">
                 <div class="inicio-testimonio h-100">
                     <div class="testimonio-head d-flex align-items-center mb-3">
-                        <img src="{% static 'img/galeria/imagen2.png' %}" alt="Juan" class="testimonio-avatar mr-3">
+                        <img src="{% static 'img/galeria/imagen2.png' %}" alt="Juan" class="testimonio-avatar mr-3 img-fall">
                         <div>
                             <div class="inicio-testimonio-nombre">Juan</div>
                             <div class="inicio-testimonio-rol">Socio</div>
@@ -265,7 +289,7 @@
             <div class="col-lg-4 mb-3">
                 <div class="inicio-testimonio h-100">
                     <div class="testimonio-head d-flex align-items-center mb-3">
-                        <img src="{% static 'img/galeria/imagen3.png' %}" alt="Ana" class="testimonio-avatar mr-3">
+                        <img src="{% static 'img/galeria/imagen3.png' %}" alt="Ana" class="testimonio-avatar mr-3 img-fall">
                         <div>
                             <div class="inicio-testimonio-nombre">Ana</div>
                             <div class="inicio-testimonio-rol">Socio</div>
@@ -284,31 +308,31 @@
         </div>
         <div class="gallery-grid">
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen1.png' %}" alt="Galería 1" loading="lazy">
+                <img class="inicio-galeria-img img-fall" src="{% static 'img/galeria/imagen1.png' %}" alt="Galería 1" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen2.png' %}" alt="Galería 2" loading="lazy">
+                <img class="inicio-galeria-img img-fall" src="{% static 'img/galeria/imagen2.png' %}" alt="Galería 2" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen3.png' %}" alt="Galería 3" loading="lazy">
+                <img class="inicio-galeria-img img-fall" src="{% static 'img/galeria/imagen3.png' %}" alt="Galería 3" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen4.png' %}" alt="Galería 4" loading="lazy">
+                <img class="inicio-galeria-img img-fall" src="{% static 'img/galeria/imagen4.png' %}" alt="Galería 4" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen5.png' %}" alt="Galería 5" loading="lazy">
+                <img class="inicio-galeria-img img-fall" src="{% static 'img/galeria/imagen5.png' %}" alt="Galería 5" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen6.png' %}" alt="Galería 6" loading="lazy">
+                <img class="inicio-galeria-img img-fall" src="{% static 'img/galeria/imagen6.png' %}" alt="Galería 6" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen7.png' %}" alt="Galería 7" loading="lazy">
+                <img class="inicio-galeria-img img-fall" src="{% static 'img/galeria/imagen7.png' %}" alt="Galería 7" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen8.png' %}" alt="Galería 8" loading="lazy">
+                <img class="inicio-galeria-img img-fall" src="{% static 'img/galeria/imagen8.png' %}" alt="Galería 8" loading="lazy">
             </figure>
             <figure class="inicio-galeria-card reveal">
-                <img class="inicio-galeria-img" src="{% static 'img/galeria/imagen9.png' %}" alt="Galería 9" loading="lazy">
+                <img class="inicio-galeria-img img-fall" src="{% static 'img/galeria/imagen9.png' %}" alt="Galería 9" loading="lazy">
             </figure>
         </div>
     </section>
@@ -317,6 +341,24 @@
 <a href="https://wa.me/59168440201?text=Hola%2C%20vengo%20desde%20su%20p%C3%A1gina%20y%20quiero%20consultar%20sobre%20el%20club%20y%20mis%20membres%C3%ADas..." class="floating-whatsapp-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
     <i class="fab fa-whatsapp" aria-hidden="true"></i>
 </a>
+
+<!-- Modal de confirmación con efecto de explosión -->
+<div class="modal fade" id="modalConfirmacion" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+        <div class="modal-content modal-confirmacion">
+            <div class="modal-body text-center p-4">
+                <div class="confirm-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h4 class="confirm-title">¡Solicitud enviada!</h4>
+                <p class="confirm-message">Tu solicitud fue registrada correctamente. Pronto nos contactaremos contigo.</p>
+                <button type="button" class="btn btn-primary btn-confirm" data-dismiss="modal">
+                    <i class="fas fa-thumbs-up mr-2"></i>¡Genial!
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% if not user.is_authenticated %}
     {% include 'componentes/footer-inicio.html' %}

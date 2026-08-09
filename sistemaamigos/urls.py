@@ -25,6 +25,7 @@ urlpatterns = [
     path('socios/', include(('apps.socios.urls', 'socios'), namespace='socios')),
     path('reportes/', include(('apps.reportes.urls', 'reportes'), namespace='reportes')),
     path('souvenirs/', include(('apps.souvenirs.urls', 'souvenirs'), namespace='souvenirs')),
+    path('eventos/', include(('apps.eventos.urls', 'eventos'), namespace='eventos')),
     path('dashboard/', include(('apps.dashboard.urls', 'dashboard'), namespace='dashboard')),
     path('admin/', admin.site.urls),
 ]

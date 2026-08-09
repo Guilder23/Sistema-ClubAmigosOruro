@@ -39,7 +39,7 @@
                             <div class="input-group-prepend">
                                 <span class="input-group-text bg-white border-right-0"><i class="fas fa-search text-muted"></i></span>
                             </div>
-                            <input id="inputSocioBusqueda" type="text" class="form-control form-control-sm border-left-0" name="q" value="{{ q }}" placeholder="Buscar por nombre, apellido o correo...">
+                            <input id="inputSocioBusqueda" type="text" class="form-control form-control-sm border-left-0" name="q" value="{{ q }}" placeholder="Buscar por nombre, apellido, ci o correo...">
                         </div>
                     </div>
                     <div class="filtro-item">
@@ -60,7 +60,9 @@
                 <thead>
                     <tr>
                         <th>Foto</th>
+                        <th>Código</th>
                         <th>Nombre</th>
+                        <th>CI/Carnet</th>
                         <th>Correo</th>
                         <th>Teléfono</th>
                         <th>Estado</th>
@@ -79,7 +81,9 @@
                                 <div style="width:40px;height:40px;background:#f0f0f0;border-radius:4px;display:inline-block;"></div>
                             {% endif %}
                         </td>
-                        <td>{{ socio.nombre }} {{ socio.apellido }}</td>
+                        <td><span class="codigo-badge">{{ socio.codigo_socio|default:'-' }}</span></td>
+                        <td>{{ socio.nombre }} {% if socio.apellido_paterno %}{{ socio.apellido_paterno }}{% endif %} {% if socio.apellido_materno %}{{ socio.apellido_materno }}{% endif %}</td>
+                        <td>{{ socio.carnet_ci }}{% if socio.carnet_complemento %} {{ socio.carnet_complemento }}{% endif %}</td>
                         <td>{{ socio.email }}</td>
                         <td>{{ socio.telefono|default:'-' }}</td>
                         <td>
@@ -95,12 +99,18 @@
                         </td>
                         <td class="text-center acciones-col">
                             <button class="btn btn-info btn-sm btn-ver-socio" data-toggle="modal" data-target="#modalVerSocio"
+                                data-codigo-socio="{{ socio.codigo_socio|default:'' }}"
                                 data-nombre="{{ socio.nombre }}"
-                                data-apellido="{{ socio.apellido }}"
+                                data-apellido-paterno="{{ socio.apellido_paterno }}"
+                                data-apellido-materno="{{ socio.apellido_materno }}"
                                 data-email="{{ socio.email }}"
                                 data-telefono="{{ socio.telefono }}"
                                 data-ciudad="{{ socio.ciudad }}"
                                 data-direccion="{{ socio.direccion }}"
+                                data-carnet-ci="{{ socio.carnet_ci }}"
+                                data-carnet-complemento="{{ socio.carnet_complemento }}"
+                                data-fecha-nacimiento="{{ socio.fecha_nacimiento|date:'Y-m-d' }}"
+                                data-razon="{{ socio.razon }}"
                                 data-estado="{{ socio.get_estado_display }}"
                                 data-souvenir="{% if socio.recibio_souvenir %}Sí{% else %}No{% endif %}"
                                 data-fecha-ingreso="{{ socio.fecha_ingreso|date:'d/m/Y' }}"
@@ -109,17 +119,24 @@
                             <button class="btn btn-warning btn-sm btn-editar-socio" data-toggle="modal" data-target="#modalEditarSocio"
                                 data-id="{{ socio.id }}"
                                 data-nombre="{{ socio.nombre }}"
+                                data-apellido-paterno="{{ socio.apellido_paterno }}"
+                                data-apellido-materno="{{ socio.apellido_materno }}"
                                 data-apellido="{{ socio.apellido }}"
                                 data-email="{{ socio.email }}"
                                 data-telefono="{{ socio.telefono }}"
                                 data-ciudad="{{ socio.ciudad }}"
                                 data-direccion="{{ socio.direccion }}"
+                                data-carnet-ci="{{ socio.carnet_ci }}"
+                                data-carnet-complemento="{{ socio.carnet_complemento }}"
+                                data-fecha-nacimiento="{{ socio.fecha_nacimiento|date:'Y-m-d' }}"
+                                data-razon="{{ socio.razon }}"
                                 data-observacion="{{ socio.observacion }}"
                                 ><i class="fas fa-edit"></i></button>
                             <button class="btn btn-danger btn-sm btn-eliminar-socio" data-toggle="modal" data-target="#modalEliminarSocio"
                                 data-id="{{ socio.id }}"
-                                data-nombre="{{ socio.nombre }} {{ socio.apellido }}"
+                                data-nombre="{{ socio.nombre }} {% if socio.apellido_paterno %}{{ socio.apellido_paterno }}{% endif %} {% if socio.apellido_materno %}{{ socio.apellido_materno }}{% endif %}"
                                 ><i class="fas fa-trash"></i></button>
+                            <a href="{% url 'socios:historial_souvenirs' socio.id %}" class="btn btn-secondary btn-sm" title="Historial de souvenirs"><i class="fas fa-history"></i></a>
                             {% if socio.estado == 'activo' %}
                             <form method="post" action="{% url 'socios:desactivar_socio' socio.id %}" class="d-inline">
                                 {% csrf_token %}
@@ -135,7 +152,7 @@
                         </td>
                     </tr>
                     {% empty %}
-                    <tr><td colspan="7" class="text-center py-4">No hay socios registrados.</td></tr>
+                    <tr><td colspan="10" class="text-center py-4">No hay socios registrados.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
