@@ -18,16 +18,18 @@
             <a href="{% url 'souvenirs:listar_entregas' %}" class="btn btn-secondary">Historial</a>
         </div>
 
-        <form method="post">
+        <form method="post" id="formRegistrarEntrega">
             {% csrf_token %}
-            <div class="form-group">
+            <script id="sociosData" type="application/json">[
+                {% for socio in socios %}
+                    {"value": "{{ socio.id }}", "label": "{{ socio.nombre }} {{ socio.apellido }}"}{% if not forloop.last %},{% endif %}
+                {% endfor %}
+            ]</script>
+            <div class="form-group autocomplete-group">
                 <label>Socio</label>
-                <select name="socio_id" class="form-control" required>
-                    <option value="">Selecciona un socio</option>
-                    {% for socio in socios %}
-                    <option value="{{ socio.id }}">{{ socio.nombre }} {{ socio.apellido }}</option>
-                    {% endfor %}
-                </select>
+                <input id="socioSearch" type="text" class="form-control" placeholder="Busca por nombre o apellido" autocomplete="off" required>
+                <input id="socioId" type="hidden" name="socio_id">
+                <div id="socioSuggestions" class="autocomplete-suggestions"></div>
             </div>
             <div class="form-group">
                 <label>Evento</label>

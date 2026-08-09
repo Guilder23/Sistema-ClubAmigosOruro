@@ -433,6 +433,21 @@ def desactivar_socio(request, socio_id):
 
 @login_required
 @user_passes_test(lambda u: u.is_staff, login_url='/login/')
+def historial_souvenirs(request, socio_id):
+    socio = get_object_or_404(Socio, id=socio_id)
+    entregas = socio.entregas_souvenir.select_related('souvenir', 'evento', 'entregado_por').order_by('-fecha_entrega')
+    total_entregas = entregas.count()
+    paginator = Paginator(entregas, 10)
+    page_obj = paginator.get_page(request.GET.get('page'))
+    return render(request, 'socios/historial_souvenirs.html', {
+        'socio': socio,
+        'page_obj': page_obj,
+        'total_entregas': total_entregas,
+    })
+
+
+@login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/login/')
 def eliminar_socio(request, socio_id):
     socio = get_object_or_404(Socio, id=socio_id)
     socio.user.delete()

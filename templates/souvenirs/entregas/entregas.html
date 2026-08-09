@@ -34,14 +34,20 @@
                     {% for entrega in page_obj %}
                     <tr>
                         <td>{{ entrega.socio }}</td>
-                        <td>{{ entrega.evento.nombre|default:'-' }}</td>
+                        <td>
+                            {% if entrega.evento %}
+                                <span class="event-badge">{{ entrega.evento.nombre }}</span>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
                         <td>{% if entrega.souvenir %}{{ entrega.souvenir.nombre }}{% else %}-{% endif %}</td>
                         <td>{{ entrega.fecha_entrega|date:'d/m/Y' }}</td>
                         <td>{{ entrega.entregado_por|default:'-' }}</td>
                         <td>{{ entrega.observacion|default:'-' }}</td>
                     </tr>
                     {% empty %}
-                    <tr><td colspan="5" class="text-center py-4">No hay entregas registradas.</td></tr>
+                    <tr><td colspan="6" class="text-center py-4">No hay entregas registradas.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>

@@ -120,6 +120,7 @@
                                 data-id="{{ socio.id }}"
                                 data-nombre="{{ socio.nombre }} {{ socio.apellido }}"
                                 ><i class="fas fa-trash"></i></button>
+                            <a href="{% url 'socios:historial_souvenirs' socio.id %}" class="btn btn-secondary btn-sm" title="Historial de souvenirs"><i class="fas fa-history"></i></a>
                             {% if socio.estado == 'activo' %}
                             <form method="post" action="{% url 'socios:desactivar_socio' socio.id %}" class="d-inline">
                                 {% csrf_token %}
@@ -135,7 +136,7 @@
                         </td>
                     </tr>
                     {% empty %}
-                    <tr><td colspan="7" class="text-center py-4">No hay socios registrados.</td></tr>
+                    <tr><td colspan="8" class="text-center py-4">No hay socios registrados.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>
