@@ -84,13 +84,39 @@
 }
 
 .codigo-badge {
-    display: inline-block;
-    padding: 0.3rem 0.6rem;
-    border-radius: 0.25rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 100%;
+    padding: 0.22rem 0.45rem;
+    border-radius: 6px;
     border: 1px solid #93c5fd;
     color: #1e40af;
-    background: #dbeafe;
-    font-weight: 600;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+}
+
+.tabla-socios thead th:nth-child(2),
+.tabla-socios tbody td:nth-child(2) {
+    width: 96px;
+    min-width: 80px;
+    max-width: 110px;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+.tabla-socios thead th:nth-child(3),
+.tabla-socios tbody td:nth-child(3) {
+    white-space: nowrap;
+    min-width: 220px;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
 }
 
 .badge-estado {
@@ -119,8 +145,14 @@
     margin-right: 0.2rem;
 }
 
-    .tabla-socios th.acciones-col-head,
-    .tabla-socios td.acciones-col {
+.tabla-socios th.acciones-col-head,
+.tabla-socios td.acciones-col {
+    width: 140px;
+    min-width: 140px;
+    text-align: center;
+    white-space: nowrap;
+}
+
 .modal-socio-dialog {
     max-width: 980px;
 }

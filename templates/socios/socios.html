@@ -60,6 +60,7 @@
                 <thead>
                     <tr>
                         <th>Foto</th>
+                        <th>Código</th>
                         <th>Nombre</th>
                         <th>CI/Carnet</th>
                         <th>Correo</th>
@@ -80,6 +81,7 @@
                                 <div style="width:40px;height:40px;background:#f0f0f0;border-radius:4px;display:inline-block;"></div>
                             {% endif %}
                         </td>
+                        <td><span class="codigo-badge">{{ socio.codigo_socio|default:'-' }}</span></td>
                         <td>{{ socio.nombre }} {% if socio.apellido_paterno %}{{ socio.apellido_paterno }}{% endif %} {% if socio.apellido_materno %}{{ socio.apellido_materno }}{% endif %}</td>
                         <td>{{ socio.carnet_ci }}{% if socio.carnet_complemento %} {{ socio.carnet_complemento }}{% endif %}</td>
                         <td>{{ socio.email }}</td>
@@ -150,7 +152,7 @@
                         </td>
                     </tr>
                     {% empty %}
-                    <tr><td colspan="9" class="text-center py-4">No hay socios registrados.</td></tr>
+                    <tr><td colspan="10" class="text-center py-4">No hay socios registrados.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>

@@ -26,7 +26,8 @@ def aplicar_filtros_socios(request):
             Q(nombre__icontains=q)
             | Q(apellido__icontains=q)
             | Q(email__icontains=q)
-            | Q(telefono__icontains=q)
+            | Q(carnet_ci__icontains=q)
+            | Q(carnet_complemento__icontains=q)
             | Q(ciudad__icontains=q)
             | Q(direccion__icontains=q)
         )
@@ -136,16 +137,17 @@ def descargar_reporte_socios(request):
     else:
         start_row = 5
 
-    headers = ['N°', 'Socio', 'Correo', 'Teléfono', 'Ciudad', 'Estado', 'Souvenir', 'Souvenir recibido', 'Ingreso']
+    headers = ['N°', 'Código', 'Socio', 'Correo', 'N° Carnet', 'Ciudad', 'Estado', 'Souvenir', 'Souvenir recibido', 'Ingreso']
     sheet.cell(row=start_row, column=1, value='N°')
-    sheet.cell(row=start_row, column=2, value='Socio')
-    sheet.cell(row=start_row, column=3, value='Correo')
-    sheet.cell(row=start_row, column=4, value='Teléfono')
-    sheet.cell(row=start_row, column=5, value='Ciudad')
-    sheet.cell(row=start_row, column=6, value='Estado')
-    sheet.cell(row=start_row, column=7, value='Souvenir')
-    sheet.cell(row=start_row, column=8, value='Souvenir recibido')
-    sheet.cell(row=start_row, column=9, value='Ingreso')
+    sheet.cell(row=start_row, column=2, value='Código')
+    sheet.cell(row=start_row, column=3, value='Socio')
+    sheet.cell(row=start_row, column=4, value='Correo')
+    sheet.cell(row=start_row, column=5, value='N° Carnet')
+    sheet.cell(row=start_row, column=6, value='Ciudad')
+    sheet.cell(row=start_row, column=7, value='Estado')
+    sheet.cell(row=start_row, column=8, value='Souvenir')
+    sheet.cell(row=start_row, column=9, value='Souvenir recibido')
+    sheet.cell(row=start_row, column=10, value='Ingreso')
 
     header_fill = PatternFill('solid', fgColor='0B3D91')
     header_font = Font(bold=True, color='FFFFFF')
@@ -157,13 +159,15 @@ def descargar_reporte_socios(request):
     current_row = start_row + 1
     for idx, socio in enumerate(socios, 1):
         sheet.cell(row=current_row, column=1, value=idx)
+        sheet.cell(row=current_row, column=2, value=socio.codigo_socio or '-')
         nombre_completo = f"{socio.nombre} {socio.apellido_paterno or ''} {socio.apellido_materno or ''}".strip()
-        sheet.cell(row=current_row, column=2, value=nombre_completo)
-        sheet.cell(row=current_row, column=3, value=socio.email)
-        sheet.cell(row=current_row, column=4, value=socio.telefono or '-')
-        sheet.cell(row=current_row, column=5, value=socio.ciudad or '-')
-        sheet.cell(row=current_row, column=6, value=socio.get_estado_display())
-        sheet.cell(row=current_row, column=7, value='Sí' if socio.recibio_souvenir else 'No')
+        sheet.cell(row=current_row, column=3, value=nombre_completo)
+        sheet.cell(row=current_row, column=4, value=socio.email)
+        carnet_completo = f"{socio.carnet_ci or ''}{socio.carnet_complemento or ''}".strip()
+        sheet.cell(row=current_row, column=5, value=carnet_completo or '-')
+        sheet.cell(row=current_row, column=6, value=socio.ciudad or '-')
+        sheet.cell(row=current_row, column=7, value=socio.get_estado_display())
+        sheet.cell(row=current_row, column=8, value='Sí' if socio.recibio_souvenir else 'No')
         # Obtener nombre del souvenir específico si hay filtro
         souvenir_nombre = '-'
         if filtros['souvenir_id']:
@@ -173,19 +177,20 @@ def descargar_reporte_socios(request):
                     souvenir_nombre = entrega.souvenir.nombre
             except:
                 pass
-        sheet.cell(row=current_row, column=8, value=souvenir_nombre)
-        sheet.cell(row=current_row, column=9, value=socio.fecha_ingreso.strftime('%d/%m/%Y'))
+        sheet.cell(row=current_row, column=9, value=souvenir_nombre)
+        sheet.cell(row=current_row, column=10, value=socio.fecha_ingreso.strftime('%d/%m/%Y'))
         current_row += 1
 
     sheet.column_dimensions['A'].width = 8
-    sheet.column_dimensions['B'].width = 28
-    sheet.column_dimensions['C'].width = 32
-    sheet.column_dimensions['D'].width = 18
+    sheet.column_dimensions['B'].width = 16
+    sheet.column_dimensions['C'].width = 28
+    sheet.column_dimensions['D'].width = 32
     sheet.column_dimensions['E'].width = 18
-    sheet.column_dimensions['F'].width = 16
-    sheet.column_dimensions['G'].width = 14
-    sheet.column_dimensions['H'].width = 16
-    sheet.column_dimensions['I'].width = 20
+    sheet.column_dimensions['F'].width = 18
+    sheet.column_dimensions['G'].width = 16
+    sheet.column_dimensions['H'].width = 14
+    sheet.column_dimensions['I'].width = 16
+    sheet.column_dimensions['J'].width = 20
 
     for row in sheet.iter_rows(min_row=1, max_row=sheet.max_row):
         for cell in row:
