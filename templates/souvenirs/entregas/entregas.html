@@ -23,6 +23,7 @@
                 <thead>
                     <tr>
                         <th>Socio</th>
+                        <th>Evento</th>
                         <th>Souvenir</th>
                         <th>Fecha</th>
                         <th>Entregado por</th>
@@ -33,6 +34,7 @@
                     {% for entrega in page_obj %}
                     <tr>
                         <td>{{ entrega.socio }}</td>
+                        <td>{{ entrega.evento.nombre|default:'-' }}</td>
                         <td>{% if entrega.souvenir %}{{ entrega.souvenir.nombre }}{% else %}-{% endif %}</td>
                         <td>{{ entrega.fecha_entrega|date:'d/m/Y' }}</td>
                         <td>{{ entrega.entregado_por|default:'-' }}</td>

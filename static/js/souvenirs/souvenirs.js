@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (!button) return;
 
         const nombre = button.getAttribute('data-nombre') || '';
+        const evento = button.getAttribute('data-evento-nombre') || '-';
         const descripcion = button.getAttribute('data-descripcion') || '';
         const stock = button.getAttribute('data-stock') || '0';
         const activo = button.getAttribute('data-activo') || 'No';
@@ -14,6 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const imagenUrl = button.getAttribute('data-imagen') || null;
 
         const nombreEl = document.getElementById('verSouvenirNombre');
+        const eventoEl = document.getElementById('verSouvenirEvento');
         const descripcionEl = document.getElementById('verSouvenirDescripcion');
         const stockEl = document.getElementById('verSouvenirStock');
         const activoEl = document.getElementById('verSouvenirActivo');
@@ -22,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const imagenPlaceholder = document.getElementById('verSouvenirImagenPlaceholder');
 
         if (nombreEl) nombreEl.textContent = nombre;
+        if (eventoEl) eventoEl.textContent = evento || '-';
         if (descripcionEl) descripcionEl.textContent = descripcion || 'No disponible';
         if (stockEl) stockEl.textContent = stock;
         if (activoEl) activoEl.textContent = activo;
@@ -52,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const id = button.getAttribute('data-id');
             const nombre = button.getAttribute('data-nombre') || '';
             const descripcion = button.getAttribute('data-descripcion') || '';
+            const eventoId = button.getAttribute('data-evento-id') || '';
             const stock = button.getAttribute('data-stock') || '0';
 
             if (modalEditarForm) {
@@ -60,10 +64,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const nombreInput = document.getElementById('editarSouvenirNombre');
             const descripcionInput = document.getElementById('editarSouvenirDescripcion');
+            const eventoInput = document.getElementById('editarSouvenirEvento');
             const stockInput = document.getElementById('editarSouvenirStock');
 
             if (nombreInput) nombreInput.value = nombre;
             if (descripcionInput) descripcionInput.value = descripcion;
+            if (eventoInput) eventoInput.value = eventoId;
             if (stockInput) stockInput.value = stock;
         });
     });
@@ -71,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const filtrosForm = document.getElementById('souvenirsFiltrosForm');
     const searchInput = document.getElementById('inputSouvenirBusqueda');
     const activoSelect = document.getElementById('selectSouvenirActivo');
+    const eventoSelect = document.getElementById('selectSouvenirEvento');
     let debounceTimer = null;
 
     const submitFiltros = function () {
@@ -89,7 +96,11 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     if (activoSelect) {
-        activoSelect.addEventListener('change', scheduleSubmit);
+        activoSelect.addEventListener('change', submitFiltros);
+    }
+
+    if (eventoSelect) {
+        eventoSelect.addEventListener('change', submitFiltros);
     }
 
     const eliminarButtons = document.querySelectorAll('.btn-eliminar-souvenir');

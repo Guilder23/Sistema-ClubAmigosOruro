@@ -32,6 +32,14 @@
                         </div>
                     </div>
                     <div class="filtro-item">
+                        <select id="selectSouvenirEvento" name="evento_id" class="form-control form-control-sm">
+                            <option value="">Todos los eventos</option>
+                            {% for evento in eventos %}
+                            <option value="{{ evento.id }}" {% if evento_id == evento.id|stringformat:'s' %}selected{% endif %}>{{ evento.nombre }} - {{ evento.fecha_evento|date:'d/m/Y' }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="filtro-item">
                         <select id="selectSouvenirActivo" name="activo" class="form-control form-control-sm">
                             <option value="">Activo / Inactivo</option>
                             <option value="si" {% if activo == 'si' %}selected{% endif %}>Sí</option>
@@ -50,6 +58,7 @@
                     <tr>
                         <th>Imagen</th>
                         <th>Nombre</th>
+                        <th>Evento</th>
                         <th>Stock</th>
                         <th>Activo</th>
                         <th class="text-center">Acciones</th>
@@ -60,6 +69,7 @@
                     <tr>
                         <td>{% if s.imagen %}<img src="{{ s.imagen.url }}" class="souvenir-thumb" alt="{{ s.nombre }}" />{% else %}-{% endif %}</td>
                         <td>{{ s.nombre }}</td>
+                        <td>{{ s.evento.nombre|default:'-' }}</td>
                         <td>{{ s.stock }}</td>
                         <td>{{ s.activo|yesno:'Sí,No' }}</td>
                         <td class="text-center acciones-col">
@@ -76,6 +86,7 @@
                                 data-id="{{ s.pk }}"
                                 data-nombre="{{ s.nombre|escapejs }}"
                                 data-descripcion="{{ s.descripcion|escapejs }}"
+                                {% if s.evento %}data-evento-id="{{ s.evento.id }}" data-evento-nombre="{{ s.evento.nombre|escapejs }}"{% else %}data-evento-id="" data-evento-nombre=""{% endif %}
                                 data-stock="{{ s.stock }}">
                                 <i class="fas fa-edit"></i>
                             </button>
