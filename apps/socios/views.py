@@ -13,6 +13,8 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 import openpyxl
 from openpyxl import Workbook
+from openpyxl.styles import PatternFill, Font, Alignment, Border, Side
+from openpyxl.utils import get_column_letter
 from datetime import datetime
 
 
@@ -31,6 +33,7 @@ def listar_socios(request):
             | Q(apellido_materno__icontains=q)
             | Q(email__icontains=q)
             | Q(user__username__icontains=q)
+            | Q(carnet_ci__icontains=q)
         )
     if estado:
         socios = socios.filter(estado=estado)
@@ -370,10 +373,73 @@ def descargar_plantilla_excel(request):
     wb = Workbook()
     ws = wb.active
     ws.title = 'socios'
+    
+    # Encabezados
     headers = ['username', 'nombre', 'apellido_paterno', 'apellido_materno', 'apellido', 'email', 'password', 'telefono', 'ciudad', 'direccion', 'fecha_nacimiento', 'razon', 'carnet_ci', 'carnet_complemento']
     ws.append(headers)
-    # ejemplo fila
-    ws.append(['jdoe', 'Juan', 'Perez', 'Gomez', 'Perez Gomez', 'jdoe@example.com', 'Passw0rd!', '71234567', 'Oruro', 'Dirección 123', '1990-01-01', 'Quiero participar', '1234567', '-1A'])
+    
+    # Estilo para el encabezado
+    header_fill = PatternFill(start_color="4F81BD", end_color="4F81BD", fill_type="solid")  # Azul
+    header_font = Font(color="FFFFFF", bold=True, size=11)  # Letra blanca y negrita
+    header_alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+    
+    for col in range(1, len(headers) + 1):
+        cell = ws.cell(row=1, column=col)
+        cell.fill = header_fill
+        cell.font = header_font
+        cell.alignment = header_alignment
+    
+    # Ajustar ancho de columnas
+    column_widths = {
+        'A': 15,  # username
+        'B': 20,  # nombre
+        'C': 20,  # apellido_paterno
+        'D': 20,  # apellido_materno
+        'E': 25,  # apellido
+        'F': 25,  # email
+        'G': 15,  # password
+        'H': 15,  # telefono
+        'I': 15,  # ciudad
+        'J': 30,  # direccion
+        'K': 15,  # fecha_nacimiento
+        'L': 30,  # razon
+        'M': 15,  # carnet_ci
+        'N': 15,  # carnet_complemento
+    }
+    for col, width in column_widths.items():
+        ws.column_dimensions[col].width = width
+    
+    # Añadir bordes a todas las celdas
+    thin_border = Border(
+        left=Side(style='thin'),
+        right=Side(style='thin'),
+        top=Side(style='thin'),
+        bottom=Side(style='thin')
+    )
+    
+    # Ejemplo de fila con estilo
+    example_row = ['jdoe', 'Juan', 'Perez', 'Gomez', 'Perez Gomez', 'jdoe@example.com', 'Passw0rd!', '71234567', 'Oruro', 'Dirección 123', '1990-01-01', 'Quiero participar', '1234567', '-1A']
+    ws.append(example_row)
+    
+    # Aplicar bordes y colores alternados a las filas de datos
+    for row_num in range(2, ws.max_row + 1):
+        # Color alternado para filas
+        if row_num % 2 == 0:
+            row_fill = PatternFill(start_color="DCE6F1", end_color="DCE6F1", fill_type="solid")  # Azul claro
+            for col in range(1, len(headers) + 1):
+                cell = ws.cell(row=row_num, column=col)
+                cell.fill = row_fill
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
+        else:
+            for col in range(1, len(headers) + 1):
+                cell = ws.cell(row=row_num, column=col)
+                cell.border = thin_border
+                cell.alignment = Alignment(horizontal="left", vertical="center", wrap_text=True)
+    
+    # Congelar la primera fila (encabezado)
+    ws.freeze_panes = "A2"
+    
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename=socios_plantilla.xlsx'
     wb.save(response)
