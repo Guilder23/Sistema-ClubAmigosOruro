@@ -13,6 +13,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 import openpyxl
 from openpyxl import Workbook
+from datetime import datetime
 
 
 @login_required
@@ -250,8 +251,16 @@ def importar_socios_xlsx_preview(request):
 
         headers = [str(cell or '') for cell in rows[0]]
         preview = [[str(cell or '') for cell in row] for row in rows[1:11]]
+        
+        def convert_cell_value(cell):
+            if cell is None:
+                return ''
+            if isinstance(cell, datetime):
+                return cell.strftime('%Y-%m-%d') if cell.time() == datetime.min.time() else cell.strftime('%Y-%m-%d %H:%M:%S')
+            return str(cell)
+        
         preview_data = [
-            [cell or '' for cell in row[:14]]
+            [convert_cell_value(cell) for cell in row[:14]]
             for row in rows[1:]
             if any(cell is not None for cell in row[:14])
         ]
@@ -276,6 +285,8 @@ def importar_socios_xlsx_confirm(request):
         return redirect('socios:importar_socios_masivo')
 
     created = 0
+    skipped = 0
+    errors = []
     for row in preview_data:
         vals = [(c or '') for c in row[:14]]
         username = vals[0]
@@ -292,18 +303,64 @@ def importar_socios_xlsx_confirm(request):
         razon = vals[11]
         carnet_ci = vals[12]
         carnet_complemento = vals[13]
-        if not username or User.objects.filter(username=username).exists():
+        
+        if not username:
+            skipped += 1
+            errors.append(f"Fila sin username: {nombre}")
             continue
+        
         if not password:
             password = User.objects.make_random_password()
-        user = User.objects.create_user(username=username, email=email, password=password)
-        user.first_name = nombre
-        user.last_name = apellido_paterno or apellido
-        user.save()
-        Socio.objects.create(user=user, nombre=nombre, apellido_paterno=apellido_paterno, apellido_materno=apellido_materno, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion, fecha_nacimiento=fecha_nacimiento, razon=razon, carnet_ci=carnet_ci, carnet_complemento=carnet_complemento)
-        created += 1
+        
+        try:
+            if User.objects.filter(username=username).exists():
+                # Actualizar usuario existente
+                user = User.objects.get(username=username)
+                user.email = email
+                if password and password != '':
+                    user.set_password(password)
+                user.first_name = nombre
+                user.last_name = apellido_paterno or apellido
+                user.save()
+                
+                # Actualizar o crear socio
+                socio, created_socio = Socio.objects.update_or_create(
+                    user=user,
+                    defaults={
+                        'nombre': nombre,
+                        'apellido_paterno': apellido_paterno,
+                        'apellido_materno': apellido_materno,
+                        'apellido': apellido,
+                        'email': email,
+                        'telefono': telefono,
+                        'ciudad': ciudad,
+                        'direccion': direccion,
+                        'fecha_nacimiento': fecha_nacimiento,
+                        'razon': razon,
+                        'carnet_ci': carnet_ci,
+                        'carnet_complemento': carnet_complemento,
+                    }
+                )
+                if created_socio:
+                    created += 1
+                else:
+                    created += 1  # Contar como actualizado
+            else:
+                # Crear nuevo usuario
+                user = User.objects.create_user(username=username, email=email, password=password)
+                user.first_name = nombre
+                user.last_name = apellido_paterno or apellido
+                user.save()
+                Socio.objects.create(user=user, nombre=nombre, apellido_paterno=apellido_paterno, apellido_materno=apellido_materno, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion, fecha_nacimiento=fecha_nacimiento, razon=razon, carnet_ci=carnet_ci, carnet_complemento=carnet_complemento)
+                created += 1
+        except Exception as e:
+            skipped += 1
+            errors.append(f"Error creando {username}: {str(e)}")
 
-    messages.success(request, f'Socios importados desde XLSX: {created}')
+    if errors:
+        messages.warning(request, f'Socios importados: {created}, omitidos: {skipped}. Errores: {"; ".join(errors[:5])}')
+    else:
+        messages.success(request, f'Socios importados desde XLSX: {created}')
     return redirect('socios:listar_socios')
 
 
