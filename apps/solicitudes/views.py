@@ -18,7 +18,7 @@ def listar_solicitudes(request):
     solicitudes = SolicitudSocio.objects.all()
     if q:
         solicitudes = solicitudes.filter(
-            Q(nombre__icontains=q) | Q(apellido__icontains=q) | Q(email__icontains=q)
+            Q(nombre__icontains=q) | Q(apellido__icontains=q) | Q(apellido_paterno__icontains=q) | Q(apellido_materno__icontains=q) | Q(email__icontains=q)
         )
     if estado:
         solicitudes = solicitudes.filter(estado=estado)
@@ -32,20 +32,26 @@ def listar_solicitudes(request):
 def crear_solicitud(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre', '').strip()
-        apellido = request.POST.get('apellido', '').strip()
+        apellido_paterno = request.POST.get('apellido_paterno', '').strip()
+        apellido_materno = request.POST.get('apellido_materno', '').strip()
+        apellido = request.POST.get('apellido', '').strip() or f"{apellido_paterno} {apellido_materno}".strip()
         email = request.POST.get('email', '').strip()
         telefono = request.POST.get('telefono', '').strip()
         ciudad = request.POST.get('ciudad', '').strip()
         direccion = request.POST.get('direccion', '').strip()
         fecha_nacimiento = request.POST.get('fecha_nacimiento', '').strip() or None
         razon = request.POST.get('razon', '').strip()
+        carnet_ci = request.POST.get('carnet_ci', '').strip()
+        carnet_complemento = request.POST.get('carnet_complemento', '').strip()
 
-        if not nombre or not apellido or not email:
+        if not nombre or not (apellido_paterno or apellido) or not email:
             messages.error(request, 'Completa los datos básicos de la solicitud.')
             return redirect('core:inicio')
 
         SolicitudSocio.objects.create(
             nombre=nombre,
+            apellido_paterno=apellido_paterno,
+            apellido_materno=apellido_materno,
             apellido=apellido,
             email=email,
             telefono=telefono,
@@ -53,6 +59,8 @@ def crear_solicitud(request):
             direccion=direccion,
             fecha_nacimiento=fecha_nacimiento,
             razon=razon,
+            carnet_ci=carnet_ci,
+            carnet_complemento=carnet_complemento,
         )
         messages.success(request, 'Tu solicitud fue registrada correctamente. Pronto nos contactaremos.')
         return redirect('core:inicio')
@@ -68,26 +76,33 @@ def aprobar_solicitud(request, solicitud_id):
         messages.info(request, 'Esta solicitud ya fue atendida.')
         return redirect('solicitudes:listar_solicitudes')
 
-    username = f"{solicitud.nombre.lower().replace(' ', '')}{solicitud.apellido.lower().replace(' ', '')}"[:20]
+    # Usar apellido paterno como usuario (sin espacios), acortar a 20
+    username = (solicitud.apellido_paterno or solicitud.apellido).lower().replace(' ', '')[:20]
     user, created = User.objects.get_or_create(username=username, defaults={
         'first_name': solicitud.nombre,
-        'last_name': solicitud.apellido,
+        'last_name': (solicitud.apellido_paterno or solicitud.apellido),
         'email': solicitud.email,
         'is_active': True,
     })
     if created:
-        user.set_password('ClubAmigos2026!')
+        # La contraseña inicial será el número de carnet (sin complemento) si está disponible
+        default_pass = solicitud.carnet_ci or 'ClubAmigos2026!'
+        user.set_password(default_pass)
         user.save()
     # Crear registro de Socio si no existe
     if not Socio.objects.filter(user=user).exists():
         Socio.objects.create(
             user=user,
             nombre=solicitud.nombre,
-            apellido=solicitud.apellido,
+            apellido_paterno=solicitud.apellido_paterno or '',
+            apellido_materno=solicitud.apellido_materno or '',
+            apellido=solicitud.apellido or '',
             email=solicitud.email,
             telefono=solicitud.telefono or '',
             ciudad=solicitud.ciudad or '',
             direccion=solicitud.direccion or '',
+            carnet_ci=solicitud.carnet_ci or '',
+            carnet_complemento=solicitud.carnet_complemento or '',
         )
     solicitud.estado = 'aprobada'
     solicitud.usuario_creado = user

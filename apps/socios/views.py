@@ -26,6 +26,8 @@ def listar_socios(request):
         socios = socios.filter(
             Q(nombre__icontains=q)
             | Q(apellido__icontains=q)
+            | Q(apellido_paterno__icontains=q)
+            | Q(apellido_materno__icontains=q)
             | Q(email__icontains=q)
             | Q(user__username__icontains=q)
         )
@@ -58,14 +60,21 @@ def crear_socio(request):
 
     username = request.POST.get('username', '').strip()
     nombre = request.POST.get('nombre', '').strip()
-    apellido = request.POST.get('apellido', '').strip()
+    apellido_paterno = request.POST.get('apellido_paterno', '').strip()
+    apellido_materno = request.POST.get('apellido_materno', '').strip()
+    apellido = request.POST.get('apellido', '').strip() or f"{apellido_paterno} {apellido_materno}".strip()
     email = request.POST.get('email', '').strip()
     telefono = request.POST.get('telefono', '').strip()
     ciudad = request.POST.get('ciudad', '').strip()
     direccion = request.POST.get('direccion', '').strip()
     password = request.POST.get('password', '')
+    fecha_nacimiento = request.POST.get('fecha_nacimiento', '').strip() or None
+    razon = request.POST.get('razon', '').strip()
+    carnet_ci = request.POST.get('carnet_ci', '').strip()
+    carnet_complemento = request.POST.get('carnet_complemento', '').strip()
+    observacion = request.POST.get('observacion', '').strip()
 
-    if not username or not nombre or not apellido or not email or not password:
+    if not username or not nombre or not (apellido_paterno or apellido) or not email or not password:
         messages.error(request, 'Completa los campos obligatorios.')
         return redirect('socios:listar_socios')
 
@@ -75,16 +84,23 @@ def crear_socio(request):
 
     user = User.objects.create_user(username=username, email=email, password=password)
     user.first_name = nombre
-    user.last_name = apellido
+    user.last_name = apellido_paterno or apellido
     user.save()
     Socio.objects.create(
         user=user,
         nombre=nombre,
+        apellido_paterno=apellido_paterno,
+        apellido_materno=apellido_materno,
         apellido=apellido,
         email=email,
         telefono=telefono,
         ciudad=ciudad,
         direccion=direccion,
+        fecha_nacimiento=fecha_nacimiento,
+        razon=razon,
+        carnet_ci=carnet_ci,
+        carnet_complemento=carnet_complemento,
+        observacion=observacion,
     )
     messages.success(request, 'Socio registrado correctamente.')
     return redirect('socios:listar_socios')
@@ -181,19 +197,25 @@ def importar_socios(request):
             for row in reader:
                 username = row.get('username') or row.get('usuario') or ''
                 nombre = row.get('nombre') or ''
-                apellido = row.get('apellido') or ''
+                apellido_paterno = row.get('apellido_paterno') or row.get('apellido') or ''
+                apellido_materno = row.get('apellido_materno') or ''
+                apellido = row.get('apellido') or f"{apellido_paterno} {apellido_materno}".strip()
                 email = row.get('email') or ''
                 password = row.get('password') or User.objects.make_random_password()
                 telefono = row.get('telefono') or ''
                 ciudad = row.get('ciudad') or ''
                 direccion = row.get('direccion') or ''
+                fecha_nacimiento = row.get('fecha_nacimiento') or None
+                razon = row.get('razon') or ''
+                carnet_ci = row.get('carnet_ci') or ''
+                carnet_complemento = row.get('carnet_complemento') or ''
                 if not username or User.objects.filter(username=username).exists():
                     continue
                 user = User.objects.create_user(username=username, email=email, password=password)
                 user.first_name = nombre
-                user.last_name = apellido
+                user.last_name = apellido_paterno or apellido
                 user.save()
-                Socio.objects.create(user=user, nombre=nombre, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion)
+                Socio.objects.create(user=user, nombre=nombre, apellido_paterno=apellido_paterno, apellido_materno=apellido_materno, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion, fecha_nacimiento=fecha_nacimiento, razon=razon, carnet_ci=carnet_ci, carnet_complemento=carnet_complemento)
                 created += 1
             messages.success(request, f'Socios importados: {created}')
         except Exception as e:
@@ -229,9 +251,9 @@ def importar_socios_xlsx_preview(request):
         headers = [str(cell or '') for cell in rows[0]]
         preview = [[str(cell or '') for cell in row] for row in rows[1:11]]
         preview_data = [
-            [cell or '' for cell in row[:8]]
+            [cell or '' for cell in row[:14]]
             for row in rows[1:]
-            if any(cell is not None for cell in row[:8])
+            if any(cell is not None for cell in row[:14])
         ]
 
         request.session['socios_import_preview'] = preview_data
@@ -255,16 +277,30 @@ def importar_socios_xlsx_confirm(request):
 
     created = 0
     for row in preview_data:
-        username, nombre, apellido, email, password, telefono, ciudad, direccion = [(c or '') for c in row[:8]]
+        vals = [(c or '') for c in row[:14]]
+        username = vals[0]
+        nombre = vals[1]
+        apellido_paterno = vals[2]
+        apellido_materno = vals[3]
+        apellido = vals[4] or f"{apellido_paterno} {apellido_materno}".strip()
+        email = vals[5]
+        password = vals[6]
+        telefono = vals[7]
+        ciudad = vals[8]
+        direccion = vals[9]
+        fecha_nacimiento = vals[10] or None
+        razon = vals[11]
+        carnet_ci = vals[12]
+        carnet_complemento = vals[13]
         if not username or User.objects.filter(username=username).exists():
             continue
         if not password:
             password = User.objects.make_random_password()
         user = User.objects.create_user(username=username, email=email, password=password)
         user.first_name = nombre
-        user.last_name = apellido
+        user.last_name = apellido_paterno or apellido
         user.save()
-        Socio.objects.create(user=user, nombre=nombre, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion)
+        Socio.objects.create(user=user, nombre=nombre, apellido_paterno=apellido_paterno, apellido_materno=apellido_materno, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion, fecha_nacimiento=fecha_nacimiento, razon=razon, carnet_ci=carnet_ci, carnet_complemento=carnet_complemento)
         created += 1
 
     messages.success(request, f'Socios importados desde XLSX: {created}')
@@ -277,10 +313,10 @@ def descargar_plantilla_excel(request):
     wb = Workbook()
     ws = wb.active
     ws.title = 'socios'
-    headers = ['username', 'nombre', 'apellido', 'email', 'password', 'telefono', 'ciudad', 'direccion']
+    headers = ['username', 'nombre', 'apellido_paterno', 'apellido_materno', 'apellido', 'email', 'password', 'telefono', 'ciudad', 'direccion', 'fecha_nacimiento', 'razon', 'carnet_ci', 'carnet_complemento']
     ws.append(headers)
     # ejemplo fila
-    ws.append(['jdoe', 'Juan', 'Doe', 'jdoe@example.com', 'Passw0rd!', '71234567', 'Oruro', 'Dirección 123'])
+    ws.append(['jdoe', 'Juan', 'Perez', 'Gomez', 'Perez Gomez', 'jdoe@example.com', 'Passw0rd!', '71234567', 'Oruro', 'Dirección 123', '1990-01-01', 'Quiero participar', '1234567', '-1A'])
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = 'attachment; filename=socios_plantilla.xlsx'
     wb.save(response)
@@ -302,16 +338,30 @@ def importar_socios_xlsx(request):
             for i, row in enumerate(ws.iter_rows(values_only=True)):
                 if i == 0:
                     continue
-                username, nombre, apellido, email, password, telefono, ciudad, direccion = [ (c or '') for c in row[:8] ]
+                vals = [ (c or '') for c in row[:14] ]
+                username = vals[0]
+                nombre = vals[1]
+                apellido_paterno = vals[2]
+                apellido_materno = vals[3]
+                apellido = vals[4] or f"{apellido_paterno} {apellido_materno}".strip()
+                email = vals[5]
+                password = vals[6]
+                telefono = vals[7]
+                ciudad = vals[8]
+                direccion = vals[9]
+                fecha_nacimiento = vals[10] or None
+                razon = vals[11]
+                carnet_ci = vals[12]
+                carnet_complemento = vals[13]
                 if not username or User.objects.filter(username=username).exists():
                     continue
                 if not password:
                     password = User.objects.make_random_password()
                 user = User.objects.create_user(username=username, email=email, password=password)
                 user.first_name = nombre
-                user.last_name = apellido
+                user.last_name = apellido_paterno or apellido
                 user.save()
-                Socio.objects.create(user=user, nombre=nombre, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion)
+                Socio.objects.create(user=user, nombre=nombre, apellido_paterno=apellido_paterno, apellido_materno=apellido_materno, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion, fecha_nacimiento=fecha_nacimiento, razon=razon, carnet_ci=carnet_ci, carnet_complemento=carnet_complemento)
                 created += 1
             messages.success(request, f'Socios importados desde XLSX: {created}')
         except Exception as e:
@@ -400,11 +450,15 @@ def editar_socio(request, socio_id):
 
     socio = get_object_or_404(Socio, id=socio_id)
     socio.nombre = request.POST.get('nombre', '').strip()
-    socio.apellido = request.POST.get('apellido', '').strip()
+    socio.apellido_paterno = request.POST.get('apellido_paterno', '').strip()
+    socio.apellido_materno = request.POST.get('apellido_materno', '').strip()
+    socio.apellido = request.POST.get('apellido', '').strip() or f"{socio.apellido_paterno} {socio.apellido_materno}".strip()
     socio.email = request.POST.get('email', '').strip()
     socio.telefono = request.POST.get('telefono', '').strip()
     socio.ciudad = request.POST.get('ciudad', '').strip()
     socio.direccion = request.POST.get('direccion', '').strip()
+    socio.carnet_ci = request.POST.get('carnet_ci', '').strip()
+    socio.carnet_complemento = request.POST.get('carnet_complemento', '').strip()
     socio.observacion = request.POST.get('observacion', '').strip()
     socio.save()
     messages.success(request, 'Datos del socio actualizados.')

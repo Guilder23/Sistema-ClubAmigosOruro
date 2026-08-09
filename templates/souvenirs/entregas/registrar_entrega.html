@@ -22,7 +22,7 @@
             {% csrf_token %}
             <script id="sociosData" type="application/json">[
                 {% for socio in socios %}
-                    {"value": "{{ socio.id }}", "label": "{{ socio.nombre }} {{ socio.apellido }}"}{% if not forloop.last %},{% endif %}
+                    {"value": "{{ socio.id }}", "label": "{{ socio.nombre }} {% if socio.apellido_paterno %}{{ socio.apellido_paterno }}{% endif %} {% if socio.apellido_materno %}{{ socio.apellido_materno }}{% endif %}"}{% if not forloop.last %},{% endif %}
                 {% endfor %}
             ]</script>
             <div class="form-group autocomplete-group">

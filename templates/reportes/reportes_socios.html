@@ -89,7 +89,7 @@
                     {% for socio in socios %}
                     <tr>
                         <td>{{ forloop.counter }}</td>
-                        <td>{{ socio.nombre }} {{ socio.apellido }}</td>
+                        <td>{{ socio.nombre }} {% if socio.apellido_paterno %}{{ socio.apellido_paterno }}{% endif %} {% if socio.apellido_materno %}{{ socio.apellido_materno }}{% endif %}</td>
                         <td>{{ socio.email }}</td>
                         <td>{{ socio.telefono|default:'-' }}</td>
                         <td>{{ socio.ciudad|default:'-' }}</td>

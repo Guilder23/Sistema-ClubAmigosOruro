@@ -11,7 +11,7 @@
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
-            <h2 class="mb-1">Historial de Souvenirs de {{ socio.nombre }} {{ socio.apellido }}</h2>
+            <h2 class="mb-1">Historial de Souvenirs de {{ socio.nombre }} {% if socio.apellido_paterno %}{{ socio.apellido_paterno }}{% endif %} {% if socio.apellido_materno %}{{ socio.apellido_materno }}{% endif %}</h2>
             <p class="text-muted mb-0">Total de entregas: {{ total_entregas }}</p>
         </div>
         <a href="{% url 'socios:listar_socios' %}" class="btn btn-secondary">Volver a socios</a>

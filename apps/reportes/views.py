@@ -132,7 +132,8 @@ def descargar_reporte_socios(request):
     current_row = start_row + 1
     for idx, socio in enumerate(socios, 1):
         sheet.cell(row=current_row, column=1, value=idx)
-        sheet.cell(row=current_row, column=2, value=f'{socio.nombre} {socio.apellido}')
+        nombre_completo = f"{socio.nombre} {socio.apellido_paterno or ''} {socio.apellido_materno or ''}".strip()
+        sheet.cell(row=current_row, column=2, value=nombre_completo)
         sheet.cell(row=current_row, column=3, value=socio.email)
         sheet.cell(row=current_row, column=4, value=socio.telefono or '-')
         sheet.cell(row=current_row, column=5, value=socio.ciudad or '-')

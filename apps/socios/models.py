@@ -12,8 +12,13 @@ class Socio(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='socio_profile')
     nombre = models.CharField(max_length=150, verbose_name='Nombres')
-    apellido = models.CharField(max_length=150, verbose_name='Apellidos')
+    apellido_paterno = models.CharField(max_length=150, blank=True, default='', verbose_name='Apellido paterno')
+    apellido_materno = models.CharField(max_length=150, blank=True, default='', verbose_name='Apellido materno')
+    # Mantener campo legado para compatibilidad
+    apellido = models.CharField(max_length=150, blank=True, default='', verbose_name='Apellidos')
     email = models.EmailField(verbose_name='Correo electrónico')
+    carnet_ci = models.CharField(max_length=30, blank=True, default='', verbose_name='CI / Carnet')
+    carnet_complemento = models.CharField(max_length=10, blank=True, default='', verbose_name='Complemento CI')
     telefono = models.CharField(max_length=20, blank=True, default='', verbose_name='Teléfono')
     ciudad = models.CharField(max_length=150, blank=True, default='', verbose_name='Ciudad')
     direccion = models.CharField(max_length=250, blank=True, default='', verbose_name='Dirección')
@@ -28,6 +33,8 @@ class Socio(models.Model):
         ordering = ['-fecha_ingreso', 'apellido', 'nombre']
 
     def __str__(self):
+        if self.apellido_paterno or self.apellido_materno:
+            return f"{self.nombre} {self.apellido_paterno} {self.apellido_materno}".strip()
         return f'{self.nombre} {self.apellido}'
 
 

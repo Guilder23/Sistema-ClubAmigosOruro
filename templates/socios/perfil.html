@@ -34,7 +34,7 @@
           {% endif %}
         </div>
         <div>
-          <h3>{% if socio %}{{ socio.nombre }} {{ socio.apellido }}{% else %}{{ request.user.get_full_name|default:request.user.username }}{% endif %}</h3>
+          <h3>{% if socio %}{{ socio.nombre }} {% if socio.apellido_paterno %}{{ socio.apellido_paterno }}{% endif %} {% if socio.apellido_materno %}{{ socio.apellido_materno }}{% endif %}{% else %}{{ request.user.get_full_name|default:request.user.username }}{% endif %}</h3>
           <span>{{ request.user.email }}</span>
         </div>
       </div>
@@ -53,7 +53,7 @@
       <div class="perfil-info">
         <div class="info-item">
           <strong>Nombre completo</strong>
-          <span>{% if socio %}{{ socio.nombre }} {{ socio.apellido }}{% else %}{{ request.user.get_full_name|default:'No disponible' }}{% endif %}</span>
+          <span>{% if socio %}{{ socio.nombre }} {% if socio.apellido_paterno %}{{ socio.apellido_paterno }}{% endif %} {% if socio.apellido_materno %}{{ socio.apellido_materno }}{% endif %}{% else %}{{ request.user.get_full_name|default:'No disponible' }}{% endif %}</span>
         </div>
         <div class="info-item">
           <strong>Correo</strong>
