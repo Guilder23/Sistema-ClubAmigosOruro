@@ -7,6 +7,9 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeFaqAccordion();
     initializeRevealAnimations();
     initializeFechaNacimientoMode();
+    initializeConfirmationModal();
+    initializeFormularioAjax();
+    initializeImageFallAnimations();
 });
 
 function initializePaginationAnimations() {
@@ -195,3 +198,143 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
+// ================================================
+// MODAL DE CONFIRMACIÓN CON EFECTO DE EXPLOSIÓN
+// ================================================
+
+function initializeConfirmationModal() {
+    // Verificar si hay mensaje de éxito de Django con el marcador especial
+    const successMessages = document.querySelectorAll('.alert-success');
+    
+    successMessages.forEach(message => {
+        const messageText = message.textContent || message.innerText;
+        if (messageText.includes('CONFETTI_SHOW') || messageText.includes('solicitud fue registrada')) {
+            // Ocultar el mensaje original de Django
+            message.style.display = 'none';
+            
+            // Mostrar el modal personalizado con confeti
+            showConfirmationModal();
+        }
+    });
+}
+
+function showConfirmationModal() {
+    const modal = document.getElementById('modalConfirmacion');
+    if (!modal) return;
+    
+    // Mostrar el modal
+    $(modal).modal('show');
+    
+    // Crear efecto de confeti
+    createConfetti();
+}
+
+function createConfetti() {
+    const colors = ['#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#8b5cf6', '#ec4899'];
+    const confettiCount = 50;
+    
+    for (let i = 0; i < confettiCount; i++) {
+        setTimeout(() => {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + 'vw';
+            confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            confetti.style.width = (Math.random() * 10 + 5) + 'px';
+            confetti.style.height = (Math.random() * 10 + 5) + 'px';
+            confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+            
+            document.body.appendChild(confetti);
+            
+            // Eliminar el confeti después de la animación
+            setTimeout(() => {
+                confetti.remove();
+            }, 4000);
+        }, i * 50);
+    }
+}
+
+// ================================================
+// ENVÍO DEL FORMULARIO POR AJAX (SIN RECARGAR)
+// ================================================
+
+function initializeFormularioAjax() {
+    const form = document.getElementById('formInscripcion');
+    if (!form) return;
+
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            const originalText = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Enviando...';
+
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                // Si la respuesta es OK, mostramos el modal de confirmación
+                $('#modalInscripcion').modal('hide');
+                showConfirmationModal();
+                form.reset();
+            })
+            .catch(error => {
+                // Si hay error, intentamos el comportamiento por defecto
+                console.error('Error en el envío:', error);
+                form.submit();
+            })
+            .finally(() => {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = originalText;
+                }
+            });
+        } else {
+            form.submit();
+        }
+    });
+}
+
+// ================================================
+// ANIMACIONES DE CAÍDA PARA IMÁGENES (Viewport)
+// ================================================
+
+function initializeImageFallAnimations() {
+    const images = document.querySelectorAll('.img-fall');
+    if (images.length === 0) return;
+
+    if (!('IntersectionObserver' in window)) {
+        images.forEach(img => img.classList.add('img-fall-visible'));
+        return;
+    }
+
+    const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach((entry, idx) => {
+            if (entry.isIntersecting) {
+                const img = entry.target;
+                // Calcular delay basado en el índice dentro del contenedor padre
+                const siblings = Array.from(img.parentElement.querySelectorAll('.img-fall'));
+                const siblingIndex = siblings.indexOf(img);
+                const delay = Math.min(siblingIndex * 0.1, 0.5);
+                
+                setTimeout(() => {
+                    img.classList.add('img-fall-visible');
+                }, delay * 1000);
+                
+                obs.unobserve(img);
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    });
+
+    images.forEach(img => observer.observe(img));
+}

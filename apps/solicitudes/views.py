@@ -63,7 +63,7 @@ def crear_solicitud(request):
             carnet_ci=carnet_ci,
             carnet_complemento=carnet_complemento,
         )
-        messages.success(request, 'Tu solicitud fue registrada correctamente. Pronto nos contactaremos.')
+        messages.success(request, 'CONFETTI_SHOW:Tu solicitud fue registrada correctamente. Pronto nos contactaremos.')
         return redirect('core:inicio')
 
     return redirect('core:inicio')
