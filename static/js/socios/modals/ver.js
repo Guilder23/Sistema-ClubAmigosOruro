@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function () {
     modalVer.addEventListener('show.bs.modal', function (event) {
         const button = event.relatedTarget;
         const setText = (idName, text) => { const el = document.getElementById(idName); if (!el) return; el.textContent = text; };
+        setText('verCodigoSocio', button.getAttribute('data-codigo-socio') || '');
         setText('verNombre', button.getAttribute('data-nombre') || '');
         setText('verApellidoPaterno', button.getAttribute('data-apellido-paterno') || '');
         setText('verApellidoMaterno', button.getAttribute('data-apellido-materno') || '');
@@ -26,6 +27,7 @@ document.addEventListener('DOMContentLoaded', function () {
         btn.addEventListener('click', function (e) {
             const button = e.currentTarget;
             const setText = (idName, text) => { const el = document.getElementById(idName); if (!el) return; el.textContent = text; };
+            setText('verCodigoSocio', button.getAttribute('data-codigo-socio') || '');
             setText('verNombre', button.getAttribute('data-nombre') || '');
             setText('verApellidoPaterno', button.getAttribute('data-apellido-paterno') || '');
             setText('verApellidoMaterno', button.getAttribute('data-apellido-materno') || '');

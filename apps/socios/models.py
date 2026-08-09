@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.db import transaction
 
 
 class Socio(models.Model):
@@ -11,6 +12,7 @@ class Socio(models.Model):
     ]
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='socio_profile')
+    codigo_socio = models.CharField(max_length=6, unique=True, blank=True, null=True, verbose_name='Código de socio')
     nombre = models.CharField(max_length=150, verbose_name='Nombres')
     apellido_paterno = models.CharField(max_length=150, blank=True, default='', verbose_name='Apellido paterno')
     apellido_materno = models.CharField(max_length=150, blank=True, default='', verbose_name='Apellido materno')
@@ -56,3 +58,23 @@ class UserProfile(models.Model):
 def ensure_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
+
+
+def generar_codigo_socio():
+    """
+    Genera el siguiente código de socio incremental.
+    El formato es 260001, 260002, 260003, etc.
+    """
+    with transaction.atomic():
+        # Obtener el último código asignado
+        ultimo_socio = Socio.objects.filter(codigo_socio__isnull=False).order_by('-codigo_socio').first()
+        
+        if ultimo_socio and ultimo_socio.codigo_socio:
+            # Extraer el número del código y sumar 1
+            ultimo_numero = int(ultimo_socio.codigo_socio)
+            nuevo_numero = ultimo_numero + 1
+        else:
+            # Si no hay códigos, empezar desde 260001
+            nuevo_numero = 260001
+        
+        return str(nuevo_numero)

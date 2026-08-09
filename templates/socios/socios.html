@@ -61,6 +61,7 @@
                     <tr>
                         <th>Foto</th>
                         <th>Nombre</th>
+                        <th>CI/Carnet</th>
                         <th>Correo</th>
                         <th>Teléfono</th>
                         <th>Estado</th>
@@ -80,6 +81,7 @@
                             {% endif %}
                         </td>
                         <td>{{ socio.nombre }} {% if socio.apellido_paterno %}{{ socio.apellido_paterno }}{% endif %} {% if socio.apellido_materno %}{{ socio.apellido_materno }}{% endif %}</td>
+                        <td>{{ socio.carnet_ci }}{% if socio.carnet_complemento %} {{ socio.carnet_complemento }}{% endif %}</td>
                         <td>{{ socio.email }}</td>
                         <td>{{ socio.telefono|default:'-' }}</td>
                         <td>
@@ -95,6 +97,7 @@
                         </td>
                         <td class="text-center acciones-col">
                             <button class="btn btn-info btn-sm btn-ver-socio" data-toggle="modal" data-target="#modalVerSocio"
+                                data-codigo-socio="{{ socio.codigo_socio|default:'' }}"
                                 data-nombre="{{ socio.nombre }}"
                                 data-apellido-paterno="{{ socio.apellido_paterno }}"
                                 data-apellido-materno="{{ socio.apellido_materno }}"
@@ -147,7 +150,7 @@
                         </td>
                     </tr>
                     {% empty %}
-                    <tr><td colspan="8" class="text-center py-4">No hay socios registrados.</td></tr>
+                    <tr><td colspan="9" class="text-center py-4">No hay socios registrados.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>

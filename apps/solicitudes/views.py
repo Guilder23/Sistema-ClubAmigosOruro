@@ -7,6 +7,7 @@ from django.db.models import Q
 
 from .models import SolicitudSocio
 from apps.socios.models import Socio
+from apps.socios.models import generar_codigo_socio
 
 
 @login_required
@@ -93,6 +94,7 @@ def aprobar_solicitud(request, solicitud_id):
     if not Socio.objects.filter(user=user).exists():
         Socio.objects.create(
             user=user,
+            codigo_socio=generar_codigo_socio(),
             nombre=solicitud.nombre,
             apellido_paterno=solicitud.apellido_paterno or '',
             apellido_materno=solicitud.apellido_materno or '',

@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from .models import Socio
 from .models import UserProfile
+from .models import generar_codigo_socio
 import csv
 from io import TextIOWrapper
 from django.contrib.auth.models import User
@@ -92,6 +93,7 @@ def crear_socio(request):
     user.save()
     Socio.objects.create(
         user=user,
+        codigo_socio=generar_codigo_socio(),
         nombre=nombre,
         apellido_paterno=apellido_paterno,
         apellido_materno=apellido_materno,
@@ -219,7 +221,7 @@ def importar_socios(request):
                 user.first_name = nombre
                 user.last_name = apellido_paterno or apellido
                 user.save()
-                Socio.objects.create(user=user, nombre=nombre, apellido_paterno=apellido_paterno, apellido_materno=apellido_materno, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion, fecha_nacimiento=fecha_nacimiento, razon=razon, carnet_ci=carnet_ci, carnet_complemento=carnet_complemento)
+                Socio.objects.create(user=user, codigo_socio=generar_codigo_socio(), nombre=nombre, apellido_paterno=apellido_paterno, apellido_materno=apellido_materno, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion, fecha_nacimiento=fecha_nacimiento, razon=razon, carnet_ci=carnet_ci, carnet_complemento=carnet_complemento)
                 created += 1
             messages.success(request, f'Socios importados: {created}')
         except Exception as e:
@@ -354,7 +356,7 @@ def importar_socios_xlsx_confirm(request):
                 user.first_name = nombre
                 user.last_name = apellido_paterno or apellido
                 user.save()
-                Socio.objects.create(user=user, nombre=nombre, apellido_paterno=apellido_paterno, apellido_materno=apellido_materno, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion, fecha_nacimiento=fecha_nacimiento, razon=razon, carnet_ci=carnet_ci, carnet_complemento=carnet_complemento)
+                Socio.objects.create(user=user, codigo_socio=generar_codigo_socio(), nombre=nombre, apellido_paterno=apellido_paterno, apellido_materno=apellido_materno, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion, fecha_nacimiento=fecha_nacimiento, razon=razon, carnet_ci=carnet_ci, carnet_complemento=carnet_complemento)
                 created += 1
         except Exception as e:
             skipped += 1
@@ -484,7 +486,7 @@ def importar_socios_xlsx(request):
                 user.first_name = nombre
                 user.last_name = apellido_paterno or apellido
                 user.save()
-                Socio.objects.create(user=user, nombre=nombre, apellido_paterno=apellido_paterno, apellido_materno=apellido_materno, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion, fecha_nacimiento=fecha_nacimiento, razon=razon, carnet_ci=carnet_ci, carnet_complemento=carnet_complemento)
+                Socio.objects.create(user=user, codigo_socio=generar_codigo_socio(), nombre=nombre, apellido_paterno=apellido_paterno, apellido_materno=apellido_materno, apellido=apellido, email=email, telefono=telefono, ciudad=ciudad, direccion=direccion, fecha_nacimiento=fecha_nacimiento, razon=razon, carnet_ci=carnet_ci, carnet_complemento=carnet_complemento)
                 created += 1
             messages.success(request, f'Socios importados desde XLSX: {created}')
         except Exception as e:
