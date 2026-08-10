@@ -33,11 +33,11 @@
                         <a href="#beneficios" class="btn btn-outline-light btn-lg mt-3 ml-2 hero-btn-float">Ver beneficios</a>
                     </div>
                 </div>
-                <div class="col-lg-4 hero-portada-gallery hero-anim hero-anim-5">
+                {% comment %} <div class="col-lg-4 hero-portada-gallery hero-anim hero-anim-5">
                     <img src="{% static 'img/galeria/imagen1.png' %}" alt="Amigos" class="hero-thumb hero-thumb-1 img-fall">
                     <img src="{% static 'img/galeria/imagen2.png' %}" alt="Reunión" class="hero-thumb hero-thumb-2 img-fall">
                     <img src="{% static 'img/galeria/imagen3.png' %}" alt="Actividad" class="hero-thumb hero-thumb-3 img-fall">
-                </div>
+                </div> {% endcomment %}
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@
             <div class="modal-header">
                 <div>
                     <h3 class="modal-title" id="modalInscripcionTitle"><i class="fas fa-user-plus mr-2"></i>Solicita tu membresía</h3>
-                    <p class="modal-subtitle">Completa tus datos y nos pondremos en contacto contigo.</p>
+                    <p class="modal-subtitle">Completa tus datos y se parte del club del Carnaval de oruro.</p>
                 </div>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
                     <span aria-hidden="true">&times;</span>
@@ -134,7 +134,8 @@
                 <div class="sobre-club-card p-4 shadow-sm reveal">
                     <div class="mb-4">
                         <h2 class="section-title-animate"><i class="fas fa-heart-pulse"></i> Sobre el Club</h2>
-                        <p class="text-animate">Somos una comunidad vibrante donde cada miembro encuentra un espacio único para conectar, crecer y vivir experiencias inolvidables. Más que un club, construimos lazos de amistad auténtica que trascienden el tiempo, creando una red de apoyo mutuo y crecimiento compartido para todos.</p>
+                        <p class="text-animate">Somos un espacio que reúne a las personas que viven, sienten y disfrutan la magia del Carnaval de Oruro.
+Nacimos con la convicción de que el Carnaval de Oruro no solo está presente en las calles durante la entrada, sino también en cada experiencia, recuerdo y emoción que une a quienes forman parte de él.</p>
                     </div>
                     <div class="sobre-club-item mb-4 reveal">
                         <div class="sobre-club-feature hover-lift">
@@ -154,20 +155,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="sobre-club-item reveal">
-                        <div class="sobre-club-feature hover-lift">
-                            <span class="sobre-club-icon icon-pulse"><i class="fas fa-list-check"></i></span>
-                            <div>
-                                <h5>Objetivos</h5>
-                                <ul class="sobre-club-list">
-                                    <li><i class="fas fa-check-circle text-primary mr-2"></i>Diseñar eventos sociales, recreativos y culturales que inspiren y fortalezcan la convivencia.</li>
-                                    <li><i class="fas fa-check-circle text-primary mr-2"></i>Fomentar espacios de integración donde cada socio pueda conectar y crear amistades genuinas.</li>
-                                    <li><i class="fas fa-check-circle text-primary mr-2"></i>Ofrecer beneficios exclusivos, souvenirs y reconocimientos que valoren tu pertenencia al club.</li>
-                                    <li><i class="fas fa-check-circle text-primary mr-2"></i>Impulsar el crecimiento personal a través de talleres, charlas y actividades enriquecedoras.</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div class="col-lg-6">
@@ -175,10 +162,17 @@
                     <div class="sobre-club-main-img img-zoom">
                         <img src="{% static 'img/imagenprincipal.png' %}" alt="Club Amigos" class="img-fluid rounded img-fall">
                     </div>
-                    <div class="sobre-club-subgrid mt-3">
-                        <img src="{% static 'img/galeria/imagen1.png' %}" alt="Vida social" class="img-fluid rounded img-hover img-fall">
-                        <img src="{% static 'img/galeria/imagen6.png' %}" alt="Reunión de grupo" class="img-fluid rounded img-hover img-fall">
-                        <img src="{% static 'img/galeria/imagen3.png' %}" alt="Actividad al aire libre" class="img-fluid rounded img-hover img-fall">
+                    <div class="sobre-club-card p-4 shadow-sm mt-3 border-0">
+                        <div class="d-flex align-items-center mb-4">
+                            <span class="sobre-club-icon icon-pulse" style="font-size: 2.5rem; min-width: 60px;"><i class="fas fa-list-check"></i></span>
+                            <h5 style="margin: 0 0 0 1.5rem; font-size: 1.5rem;">Objetivos</h5>
+                        </div>
+                        <ul class="sobre-club-list w-100">
+                            <li><i class="fas fa-check-circle text-primary mr-2"></i>Diseñar eventos sociales, recreativos y culturales que inspiren y fortalezcan la convivencia.</li>
+                            <li><i class="fas fa-check-circle text-primary mr-2"></i>Fomentar espacios de integración donde cada socio pueda conectar y crear amistades genuinas.</li>
+                            <li><i class="fas fa-check-circle text-primary mr-2"></i>Ofrecer beneficios exclusivos, souvenirs y reconocimientos que valoren tu pertenencia al club.</li>
+                            <li><i class="fas fa-check-circle text-primary mr-2"></i>Impulsar el crecimiento personal a través de talleres, charlas y actividades enriquecedoras.</li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -197,28 +191,28 @@
                 <div class="card p-4 h-100 shadow-sm border-0 servicio-card-modern reveal">
                     <div class="servicio-icono"><i class="fas fa-hand-holding-heart"></i></div>
                     <h4>Acceso exclusivo</h4>
-                    <p>Participa en eventos especiales y actividades privadas para socios.</p>
+                    <p>Eventos especiales, actividades y experiencias reservadas para nuestros socios.</p>
                 </div>
             </div>
             <div class="col-lg-6 mb-4">
                 <div class="card p-4 h-100 shadow-sm border-0 servicio-card-modern reveal">
-                    <div class="servicio-icono"><i class="fas fa-star"></i></div>
-                    <h4>Atención prioritaria</h4>
-                    <p>Prioridad en solicitudes, información y seguimiento de tus datos.</p>
+                    <div class="servicio-icono"><i class="fas fa-tags"></i></div>
+                    <h4>Beneficios y convenios</h4>
+                    <p>Descuentos y promociones exclusivas gracias a nuestros convenios con empresas y comercios aliados.</p>
                 </div>
             </div>
             <div class="col-lg-6 mb-4">
                 <div class="card p-4 h-100 shadow-sm border-0 servicio-card-modern reveal">
                     <div class="servicio-icono"><i class="fas fa-gift"></i></div>
-                    <h4>Souvenirs y reconocimientos</h4>
-                    <p>Recibe beneficios y novedades durante tu membresía.</p>
+                    <h4>Detalles para socios</h4>
+                    <p>Recibe souvenirs y detalles especiales como parte de tu membresía.</p>
                 </div>
             </div>
             <div class="col-lg-6 mb-4">
                 <div class="card p-4 h-100 shadow-sm border-0 servicio-card-modern reveal">
                     <div class="servicio-icono"><i class="fas fa-users"></i></div>
-                    <h4>Comunidad activa</h4>
-                    <p>Conecta con otros socios y participa en iniciativas comunitarias del club.</p>
+                    <h4>Participa y conecta</h4>
+                    <p>Forma parte de las iniciativas del club, comparte con otros miembros y sé parte de una comunidad activa.</p>
                 </div>
             </div>
         </div>
@@ -263,45 +257,45 @@
                 <h2 class="mb-3" style="font-size:1.3rem; color:#1e3a8a; font-weight:700;"><i class="fas fa-user-friends"></i> Opiniones de socios</h2>
             </div>
             <div class="col-lg-4 mb-3">
-                <div class="inicio-testimonio h-100">
-                    <div class="testimonio-head d-flex align-items-center mb-3">
-                        <img src="{% static 'img/galeria/imagen1.png' %}" alt="María" class="testimonio-avatar mr-3 img-fall">
+                <div class="inicio-testimonio h-100 shadow-sm">
+                    <div class="testimonio-head d-flex align-items-center mb-2">
+                        <img src="{% static 'img/galeria/imagen1.png' %}" alt="María" class="testimonio-avatar mr-3">
                         <div>
                             <div class="inicio-testimonio-nombre">María</div>
                             <div class="inicio-testimonio-rol">Socio</div>
                         </div>
                     </div>
-                    <p class="inicio-testimonio-txt">“Ser socio me permitió asistir a eventos únicos y sentirme parte de una comunidad cercana.”</p>
+                    <p class="inicio-testimonio-txt">Ser socio me permitió asistir a eventos únicos y sentirme parte de una comunidad cercana.</p>
                 </div>
             </div>
             <div class="col-lg-4 mb-3">
-                <div class="inicio-testimonio h-100">
-                    <div class="testimonio-head d-flex align-items-center mb-3">
-                        <img src="{% static 'img/galeria/imagen2.png' %}" alt="Juan" class="testimonio-avatar mr-3 img-fall">
+                <div class="inicio-testimonio h-100 shadow-sm">
+                    <div class="testimonio-head d-flex align-items-center mb-2">
+                        <img src="{% static 'img/galeria/imagen2.png' %}" alt="Juan" class="testimonio-avatar mr-3">
                         <div>
                             <div class="inicio-testimonio-nombre">Juan</div>
                             <div class="inicio-testimonio-rol">Socio</div>
                         </div>
                     </div>
-                    <p class="inicio-testimonio-txt">“La atención es rápida y el seguimiento de mi membresía siempre fue claro y amable.”</p>
+                    <p class="inicio-testimonio-txt">La atención es rápida y el seguimiento de mi membresía siempre fue claro y amable.</p>
                 </div>
             </div>
             <div class="col-lg-4 mb-3">
-                <div class="inicio-testimonio h-100">
-                    <div class="testimonio-head d-flex align-items-center mb-3">
-                        <img src="{% static 'img/galeria/imagen3.png' %}" alt="Ana" class="testimonio-avatar mr-3 img-fall">
+                <div class="inicio-testimonio h-100 shadow-sm">
+                    <div class="testimonio-head d-flex align-items-center mb-2">
+                        <img src="{% static 'img/galeria/imagen3.png' %}" alt="Ana" class="testimonio-avatar mr-3">
                         <div>
                             <div class="inicio-testimonio-nombre">Ana</div>
                             <div class="inicio-testimonio-rol">Socio</div>
                         </div>
                     </div>
-                    <p class="inicio-testimonio-txt">“Los souvenirs y reconocimientos son un plus excelente. Me hacen sentir valorado como miembro.”</p>
+                    <p class="inicio-testimonio-txt">Los souvenirs y reconocimientos son un plus excelente. Me hacen sentir valorado como miembro.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="inicio-section gallery-section" aria-hidden="false">
+    {% comment %} <section class="inicio-section gallery-section" aria-hidden="false">
         <div class="section-heading reveal">
             <span class="section-eyebrow"><i class="fas fa-images"></i> Galería</span>
             <h2>Momentos del Club de Amigos</h2>
@@ -335,7 +329,7 @@
                 <img class="inicio-galeria-img img-fall" src="{% static 'img/galeria/imagen9.png' %}" alt="Galería 9" loading="lazy">
             </figure>
         </div>
-    </section>
+    </section> {% endcomment %}
 </div>
 
 <a href="https://wa.me/59168440201?text=Hola%2C%20vengo%20desde%20su%20p%C3%A1gina%20y%20quiero%20consultar%20sobre%20el%20club%20y%20mis%20membres%C3%ADas..." class="floating-whatsapp-btn" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
