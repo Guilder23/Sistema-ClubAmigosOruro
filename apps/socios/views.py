@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from .models import Socio
 from .models import UserProfile
 from .models import generar_codigo_socio
+from django.contrib.auth import update_session_auth_hash
 import csv
 from io import TextIOWrapper
 from django.contrib.auth.models import User
@@ -132,6 +133,68 @@ def perfil_socio(request):
         'is_admin': request.user.is_staff,
         'user_profile': profile,
     })
+
+
+@login_required
+def editar_perfil(request):
+    if request.method != 'POST':
+        return redirect('socios:perfil_socio')
+
+    user = request.user
+    email = request.POST.get('email', '').strip()
+    telefono = request.POST.get('telefono', '').strip()
+
+    # Actualizar email en User
+    if email:
+        user.email = email
+        user.save()
+
+    # Actualizar datos en Socio si existe
+    try:
+        socio = user.socio_profile
+        socio.email = email or socio.email
+        socio.telefono = telefono or socio.telefono
+        socio.save()
+    except Socio.DoesNotExist:
+        pass
+
+    messages.success(request, 'Datos de perfil actualizados.')
+    return redirect('socios:perfil_socio')
+
+
+@login_required
+def cambiar_contrasena(request):
+    if request.method != 'POST':
+        return redirect('socios:perfil_socio')
+
+    user = request.user
+    current = request.POST.get('current_password', '')
+    new1 = request.POST.get('new_password1', '')
+    new2 = request.POST.get('new_password2', '')
+
+    # Validar que los tres campos estén presentes
+    if not current or not new1 or not new2:
+        messages.error(request, 'Completa los 3 campos requeridos para cambiar la contraseña.')
+        return redirect('socios:perfil_socio')
+
+    if not user.check_password(current):
+        messages.error(request, 'La contraseña actual es incorrecta.')
+        return redirect('socios:perfil_socio')
+
+    if new1 != new2:
+        messages.error(request, 'Las nuevas contraseñas no coinciden.')
+        return redirect('socios:perfil_socio')
+
+    try:
+        user.set_password(new1)
+        user.save()
+        # Mantener la sesión activa
+        update_session_auth_hash(request, user)
+        messages.success(request, 'Contraseña actualizada correctamente.')
+    except Exception:
+        messages.error(request, 'No se pudo actualizar la contraseña.')
+
+    return redirect('socios:perfil_socio')
 
 
 @login_required

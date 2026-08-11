@@ -91,6 +91,86 @@
     </div>
   </div>
 
+  <div class="row mt-4">
+    <div class="col-md-6">
+      <div class="card mb-3 p-3">
+        <h4>Editar información</h4>
+        <form method="post" action="{% url 'socios:editar_perfil' %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <label>Correo</label>
+            <input class="form-control" type="email" name="email" value="{{ request.user.email }}" required>
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input class="form-control" type="text" name="telefono" value="{% if socio and socio.telefono %}{{ socio.telefono }}{% endif %}">
+          </div>
+          <div class="mt-2">
+            <button class="btn btn-primary" type="submit">Guardar cambios</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card mb-3 p-3">
+        <h4>Cambiar contraseña</h4>
+        <form method="post" action="{% url 'socios:cambiar_contrasena' %}">
+          {% csrf_token %}
+          <div class="form-group">
+            <label>Contraseña actual</label>
+            <div class="input-group">
+              <input class="form-control" type="password" name="current_password" id="current_password" required>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#current_password"><i class="fas fa-eye"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Nueva contraseña</label>
+            <div class="input-group">
+              <input class="form-control" type="password" name="new_password1" id="new_password1" required>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#new_password1"><i class="fas fa-eye"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Repetir nueva contraseña</label>
+            <div class="input-group">
+              <input class="form-control" type="password" name="new_password2" id="new_password2" required>
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#new_password2"><i class="fas fa-eye"></i></button>
+              </div>
+            </div>
+          </div>
+          <div class="mt-2">
+            <button class="btn btn-warning" type="submit">Cambiar contraseña</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      function toggle(e){
+        var btn = e.currentTarget;
+        var target = document.querySelector(btn.getAttribute('data-target'));
+        if(!target) return;
+        if(target.type === 'password'){
+          target.type = 'text';
+          btn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+        } else {
+          target.type = 'password';
+          btn.innerHTML = '<i class="fas fa-eye"></i>';
+        }
+      }
+      var toggles = document.querySelectorAll('.toggle-password');
+      toggles.forEach(function(t){ t.addEventListener('click', toggle); });
+    });
+  </script>
+
   <div class="perfil-entregas-card">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <div>

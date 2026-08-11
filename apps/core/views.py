@@ -36,6 +36,15 @@ def iniciar_sesion(request):
             messages.error(request, 'Usuario o contrasena incorrectos.')
             return render(request, 'auth/login.html')
 
+        try:
+            from apps.socios.models import Socio
+            socio = Socio.objects.get(user=user)
+            if socio.estado == 'inactivo':
+                messages.error(request, 'Socio inactivo. Comunicate con el administrador para que te active y puedas iniciar sesion.')
+                return render(request, 'auth/login.html')
+        except Socio.DoesNotExist:
+            pass
+
         login(request, user)
         next_url = request.GET.get('next') or request.POST.get('next')
         if next_url:
