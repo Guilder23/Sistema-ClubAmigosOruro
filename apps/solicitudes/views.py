@@ -20,14 +20,28 @@ def construir_enlace_whatsapp(solicitud):
 
     apellido = solicitud.apellido_paterno or solicitud.apellido
     nombre_completo = f'{solicitud.nombre} {apellido}'.strip()
-    contrasena = solicitud.carnet_ci or 'ClubAmigos2026!'
-    mensaje = (
-        f'Hola {nombre_completo}, gracias por registrarte para entrar a tu cuenta de Club carnaval Oruro.\n\n'
-        f'Estos son los datos de acceso:\n'
-        f'Usuario: {solicitud.usuario_creado.username}\n'
-        f'Contraseña: {contrasena}\n\n'
-        '¡Te damos la bienvenida al club!'
-    )
+    if solicitud.estado == 'rechazada':
+        mensaje = (
+            f'Hola {nombre_completo}. Gracias por tu interés en formar parte del Club carnaval Oruro.\n\n'
+            'Lamentamos informarte que tu solicitud de ingreso fue rechazada en esta ocasión. '
+            'Si deseas recibir más información, puedes responder a este mensaje.\n\n'
+            'Saludos cordiales.'
+        )
+    elif solicitud.usuario_creado:
+        contrasena = solicitud.carnet_ci or 'ClubAmigos2026!'
+        mensaje = (
+            f'Hola {nombre_completo}, gracias por registrarte para entrar a tu cuenta de Club carnaval Oruro.\n\n'
+            f'Estos son los datos de acceso:\n'
+            f'Usuario: {solicitud.usuario_creado.username}\n'
+            f'Contraseña: {contrasena}\n\n'
+            '¡Te damos la bienvenida al club!'
+        )
+    else:
+        mensaje = (
+            f'Hola {nombre_completo}, tu solicitud para formar parte del Club carnaval Oruro fue aprobada. '
+            'Nos comunicaremos contigo para brindarte los siguientes pasos.\n\n'
+            '¡Bienvenido al club!'
+        )
     return f'https://wa.me/{telefono}?text={quote(mensaje)}'
 
 
@@ -49,7 +63,7 @@ def listar_solicitudes(request):
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     for solicitud in page_obj.object_list:
-        solicitud.whatsapp_url = construir_enlace_whatsapp(solicitud) if solicitud.estado == 'aprobada' and solicitud.usuario_creado else ''
+        solicitud.whatsapp_url = construir_enlace_whatsapp(solicitud) if solicitud.estado in ('aprobada', 'rechazada') else ''
     return render(request, 'solicitudes/listar_solicitudes.html', {'page_obj': page_obj, 'q': q, 'estado': estado})
 
 
