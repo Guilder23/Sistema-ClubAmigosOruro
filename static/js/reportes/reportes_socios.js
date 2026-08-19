@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     const filtroBusqueda = document.getElementById('filtroBusqueda');
     const filtroEstado = document.getElementById('filtroEstado');
-    const filtroCiudad = document.getElementById('filtroCiudad');
     const filtroSouvenir = document.getElementById('filtroSouvenir');
     const filtroSouvenirId = document.getElementById('filtroSouvenirId');
     const filtroOrden = document.getElementById('filtroOrden');
@@ -16,9 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         if (filtroEstado.value) {
             params.set('estado', filtroEstado.value);
-        }
-        if (filtroCiudad.value.trim()) {
-            params.set('ciudad', filtroCiudad.value.trim());
         }
         if (filtroSouvenir.value) {
             params.set('recibio_souvenir', filtroSouvenir.value);
@@ -50,7 +46,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     filtroBusqueda.addEventListener('input', debounce(aplicarFiltros));
     filtroEstado.addEventListener('change', aplicarFiltros);
-    filtroCiudad.addEventListener('input', debounce(aplicarFiltros));
     filtroSouvenir.addEventListener('change', aplicarFiltros);
     filtroSouvenirId.addEventListener('change', aplicarFiltros);
     filtroOrden.addEventListener('change', aplicarFiltros);

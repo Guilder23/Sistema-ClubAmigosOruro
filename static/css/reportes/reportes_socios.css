@@ -31,39 +31,95 @@
 }
 
 .card-filtros {
-    border-radius: 18px;
+    border-radius: 8px;
     box-shadow: 0 18px 40px rgba(18, 34, 77, 0.08);
     border: none;
 }
 
 .card-tabla {
-    border-radius: 18px;
+    border-radius: 8px;
     box-shadow: 0 18px 40px rgba(18, 34, 77, 0.08);
     border: none;
 }
 
-.filtros-socios-form .form-control,
-.filtros-socios-form .form-select {
-    border-radius: 12px;
+.reportes-filtros-form {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    align-items: end;
+}
+
+.reportes-filtros-form > [class*="col-"] {
+    width: auto;
+    max-width: none;
+    padding: 0;
+}
+
+.reportes-filtros-form .form-control,
+.reportes-filtros-form .form-select {
+    width: 100%;
+    min-height: 38px;
+    border-radius: 6px;
     border: 1px solid #dce1ed;
     background: #f8f9ff;
     color: #22303b;
 }
 
-.input-group-sm .form-control,
-.input-group-sm .form-select {
-    height: calc(2.5rem + 2px);
+.reportes-filtros-form .input-group-sm .form-control,
+.reportes-filtros-form .input-group-sm .form-select {
+    height: 38px;
 }
 
-.input-group-prepend .input-group-text {
-    border-radius: 12px 0 0 12px;
+.reportes-filtros-form .input-group {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    align-items: stretch;
+}
+
+.reportes-filtros-form .input-group-prepend {
+    display: flex;
+    flex: 0 0 auto;
+}
+
+.reportes-filtros-form .input-group-prepend .input-group-text {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    border-radius: 6px 0 0 6px;
     border-right: 0;
     border: 1px solid #dce1ed;
     background: #ffffff;
 }
 
-.input-group .form-control {
+.reportes-filtros-form .input-group .form-control {
+    flex: 1 1 auto;
+    min-width: 0;
     border-left: none;
+    border-radius: 0 6px 6px 0;
+}
+
+.btn-limpiar-filtros {
+    width: 38px;
+    height: 38px;
+    padding: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+}
+
+@media (max-width: 992px) {
+    .reportes-filtros-form {
+        grid-template-columns: repeat(2, minmax(160px, 1fr));
+    }
+}
+
+@media (max-width: 576px) {
+    .reportes-filtros-form {
+        grid-template-columns: 1fr;
+    }
 }
 
 .table .tabla-socios th,
