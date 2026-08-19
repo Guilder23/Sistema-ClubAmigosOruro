@@ -34,8 +34,8 @@
                     <div class="filtro-item">
                         <select id="selectEventoActivo" name="activo" class="form-control form-control-sm">
                             <option value="">Activo / Inactivo</option>
-                            <option value="si" {% if activo == 'si' %}selected{% endif %}>Sí</option>
-                            <option value="no" {% if activo == 'no' %}selected{% endif %}>No</option>
+                            <option value="si" {% if activo == 'si' %}selected{% endif %}>Activo</option>
+                            <option value="no" {% if activo == 'no' %}selected{% endif %}>Inactivo</option>
                         </select>
                     </div>
                 </div>
@@ -45,13 +45,13 @@
 
     <div class="card card-tabla">
         <div class="table-responsive">
-            <table class="table table-striped mb-0">
+            <table class="table table-sm tabla-gestion mb-0">
                 <thead>
                     <tr>
                         <th>Nombre</th>
                         <th>Fecha</th>
                         <th>Lugar</th>
-                        <th>Activo</th>
+                        <th>Estado</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
@@ -61,14 +61,18 @@
                         <td>{{ evento.nombre }}</td>
                         <td>{{ evento.fecha_evento|date:'d/m/Y' }}</td>
                         <td>{{ evento.lugar|default:'-' }}</td>
-                        <td>{{ evento.activo|yesno:'Sí,No' }}</td>
+                        <td>
+                            <span class="badge-estado {% if evento.activo %}badge-estado-activo{% else %}badge-estado-inactivo{% endif %}">
+                                {{ evento.activo|yesno:'Activo,Inactivo' }}
+                            </span>
+                        </td>
                         <td class="text-center acciones-col">
                             <button type="button" class="btn btn-info btn-sm btn-ver-evento" data-toggle="modal" data-target="#modalVerEvento"
                                 data-nombre="{{ evento.nombre|escapejs }}"
                                 data-descripcion="{{ evento.descripcion|escapejs }}"
                                 data-fecha="{{ evento.fecha_evento|date:'d/m/Y' }}"
                                 data-lugar="{{ evento.lugar|escapejs }}"
-                                data-activo="{{ evento.activo|yesno:'Sí,No' }}"
+                                data-activo="{{ evento.activo|yesno:'Activo,Inactivo' }}"
                                 data-creado="{{ evento.creado|date:'d/m/Y H:i' }}">
                                 <i class="fas fa-eye"></i>
                             </button>
@@ -81,11 +85,19 @@
                                 data-activo="{{ evento.activo }}">
                                 <i class="fas fa-edit"></i>
                             </button>
+                            <form method="post" action="{% url 'eventos:cambiar_estado_evento' evento.pk %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn {% if evento.activo %}btn-secondary{% else %}btn-success{% endif %} btn-sm" title="{% if evento.activo %}Desactivar evento{% else %}Activar evento{% endif %}">
+                                    <i class="fas {% if evento.activo %}fa-toggle-off{% else %}fa-toggle-on{% endif %}"></i>
+                                </button>
+                            </form>
+                            {% if not evento.souvenirs.exists %}
                             <button type="button" class="btn btn-danger btn-sm btn-eliminar-evento" data-toggle="modal" data-target="#modalEliminarEvento"
                                 data-id="{{ evento.pk }}"
                                 data-nombre="{{ evento.nombre|escapejs }}">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
+                            {% endif %}
                         </td>
                     </tr>
                     {% empty %}

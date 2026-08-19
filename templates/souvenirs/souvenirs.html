@@ -42,8 +42,8 @@
                     <div class="filtro-item">
                         <select id="selectSouvenirActivo" name="activo" class="form-control form-control-sm">
                             <option value="">Activo / Inactivo</option>
-                            <option value="si" {% if activo == 'si' %}selected{% endif %}>Sí</option>
-                            <option value="no" {% if activo == 'no' %}selected{% endif %}>No</option>
+                            <option value="si" {% if activo == 'si' %}selected{% endif %}>Activo</option>
+                            <option value="no" {% if activo == 'no' %}selected{% endif %}>Inactivo</option>
                         </select>
                     </div>
                 </div>
@@ -53,31 +53,41 @@
 
     <div class="card card-tabla">
         <div class="table-responsive">
-            <table class="table table-striped mb-0">
+            <table class="table table-sm tabla-gestion mb-0">
                 <thead>
                     <tr>
                         <th>Imagen</th>
                         <th>Nombre</th>
                         <th>Evento</th>
                         <th>Stock</th>
-                        <th>Activo</th>
+                        <th>Estado</th>
                         <th class="text-center">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for s in page_obj.object_list %}
                     <tr>
-                        <td>{% if s.imagen %}<img src="{{ s.imagen.url }}" class="souvenir-thumb" alt="{{ s.nombre }}" />{% else %}-{% endif %}</td>
+                        <td>
+                            {% if s.imagen %}
+                            <img src="{{ s.imagen.url }}" class="souvenir-thumb" alt="{{ s.nombre }}" />
+                            {% else %}
+                            <span class="souvenir-thumb-placeholder" aria-label="Sin imagen"><i class="fas fa-image"></i></span>
+                            {% endif %}
+                        </td>
                         <td>{{ s.nombre }}</td>
                         <td>{{ s.evento.nombre|default:'-' }}</td>
                         <td>{{ s.stock }}</td>
-                        <td>{{ s.activo|yesno:'Sí,No' }}</td>
+                        <td>
+                            <span class="badge-estado {% if s.activo %}badge-estado-activo{% else %}badge-estado-inactivo{% endif %}">
+                                {{ s.activo|yesno:'Activo,Inactivo' }}
+                            </span>
+                        </td>
                         <td class="text-center acciones-col">
                             <button type="button" class="btn btn-info btn-sm btn-ver-souvenir" data-toggle="modal" data-target="#modalVerSouvenir"
                                 data-nombre="{{ s.nombre|escapejs }}"
                                 data-descripcion="{{ s.descripcion|escapejs }}"
                                 data-stock="{{ s.stock }}"
-                                data-activo="{{ s.activo|yesno:'Sí,No' }}"
+                                data-activo="{{ s.activo|yesno:'Activo,Inactivo' }}"
                                 data-creado="{{ s.creado|date:'d/m/Y H:i' }}"
                                 {% if s.imagen %}data-imagen="{{ s.imagen.url|escapejs }}"{% endif %}>
                                 <i class="fas fa-eye"></i>
@@ -90,15 +100,23 @@
                                 data-stock="{{ s.stock }}">
                                 <i class="fas fa-edit"></i>
                             </button>
+                            <form method="post" action="{% url 'souvenirs:cambiar_estado_souvenir' s.pk %}" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn {% if s.activo %}btn-secondary{% else %}btn-success{% endif %} btn-sm" title="{% if s.activo %}Desactivar souvenir{% else %}Activar souvenir{% endif %}">
+                                    <i class="fas {% if s.activo %}fa-toggle-off{% else %}fa-toggle-on{% endif %}"></i>
+                                </button>
+                            </form>
+                            {% if not s.entregas.exists %}
                             <button type="button" class="btn btn-danger btn-sm btn-eliminar-souvenir" data-toggle="modal" data-target="#modalEliminarSouvenir"
                                 data-id="{{ s.pk }}"
                                 data-nombre="{{ s.nombre|escapejs }}">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
+                            {% endif %}
                         </td>
                     </tr>
                     {% empty %}
-                    <tr><td colspan="5" class="text-center py-4">No hay souvenirs registrados.</td></tr>
+                    <tr><td colspan="6" class="text-center py-4">No hay souvenirs registrados.</td></tr>
                     {% endfor %}
                 </tbody>
             </table>

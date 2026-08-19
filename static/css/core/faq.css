@@ -1,5 +1,5 @@
 .faq-hero {
-    background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+    background: linear-gradient(135deg, #6d0d0d 0%, #d32f2f 100%);
     padding: 5rem 0 3rem;
     color: #fff;
     position: relative;
@@ -88,12 +88,12 @@
     border: none;
     font-size: 1rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #4a0b0b;
     cursor: pointer;
 }
 
 .faq-question i {
-    color: #1e3a8a;
+    color: #d32f2f;
     transition: transform 0.25s ease;
 }
 
@@ -115,7 +115,7 @@
 
 .faq-answer p {
     margin: 0;
-    color: #475569;
+    color: #7f4b4b;
     line-height: 1.8;
     padding-top: 0.75rem;
 }
@@ -131,12 +131,12 @@
 .faq-side-card h4 {
     margin-bottom: 1rem;
     font-size: 1.25rem;
-    color: #1e3a8a;
+    color: #d32f2f;
 }
 
 .faq-side-card p {
     margin-bottom: 1.5rem;
-    color: #64748b;
+    color: #7f4b4b;
     line-height: 1.7;
 }
 
@@ -152,17 +152,17 @@
     display: flex;
     align-items: center;
     gap: 0.85rem;
-    color: #475569;
+    color: #7f4b4b;
 }
 
 .faq-contact-list li a {
-    color: #1e3a8a;
+    color: #d32f2f;
     text-decoration: none;
     font-weight: 600;
 }
 
 .faq-contact-list li i {
-    color: #2563eb;
+    color: #ff1744;
     min-width: 24px;
     text-align: center;
 }

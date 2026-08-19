@@ -15,7 +15,7 @@
             <p class="page-subtitle">Filtra por estado, fecha, ciudad y orden. Descarga el Excel con los resultados actuales.</p>
         </div>
         <div class="page-header-actions">
-            <a href="{% url 'reportes:descargar_reporte_socios' %}?q={{ q|urlencode }}&estado={{ estado|urlencode }}&ciudad={{ ciudad|urlencode }}&recibio_souvenir={{ recibio_souvenir|urlencode }}&souvenir_id={{ souvenir_id|urlencode }}&orden={{ orden|urlencode }}&desde={{ desde|urlencode }}&hasta={{ hasta|urlencode }}" class="btn btn-primary btn-lg">
+            <a href="{% url 'reportes:descargar_reporte_socios' %}?q={{ q|urlencode }}&estado={{ estado|urlencode }}&recibio_souvenir={{ recibio_souvenir|urlencode }}&souvenir_id={{ souvenir_id|urlencode }}&orden={{ orden|urlencode }}&desde={{ desde|urlencode }}&hasta={{ hasta|urlencode }}" class="btn btn-primary btn-lg">
                 <i class="fas fa-file-excel"></i> Descargar Excel
             </a>
         </div>
@@ -23,7 +23,7 @@
 
     <div class="card card-filtros mb-4">
         <div class="card-body py-3">
-            <form class="filtros-socios-form row gx-3 gy-3" id="reportesFiltrosForm">
+            <form class="reportes-filtros-form" id="reportesFiltrosForm">
                 <div class="col-12 col-md-4">
                     <div class="input-group input-group-sm">
                         <div class="input-group-prepend">
@@ -55,9 +55,6 @@
                     </select>
                 </div>
                 <div class="col-6 col-md-2">
-                    <input id="filtroCiudad" type="text" class="form-control form-control-sm" placeholder="Ciudad" value="{{ ciudad }}">
-                </div>
-                <div class="col-6 col-md-2">
                     <select id="filtroOrden" class="form-control form-control-sm">
                         <option value="recientes" {% if orden == 'recientes' or not orden %}selected{% endif %}>Más recientes</option>
                         <option value="antiguos" {% if orden == 'antiguos' %}selected{% endif %}>Más antiguos</option>
@@ -72,7 +69,9 @@
                     <input id="filtroHasta" type="date" class="form-control form-control-sm" value="{{ hasta }}">
                 </div>
                 <div class="col-6 col-md-2 d-flex align-items-end">
-                    <button id="btnLimpiarFiltros" type="button" class="btn btn-outline-secondary w-100">Limpiar filtros</button>
+                    <button id="btnLimpiarFiltros" type="button" class="btn btn-outline-secondary btn-limpiar-filtros" title="Limpiar filtros" aria-label="Limpiar filtros">
+                        <i class="fas fa-eraser" aria-hidden="true"></i>
+                    </button>
                 </div>
             </form>
         </div>

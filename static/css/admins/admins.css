@@ -26,9 +26,8 @@
 }
 
 .acciones-col {
-    display: inline-flex;
-    gap: 0.35rem;
-    justify-content: center;
+    text-align: center;
+    white-space: nowrap;
 }
 
 .acciones-col .btn {
@@ -92,6 +91,45 @@
     text-transform: uppercase;
 }
 
+.tabla-gestion th.acciones-col-head,
+.tabla-gestion td.acciones-col {
+    width: 140px;
+    min-width: 140px;
+}
+
+.modal-socio-dialog {
+    max-width: 980px;
+}
+
+.modal-socio-dialog .modal-body {
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+}
+
+.modal-crear-gestion .modal-header {
+    background: #1e3a8a;
+    color: #fff;
+}
+
+.modal-ver-gestion .modal-header {
+    background: #38bdf8;
+    color: #fff;
+}
+
+.modal-editar-gestion .modal-header {
+    background: #facc15;
+    color: #1f2937;
+}
+
+.modal-eliminar-gestion .modal-header {
+    background: #dc2626;
+    color: #fff;
+}
+
+.modal-eliminar-gestion .modal-dialog {
+    max-width: 420px;
+}
+
 .btn-primary {
     white-space: nowrap;
 }
@@ -111,5 +149,9 @@
     .filtro-busqueda,
     .filtro-item {
         flex: 1 1 100%;
+    }
+
+    .modal-socio-dialog {
+        max-width: 95%;
     }
 }

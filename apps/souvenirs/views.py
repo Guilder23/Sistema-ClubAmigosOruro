@@ -159,7 +159,22 @@ def ver_souvenir(request, pk):
 def eliminar_souvenir(request, pk):
     s = get_object_or_404(Souvenir, pk=pk)
     if request.method == 'POST':
+        if s.entregas.exists():
+            messages.error(request, 'No se puede eliminar un souvenir asignado a un socio. Puedes cambiar su estado a inactivo.')
+            return redirect('souvenirs:listar_souvenirs')
         s.delete()
         messages.success(request, 'Souvenir eliminado.')
         return redirect('souvenirs:listar_souvenirs')
+    return redirect('souvenirs:listar_souvenirs')
+
+
+@login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/login/')
+def cambiar_estado_souvenir(request, pk):
+    souvenir = get_object_or_404(Souvenir, pk=pk)
+    if request.method == 'POST':
+        souvenir.activo = not souvenir.activo
+        souvenir.save(update_fields=['activo'])
+        estado = 'activado' if souvenir.activo else 'desactivado'
+        messages.success(request, f'Souvenir {estado}.')
     return redirect('souvenirs:listar_souvenirs')

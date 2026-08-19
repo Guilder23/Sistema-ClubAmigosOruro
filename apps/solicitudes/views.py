@@ -4,10 +4,45 @@ from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.paginator import Paginator
 from django.db.models import Q
+from urllib.parse import quote
 
 from .models import SolicitudSocio
 from apps.socios.models import Socio
 from apps.socios.models import generar_codigo_socio
+
+
+def construir_enlace_whatsapp(solicitud):
+    telefono = ''.join(caracter for caracter in (solicitud.telefono or '') if caracter.isdigit())
+    if not telefono:
+        return ''
+    if len(telefono) == 8:
+        telefono = f'591{telefono}'
+
+    apellido = solicitud.apellido_paterno or solicitud.apellido
+    nombre_completo = f'{solicitud.nombre} {apellido}'.strip()
+    if solicitud.estado == 'rechazada':
+        mensaje = (
+            f'Hola {nombre_completo}. Gracias por tu interés en formar parte del Club carnaval Oruro.\n\n'
+            'Lamentamos informarte que tu solicitud de ingreso fue rechazada en esta ocasión. '
+            'Si deseas recibir más información, puedes responder a este mensaje.\n\n'
+            'Saludos cordiales.'
+        )
+    elif solicitud.usuario_creado:
+        contrasena = solicitud.carnet_ci or 'ClubAmigos2026!'
+        mensaje = (
+            f'Hola {nombre_completo}, gracias por registrarte para entrar a tu cuenta de Club carnaval Oruro.\n\n'
+            f'Estos son los datos de acceso:\n'
+            f'Usuario: {solicitud.usuario_creado.username}\n'
+            f'Contraseña: {contrasena}\n\n'
+            '¡Te damos la bienvenida al club!'
+        )
+    else:
+        mensaje = (
+            f'Hola {nombre_completo}, tu solicitud para formar parte del Club carnaval Oruro fue aprobada. '
+            'Nos comunicaremos contigo para brindarte los siguientes pasos.\n\n'
+            '¡Bienvenido al club!'
+        )
+    return f'https://wa.me/{telefono}?text={quote(mensaje)}'
 
 
 @login_required
@@ -27,6 +62,8 @@ def listar_solicitudes(request):
     paginator = Paginator(solicitudes.order_by('-fecha_solicitud'), 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    for solicitud in page_obj.object_list:
+        solicitud.whatsapp_url = construir_enlace_whatsapp(solicitud) if solicitud.estado in ('aprobada', 'rechazada') else ''
     return render(request, 'solicitudes/listar_solicitudes.html', {'page_obj': page_obj, 'q': q, 'estado': estado})
 
 

@@ -83,8 +83,23 @@ def editar_evento(request, pk):
 def eliminar_evento(request, pk):
     evento = get_object_or_404(Evento, pk=pk)
     if request.method == 'POST':
+        if evento.souvenirs.exists():
+            messages.error(request, 'No se puede eliminar un evento que tiene souvenirs asignados. Puedes cambiar su estado a inactivo.')
+            return redirect('eventos:listar_eventos')
         evento.delete()
         messages.success(request, 'Evento eliminado correctamente.')
+    return redirect('eventos:listar_eventos')
+
+
+@login_required
+@user_passes_test(lambda u: u.is_staff, login_url='/login/')
+def cambiar_estado_evento(request, pk):
+    evento = get_object_or_404(Evento, pk=pk)
+    if request.method == 'POST':
+        evento.activo = not evento.activo
+        evento.save(update_fields=['activo'])
+        estado = 'activado' if evento.activo else 'desactivado'
+        messages.success(request, f'Evento {estado}.')
     return redirect('eventos:listar_eventos')
 
 

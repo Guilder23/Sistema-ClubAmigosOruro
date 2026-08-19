@@ -67,6 +67,10 @@
                             {% if solicitud.estado == 'pendiente' %}
                             <a href="{% url 'solicitudes:aprobar_solicitud' solicitud.id %}" class="btn btn-sm btn-success">Aprobar</a>
                             <a href="{% url 'solicitudes:rechazar_solicitud' solicitud.id %}" class="btn btn-sm btn-danger">Rechazar</a>
+                            {% elif solicitud.whatsapp_url %}
+                            <a href="{{ solicitud.whatsapp_url }}" class="btn btn-sm btn-whatsapp" target="_blank" rel="noopener noreferrer">
+                                <i class="fab fa-whatsapp mr-1" aria-hidden="true"></i>WhatsApp
+                            </a>
                             {% else %}
                             <span class="text-muted">Atendida</span>
                             {% endif %}
