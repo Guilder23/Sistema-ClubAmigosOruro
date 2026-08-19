@@ -1,6 +1,6 @@
 /* New Footer Design */
 .footer-inicio {
-    background: #0a1f44;
+    background: #6d0d0d;
     padding: 3rem 0 1rem;
     color: #ffffff;
 }
@@ -39,7 +39,7 @@
 }
 
 .footer-brand .brand-outlet {
-    color: #dc3545;
+    color: #ff8a80;
 }
 
 .footer-tagline {
@@ -96,7 +96,7 @@
 
 .footer-contact li i {
     margin-top: 0.2rem;
-    color: #dc3545;
+    color: #ff8a80;
 }
 
 /* Schedule Section */
@@ -126,7 +126,7 @@
 }
 
 .footer-social .social-link:hover {
-    background: #dc3545;
+    background: #d32f2f;
 }
 
 /* Footer Bottom */

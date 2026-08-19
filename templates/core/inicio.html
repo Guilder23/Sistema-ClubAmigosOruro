@@ -1,7 +1,7 @@
 {% extends 'base/base.html' %}
 {% load static %}
 
-{% block titulo %}Club Amigos{% endblock %}
+{% block titulo %}Club carnaval Oruro{% endblock %}
 
 {% block estilos_extra %}
 <link rel="stylesheet" href="{% static 'css/componentes/navbar-inicio.css' %}">
@@ -12,7 +12,7 @@
 {% block contenido %}
 {% include 'componentes/navbar-inicio.html' %}
 
-<section class="hero-portada" id="inicio" style="--hero-img: url('{% static 'img/imagenprincipal.png' %}');">
+<section class="hero-portada" id="inicio">
     <div class="hero-portada-overlay"></div>
     <div class="hero-portada-inner">
         <div class="container py-5">
@@ -159,9 +159,6 @@ Nacimos con la convicción de que el Carnaval de Oruro no solo está presente en
             </div>
             <div class="col-lg-6">
                 <div class="sobre-club-media reveal">
-                    <div class="sobre-club-main-img img-zoom">
-                        <img src="{% static 'img/imagenprincipal.png' %}" alt="Club Amigos" class="img-fluid rounded img-fall">
-                    </div>
                     <div class="sobre-club-card p-4 shadow-sm mt-3 border-0">
                         <div class="d-flex align-items-center mb-4">
                             <span class="sobre-club-icon icon-pulse" style="font-size: 2.5rem; min-width: 60px;"><i class="fas fa-list-check"></i></span>
@@ -254,12 +251,11 @@ Nacimos con la convicción de que el Carnaval de Oruro no solo está presente en
     <section class="inicio-section" aria-hidden="false">
         <div class="row">
             <div class="col-12">
-                <h2 class="mb-3" style="font-size:1.3rem; color:#1e3a8a; font-weight:700;"><i class="fas fa-user-friends"></i> Opiniones de socios</h2>
+                <h2 class="mb-3 inicio-subtitulo"><i class="fas fa-user-friends"></i> Opiniones de socios</h2>
             </div>
             <div class="col-lg-4 mb-3">
                 <div class="inicio-testimonio h-100 shadow-sm">
                     <div class="testimonio-head d-flex align-items-center mb-2">
-                        <img src="{% static 'img/galeria/imagen1.png' %}" alt="María" class="testimonio-avatar mr-3">
                         <div>
                             <div class="inicio-testimonio-nombre">María</div>
                             <div class="inicio-testimonio-rol">Socio</div>
@@ -271,7 +267,6 @@ Nacimos con la convicción de que el Carnaval de Oruro no solo está presente en
             <div class="col-lg-4 mb-3">
                 <div class="inicio-testimonio h-100 shadow-sm">
                     <div class="testimonio-head d-flex align-items-center mb-2">
-                        <img src="{% static 'img/galeria/imagen2.png' %}" alt="Juan" class="testimonio-avatar mr-3">
                         <div>
                             <div class="inicio-testimonio-nombre">Juan</div>
                             <div class="inicio-testimonio-rol">Socio</div>
@@ -283,7 +278,6 @@ Nacimos con la convicción de que el Carnaval de Oruro no solo está presente en
             <div class="col-lg-4 mb-3">
                 <div class="inicio-testimonio h-100 shadow-sm">
                     <div class="testimonio-head d-flex align-items-center mb-2">
-                        <img src="{% static 'img/galeria/imagen3.png' %}" alt="Ana" class="testimonio-avatar mr-3">
                         <div>
                             <div class="inicio-testimonio-nombre">Ana</div>
                             <div class="inicio-testimonio-rol">Socio</div>

@@ -1,6 +1,6 @@
 /* New Navbar Design */
 .navbar-inicio {
-    background: #0a1f44;
+    background: #b71c1c;
     padding: 0.75rem 0;
     position: sticky;
     top: 0;
@@ -37,7 +37,7 @@
 }
 
 .mobile-nav-toggle:hover {
-    color: #dc2626;
+    color: #ff8a80;
 }
 
 .navbar-brand-inicio {
@@ -64,7 +64,7 @@
 }
 
 .brand-outlet {
-    color: #dc3545;
+    color: #ff8a80;
 }
 
 .navbar-center {
@@ -95,7 +95,7 @@
 }
 
 .navbar-desktop-links .nav-link:hover {
-    color: #dc2626;
+    color: #ff8a80;
 }
 
 .nav-search-form-inline {
@@ -133,7 +133,7 @@
 }
 
 .nav-icon-btn:hover {
-    color: #dc2626;
+    color: #ff8a80;
 }
 
 /* Filter Dropdown */

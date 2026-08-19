@@ -98,7 +98,7 @@ def descargar_reporte_socios(request):
     subtitle_font = Font(size=11)
     info_font = Font(size=10)
 
-    sheet['A1'] = 'Club Amigos - Reporte de Socios'
+    sheet['A1'] = 'Club carnaval Oruro - Reporte de Socios'
     sheet['A1'].font = title_font
     sheet['A2'] = f'Reporte generado: {datetime.now().strftime("%d/%m/%Y %H:%M")}'
     sheet['A2'].font = subtitle_font
